@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="ac-spinner.html">
+<dom-module id="ac-terminal-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      ac-spinner {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <ac-spinner></ac-spinner>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'ac-terminal-app',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'ac-terminal-app',
+        },
+      },
+
+    });
+  </script>
+</dom-module>
