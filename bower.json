@@ -15,7 +15,8 @@
     "hooked-web3-provider": "https://github.com/ConsenSys/hooked-web3-provider.git",
     "moment-js": "^0.4.1",
     "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",
-    "cryptojslib": "^3.1.2"
+    "cryptojslib": "^3.1.2",
+    "iron-localstorage": "^1.0.6"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
