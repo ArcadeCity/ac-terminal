@@ -16,7 +16,8 @@
     "moment-js": "^0.4.1",
     "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",
     "cryptojslib": "^3.1.2",
-    "iron-localstorage": "^1.0.6"
+    "iron-localstorage": "^1.0.6",
+    "neon-elements": "PolymerElements/neon-elements#^1.0.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
