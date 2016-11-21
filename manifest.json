@@ -1,0 +1,7 @@
+{
+  "name": "ac-wallet",
+  "short_name": "ac-wallet",
+  "description": "Wallet app for the Arcade City ecosystem",
+  "start_url": "/",
+  "display": "standalone"
+}
