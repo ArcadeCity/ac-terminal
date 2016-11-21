@@ -1,9 +1,21 @@
 {
   "name": "ac-wallet",
-  "description": "Wallet app for the Arcade City ecosystem",
+  "description": "Arcade City Wallet",
   "main": "index.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0"
+    "polymer": "Polymer/polymer#^1.4.0",
+    "jsencrypt": "^2.3.0",
+    "node-uuid": "^1.4.7",
+    "ac-style": "https://github.com/ArcadeCity/ac-style.git",
+    "ac-button": "https://github.com/ArcadeCity/ac-button.git",
+    "ac-loader": "https://github.com/ArcadeCity/ac-loader.git",
+    "ac-input": "https://github.com/ArcadeCity/ac-input.git",
+    "web3": "https://github.com/ArcadeCity/web3.js.git",
+    "eth-lightwallet": "https://github.com/BlockTube/eth-lightwallet.git#^2.4.1",
+    "hooked-web3-provider": "https://github.com/ConsenSys/hooked-web3-provider.git",
+    "moment-js": "^0.4.1",
+    "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",
+    "cryptojslib": "^3.1.2"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
