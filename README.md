@@ -8,8 +8,11 @@ It provides the Arcadians the possibility to create and and manage a basic profi
 ## New user
 A new Arcadian opens the app and can create his own wallet in Arcade City. He must choose a strong password (min 9 characters) and needs to enter this twice. A new wallet is created. The new user needs to download the json file to store his encrypted private key and is asked to keep it safe, together with his password.
 
-## Existing user
+## User with a wallet on new device
 A user that already has a wallet in Arcade City, can upload his json file and enter his password, to import his existing wallet.
+
+## New session on device with my wallet
+A user that already has a wallet installed on his device, can open the app and unlock it by entering his pasword.
 
 ## Terminal 
 On the main terminal screen, the user sees his avatar, username, balance, reference currency and an overview of all games provided in Arcade City (to start with ridesharing).
