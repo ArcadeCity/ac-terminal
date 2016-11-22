@@ -8,7 +8,7 @@
 <link rel="import" href="../bower_components/ac-style/ac-style.html">
 <link rel="import" href="../bower_components/ac-input/ac-input.html">
 <link rel="import" href="../bower_components/ac-button/ac-button.html">
-<link rel="import" href="ac-sizeview/ac-sizeview.html">
+<!-- <link rel="import" href="ac-sizeview/ac-sizeview.html"> -->
 
 
 <script type="text/javascript" src="../bower_components/crypto-js/crypto-js.js"></script>
@@ -85,6 +85,9 @@
       p {
        @apply(--ac-font-body1);
       }
+      a {
+       @apply(--ac-font-ahref);
+      }
       small {
        @apply(--ac-font-small);
       }
@@ -92,6 +95,7 @@
       .maintitle {
         @apply(--layout-horizontal);
         @apply(--layout-center-center);
+        @apply(--layout-wrap);
       }
 
       .maintitle h1 {
@@ -104,7 +108,7 @@
 
 
     .intro {
-      width: 100%;
+      width: 90%;
       height: 70%;
       @apply(--layout-vertical);
       @apply(--layout-center);
@@ -112,6 +116,12 @@
       /*@apply(--layout-wrap);*/
       box-sizing: border-box;
       /*background-color: red;*/
+    }
+
+    .intro a {
+      color: var(--ac-blue);
+      font-size: 12px;
+
     }
 
     .syncuser {
@@ -144,15 +154,16 @@
       max-width: 500px;
     }
 
-    ac-button {
-      margin-top: 6vh;
+    .newbtn {
+      margin-top: 4vh;
       @apply(--base-shadow-and-inset);
+      width: 230px;
     }
 
     .version {
       font-size: 12px;
       color: white;
-      opacity: 0.25;
+      opacity: 0.35;
     }
 
     .wallet {
@@ -165,17 +176,21 @@
 
     </style>
 
-    <neon-animated-pages id="pages" attr-for-selected="state" selected="{{state}}" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
+    <neon-animated-pages id="pages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
     <neon-animatable state="0">
     <div class="total horiz">
       <div class="intro">
         <div class="maintitle">
           <ac-icon icon="ac-brandlogo-color" big></ac-icon>
-          <h1>arcade.city<span class="wallet"> / terminal</span></h1>
+          <h1>arcade.city<!-- <span class="wallet"> / terminal</span> --></h1>
         </div>
-        <ac-button on-tap="newuser" bg="red" txtcolor="white" txtbtn>Enter the city</ac-button>
+        <p class="version">AC-terminal v0.1</p>
+
+        <ac-button class="newbtn" on-tap="newuser" bg="red" txtcolor="white" big txtbtn>I'm new here</ac-button>
+        <div class="whitespace"></div>
+
+        <a href="">I already have an ARC-wallet</a>
       </div>
-      <p class="version">v0.1</p>
     </div>
     </neon-animatable>
 
