@@ -8,8 +8,7 @@
 <link rel="import" href="../bower_components/ac-style/ac-style.html">
 <link rel="import" href="../bower_components/ac-input/ac-input.html">
 <link rel="import" href="../bower_components/ac-button/ac-button.html">
-<link rel="import" href="ac-sizeview/ac-sizeview.html">
-
+<link rel="import" href="ac-sizeview.html">
 
 <script type="text/javascript" src="../bower_components/crypto-js/crypto-js.js"></script>
 
@@ -166,40 +165,39 @@
     </style>
 
     <neon-animated-pages id="pages" attr-for-selected="state" selected="{{state}}" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
+
     <neon-animatable state="0">
-    <div class="total horiz">
-      <div class="intro">
-        <div class="maintitle">
-          <ac-icon icon="ac-brandlogo-color" big></ac-icon>
-          <h1>arcade.city<span class="wallet"> / terminal</span></h1>
+      <div class="total horiz">
+        <div class="intro">
+          <div class="maintitle">
+            <ac-icon icon="ac-brandlogo-color" big></ac-icon>
+            <h1>arcade.city<span class="wallet"> / terminal</span></h1>
+          </div>
+          <ac-button on-tap="newuser" bg="red" txtcolor="white" txtbtn>Enter the city</ac-button>
         </div>
-        <ac-button on-tap="newuser" bg="red" txtcolor="white" txtbtn>Enter the city</ac-button>
+        <p class="version">v0.1</p>
       </div>
-      <p class="version">v0.1</p>
-    </div>
-    </neon-animatable>
+      </neon-animatable>
 
-    <neon-animatable state="1">
-      <div class="total vertic">
-        <h1>Choose a password</h1>
-        <div class="whitespace"></div>
-        <ac-input id="p1" color="yellow" label="Password" bind-value="{{password}}" type="password" center></ac-input>
-        <div class="whitespace"></div>
-        <ac-button icon="ac-arrowright" on-tap="nextcontrol" bg="base" txtcolor="yellow">Continue</ac-button>
-      </div>
-    </neon-animatable>
+      <neon-animatable state="1">
+        <div class="total vertic">
+          <h1>Choose a password</h1>
+          <div class="whitespace"></div>
+          <ac-input id="p1" color="yellow" label="Password" bind-value="{{password}}" type="password" center onkeydown="checkForEnter"></ac-input>
+          <div class="whitespace"></div>
+          <ac-button icon="ac-arrowright" on-tap="nextcontrol" bg="base" txtcolor="yellow">Continue</ac-button>
+        </div>
+      </neon-animatable>
 
-    <neon-animatable state="2">
-      <div class="total vertic">
-        <h1>Retype your password</h1>
-        <div class="whitespace"></div>
-        <ac-input id="p2" color="yellow" label="Password control" bind-value="{{password1}}" type="password" center></ac-input>
-        <div class="whitespace"></div>
-        <ac-button icon="ac-v" on-tap="savePassword" disabled="{{passcheck}}" bg="base" txtcolor="yellow">Continue</ac-button>
-      </div>
-    </neon-animatable>
-
-
+      <neon-animatable state="2">
+        <div class="total vertic">
+          <h1>Retype your password</h1>
+          <div class="whitespace"></div>
+          <ac-input id="p2" color="yellow" label="Password control" bind-value="{{password1}}" type="password" center></ac-input>
+          <div class="whitespace"></div>
+          <ac-button icon="ac-v" on-tap="savePassword" disabled="{{passcheck}}" bg="base" txtcolor="yellow">Continue</ac-button>
+        </div>
+      </neon-animatable>
 
     </neon-animated-pages>
     <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
@@ -208,9 +206,11 @@
   <script>
     Polymer({
       is: 'ac-newuser',
-  behaviors: [
-    Polymer.NeonAnimationRunnerBehavior
-  ],
+
+      behaviors: [
+        Polymer.NeonAnimationRunnerBehavior
+      ],
+
       properties: {
         password: {
           type: String,
@@ -243,6 +243,14 @@
 
       attached: function() {
         console.log('ac-newuser attached.');
+      },
+
+      checkForEnter: function (e) {
+          // check if 'enter' was pressed
+          if (e.keyCode === 13) {
+              // enter pressed!
+              console.log('thats an enter on ', e.target);
+          }
       },
 
       savePassword: function() {
