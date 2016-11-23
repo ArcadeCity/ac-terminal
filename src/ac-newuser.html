@@ -229,11 +229,11 @@
       margin: 5px;
      }
     
-    .syncbtns {
+    .doublebtns {
       width: 100%;
      }
 
-     .sync {
+     .double {
       width: 100%;
       max-width: 300px;
       margin: 5px;
@@ -247,77 +247,90 @@
       text-align: center;
      }
 
+     .smallinbtn {
+      font-size: 10px;
+     }
+
+     .lineheighter {
+      line-height: 18px;
+     }
+
 
 
 
     </style>
 
     <neon-animated-pages id="pages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
-    <neon-animatable state="0">
+
+    <neon-animatable state="start">
     <div class="total horiz">
       <div class="inner">
         <div class="maintitle">
           <ac-icon icon="ac-brandlogo-color" big></ac-icon>
-          <h1>arcade.city<!-- <span class="wallet"> / terminal</span> --></h1>
+          <h1>arcade.city</h1>
         </div>
         <p class="version">AC-terminal v0.1</p>
         <div class="flex"></div>
-
-
         <ac-button big class="newbtn" on-tap="newuser" bg="base" txtcolor="red" txtbtn>Start new</ac-button>
-
         <div class="whitespace"></div>   
         <a on-tap="toSync">Sync with other device / backup-file</a>
-<!--         <ac-button big class="newbtnslim topmarge" on-tap="" bg="base" txtcolor="red" txtbtn>I bought ARC tokens at the tokensale</ac-button>
-        <ac-button big class="newbtnslim topmarge" on-tap="" bg="base" txtcolor="red" txtbtn>I have an account on another device</ac-button> -->
-
       </div>
     </div>
     </neon-animatable>
 
 
-    <neon-animatable state="1">
+    <neon-animatable state="doyouhavetokens">
     <div class="total vertic">
-
-
           <p class="red">Do you have ARC-tokens?</p>
           <div class="whitespace"></div>
           <div class="whitespace"></div>
-
           <div class="yesnobtns vertic">
             <ac-button big class="yesno" bg="base" txtcolor="red" on-tap="saidYes" txtbtn>Yes</ac-button>
-            <ac-button big class="yesno" bg="base" txtcolor="red" on-tap="saidNo" txtbtn>No</ac-button>
+            <ac-button big class="yesno" bg="base" txtcolor="red" on-tap="toPassw1" txtbtn>No</ac-button>
           </div>
-          
         </div>
     </neon-animatable>
 
-    <neon-animatable state="2">
-    <div class="total vertic">          
+    <neon-animatable state="whereareurtokens">
+    <div class="total vertic">
+          <p class="red">Where are your ARC-tokens stored?</p>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+          <div class="doublebtns vertic">
+            <ac-button big class="double" bg="base" txtcolor="red" on-tap="saidARCwallet" txtbtn>in an ARC-wallet</ac-button>
+            <ac-button big class="double lineheighter" bg="base" txtcolor="red" on-tap="saidExternal" txtbtn>in an external wallet <br><span class="smallinbtn">(MyEtherWallet, Mist, ...)</span></ac-button>
+          </div>
+        </div>
+    </neon-animatable>
 
+    <neon-animatable state="externalwallet">
+    <div class="total vertic">
+        </div>
+    </neon-animatable>
+
+
+
+
+    <neon-animatable state="uploadarcwallet">
+    <div class="total vertic">          
         <p class="red centertxt">Upload your ARC-wallet or paste its private key</p>
        <div class="whitespace"></div>
        <div class="whitespace"></div>
        <div class="whitespace"></div>
-
         <ac-button bg="base" txtcolor="red" txtbtn>Choose wallet-file</ac-button>
        <div class="whitespace"></div>
         <ac-input color="red" label="Private key of ARC-wallet" bind-value="{{privatekey}}" type="privatekey" center ></ac-input>
         <div class="whitespace"></div>
        <div class="whitespace"></div>
        <div class="whitespace"></div>
-
         <ac-button icon="ac-v" on-tap="nextcontrol" bg="base" txtcolor="red" disabled>Continue</ac-button>
         <div class="whitespace"></div>
-
-
-
         </div>
     </neon-animatable>
 
 
 
-    <neon-animatable state="3">
+    <neon-animatable state="passw1">
       <div class="total vertic">
       <div class="inner">
 
@@ -333,7 +346,7 @@
       </neon-animatable>
 
 
-      <neon-animatable state="4">
+      <neon-animatable state="passw2">
         <div class="total vertic">
         <div class="inner">
 
@@ -349,22 +362,22 @@
         </div>
       </neon-animatable>
 
-<neon-animatable state="5">
+    <neon-animatable state="syncbackup">
     <div class="total vertic">
 
           <p class="blue centertxt txtsmall">Do you want to sync from a device or a backup-file?</p>
           <div class="whitespace"></div>
           <div class="whitespace"></div>
 
-          <div class="syncbtns vertic">
-            <ac-button big class="sync" bg="base" txtcolor="blue" on-tap="saidDevice" txtbtn>device</ac-button>
-            <ac-button big class="sync" bg="base" txtcolor="blue" on-tap="saidBackupfile" txtbtn>backup-file</ac-button>
+          <div class="doublebtns vertic">
+            <ac-button big class="double" bg="base" txtcolor="blue" on-tap="saidDevice" txtbtn>device</ac-button>
+            <ac-button big class="double" bg="base" txtcolor="blue" on-tap="saidBackupfile" txtbtn>backup-file</ac-button>
           </div>
           
         </div>
     </neon-animatable>
 
-    <neon-animatable state="6">
+    <neon-animatable state="syncwithdevice">
         <div class="total vertic">
         <div class="inner">
 
@@ -380,7 +393,7 @@
         </div>
       </neon-animatable>
 
-      <neon-animatable state="7">
+      <neon-animatable state="syncwithbackup">
         <div class="total vertic">
         <div class="inner">
         <div class="centervlak flex vertic">          
@@ -444,8 +457,6 @@
 
       attached: function() {
         console.log('ac-newuser attached.');
-        console.log("komtiiieeeeeeeee",this.emptypassw);
-
       },
 
       checkForEnter: function (e) {
@@ -468,15 +479,15 @@
       },
 
       ready: function(){
-        this.state = 0;
+        this.state = 'start';
       },
 
       newuser: function(){
-        this.state = 1;
+        this.state = 'passw1';
       },
 
       nextcontrol: function() {
-        this.state = 4;
+        this.state = 'passw2';
       },
 
       _passwordcheck: function() {
@@ -484,8 +495,7 @@
         if(this.password && this.password===this.password1){
           this.passcheck = false;
         } else {
-                    this.passcheck = true;
-
+          this.passcheck = true;
         }
 
         if(this.password === ''){
@@ -537,24 +547,33 @@
       },
 
       saidYes: function() {
-        this.state = 2;
+        this.state = 'whereareurtokens';
       },
 
-      saidNo: function() {
-        this.state = 3;
+      saidARCwallet: function() {
+        this.state = 'uploadarcwallet';
+      },
+
+      saidExternal: function() {
+        this.state = 'externalwallet';
+      },
+
+
+      toPassw1: function() {
+        this.state = 'passw1';
       },
 
       toSync: function() {
-        this.state = 5;
+        this.state = 'syncbackup';
       },
 
       saidDevice: function() {
-        this.state = 6;
+        this.state = 'syncwithdevice';
       },
 
 
       saidBackupfile: function() {
-        this.state = 7;
+        this.state = 'syncwithbackup';
       }
     });
   </script>
