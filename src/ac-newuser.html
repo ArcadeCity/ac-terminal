@@ -32,11 +32,11 @@
         padding: 10vw;
         margin: 0px;
         /*background-color: white;*/
-        /*@apply(--base-structure);*/
-        background: url(../images/AC-intro-bg2b.png) #1d143f;
+        @apply(--base-structure);
+        /*background: url(../images/AC-intro-bg2b.png) #1d143f;
         background-repeat: no-repeat;
         background-position: bottom;
-        background-size: auto 100%;
+        background-size: auto 100%;*/
       }
 
       neon-animated-pages {
@@ -63,6 +63,7 @@
 /*        background-color: var(--locals-blue);*/
           @apply(--base-structure);
       }
+
 
       .vertic ac-input {
         max-width: 600px;
@@ -92,7 +93,18 @@
       small {
        @apply(--ac-font-small);
       }
-
+      .white {
+        color: var(--ac-white);
+      }
+      .blue {
+        color: var(--ac-blue);
+      }
+      .red {
+        color: var(--ac-red);
+      }
+      .yellow {
+        color: var(--ac-yellow);
+      }              
       .maintitle {
         @apply(--layout-horizontal);
         @apply(--layout-center-center);
@@ -108,9 +120,9 @@
       }
 
 
-    .intro {
+    .inner {
       width: 90%;
-      height: 70%;
+      height: 76%;
       @apply(--layout-vertical);
       @apply(--layout-center);
       @apply(--layout-start-justified);
@@ -119,10 +131,23 @@
       /*background-color: red;*/
     }
 
-    .intro a {
-      color: var(--ac-blue);
+    .inner a {
+      color: var(--ac-red);
+      border-bottom: 1px dotted var(--ac-red);
       font-size: 12px;
+      opacity: 0.7;
+    max-width: 51%;
+    text-align: center;
+    line-height: 18px;
+    }
 
+    .inner a:hover {
+      opacity: 0.95;
+    }
+
+    .centervlak {
+      width: 100%;
+      max-width: 400px;
     }
 
     .syncuser {
@@ -156,9 +181,23 @@
     }
 
     .newbtn {
-      margin-top: 4vh;
+     
       @apply(--base-shadow-and-inset);
-      width: 230px;
+      width: 100%;
+      max-width: 375px;
+      height: 90px;
+      @apply(--layout-horizontal);
+      @apply(--layout-center-center);
+      opacity: 0.95;
+    
+    }
+
+    .newbtn:hover {
+      opacity: 1;
+    }
+
+    .newbtnslim {
+      @apply(--montserrat-light);
     }
 
     .version {
@@ -173,6 +212,27 @@
        margin-left: 4px;
      }
 
+     .topmarge {
+      margin-top: 14px;
+     }
+
+     .blue {
+      color: var(--ac-blue);
+     }
+
+     .yesnobtns {
+      width: 100%;
+     }
+
+     .yesno {
+      width: 180px;
+      margin: 5px;
+     }
+
+     .centertxt {
+      text-align: center;
+     }
+
 
 
     </style>
@@ -180,48 +240,97 @@
     <neon-animated-pages id="pages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
     <neon-animatable state="0">
     <div class="total horiz">
-      <div class="intro">
+      <div class="inner">
         <div class="maintitle">
           <ac-icon icon="ac-brandlogo-color" big></ac-icon>
           <h1>arcade.city<!-- <span class="wallet"> / terminal</span> --></h1>
         </div>
         <p class="version">AC-terminal v0.1</p>
+        <div class="flex"></div>
 
-        <ac-button class="newbtn" on-tap="newuser" bg="red" txtcolor="white" big txtbtn>I'm new here</ac-button>
-        <div class="whitespace"></div>
 
-        <a href="">I already have an ARC-wallet</a>
+        <ac-button big class="newbtn" on-tap="newuser" bg="base" txtcolor="red" txtbtn>Start new</ac-button>
+
+        <div class="whitespace"></div>   
+        <a href="">Sync with other device / backup-file</a>
+<!--         <ac-button big class="newbtnslim topmarge" on-tap="" bg="base" txtcolor="red" txtbtn>I bought ARC tokens at the tokensale</ac-button>
+        <ac-button big class="newbtnslim topmarge" on-tap="" bg="base" txtcolor="red" txtbtn>I have an account on another device</ac-button> -->
+
       </div>
     </div>
     </neon-animatable>
 
+
     <neon-animatable state="1">
+    <div class="total vertic">
+
+
+          <p class="red">Do you have ARC-tokens?</p>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
+          <div class="yesnobtns vertic">
+            <ac-button big class="yesno" bg="base" txtcolor="red" on-tap="saidYes" txtbtn>Yes</ac-button>
+            <ac-button big class="yesno" bg="base" txtcolor="red" on-tap="saidNo" txtbtn>No</ac-button>
+          </div>
+          
+        </div>
+    </neon-animatable>
+
+    <neon-animatable state="2">
+    <div class="total vertic">          
+
+        <p class="red centertxt">Upload your ARC-wallet or paste its private key</p>
+       <div class="whitespace"></div>
+       <div class="whitespace"></div>
+       <div class="whitespace"></div>
+
+        <ac-button bg="base" txtcolor="red" txtbtn>Choose wallet-file</ac-button>
+       <div class="whitespace"></div>
+        <ac-input color="red" label="Private key of ARC-wallet" bind-value="{{privatekey}}" type="privatekey" center ></ac-input>
+        <div class="whitespace"></div>
+       <div class="whitespace"></div>
+       <div class="whitespace"></div>
+
+        <ac-button icon="ac-v" on-tap="nextcontrol" bg="red" txtcolor="base" disabled>Continue</ac-button>
+        <div class="whitespace"></div>
+
+
+
+        </div>
+    </neon-animatable>
+
+
+
+    <neon-animatable state="3">
       <div class="total vertic">
-        <h1>Choose a password</h1>
+      <div class="inner">
+
+        <div class="centervlak flex vertic">
+        <p class="yellow">Choose a password</p>
         <div class="whitespace"></div>
-        <ac-input id="p1" color="yellow" label="Password" bind-value="{{password}}" type="password" center></ac-input>
+        <ac-input id="p1" color="yellow" label="Password" bind-value="{{password}}" type="password" center autofocus></ac-input>
+        </div>
+        <ac-button icon="ac-arrowright" on-tap="nextcontrol" bg="base" txtcolor="yellow" disabled$="{{emptypassw}}">Continue</ac-button>
         <div class="whitespace"></div>
-        <ac-button icon="ac-arrowright" on-tap="nextcontrol" bg="base" txtcolor="yellow">Continue</ac-button>
+        </div>
       </div>
       </neon-animatable>
 
-      <neon-animatable state="1">
-        <div class="total vertic">
-          <h1>Choose a password</h1>
-          <div class="whitespace"></div>
-          <ac-input id="p1" color="yellow" label="Password" bind-value="{{password}}" type="password" center onkeydown="checkForEnter"></ac-input>
-          <div class="whitespace"></div>
-          <ac-button icon="ac-arrowright" on-tap="nextcontrol" bg="base" txtcolor="yellow">Continue</ac-button>
-        </div>
-      </neon-animatable>
 
-      <neon-animatable state="2">
+      <neon-animatable state="4">
         <div class="total vertic">
-          <h1>Retype your password</h1>
+        <div class="inner">
+
+        <div class="centervlak flex vertic">
+
+          <p class="yellow">Retype your password</p>
           <div class="whitespace"></div>
-          <ac-input id="p2" color="yellow" label="Password control" bind-value="{{password1}}" type="password" center></ac-input>
+          <ac-input id="p2" color="yellow" label="Password control" bind-value="{{password1}}" type="password" center autofocus></ac-input>
+          </div>
+          <ac-button icon="ac-v" on-tap="savePassword" disabled$="{{passcheck}}" bg="base" txtcolor="yellow">Continue</ac-button>
           <div class="whitespace"></div>
-          <ac-button icon="ac-v" on-tap="savePassword" disabled="{{passcheck}}" bg="base" txtcolor="yellow">Continue</ac-button>
+        </div>
         </div>
       </neon-animatable>
 
@@ -264,11 +373,18 @@
         sizeview: {
           type: String,
           observer: '_sizeview'
+        },
+
+        emptypassw: {
+          type: Boolean,
+          value: true
         }
       },
 
       attached: function() {
         console.log('ac-newuser attached.');
+        console.log("komtiiieeeeeeeee",this.emptypassw);
+
       },
 
       checkForEnter: function (e) {
@@ -299,13 +415,22 @@
       },
 
       nextcontrol: function() {
-        this.state = 2;
+        this.state = 4;
       },
 
       _passwordcheck: function() {
         console.log(this.password, this.password1);
         if(this.password && this.password===this.password1){
           this.passcheck = false;
+        } else {
+                    this.passcheck = true;
+
+        }
+
+        if(this.password === ''){
+          this.emptypassw = true;
+        } else {
+          this.emptypassw = false;
         }
       },
 
@@ -348,6 +473,14 @@
           default:
           console.log('!!! ** Niks');
         }
+      },
+
+      saidYes: function() {
+        this.state = 2;
+      },
+
+      saidNo: function() {
+        this.state = 3;
       }
 
     });
