@@ -1,0 +1,21 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/ac-terminal-app.html",
+  "fragments": [
+    "src/ac-terminal-app.html",
+    "src/ac-avatar.html",
+    "src/ac-balance.html",
+    "src/ac-newuser.html",
+    "src/ac-password.html"
+  ],
+  "sourceGlobs": [
+   "src/**/*",
+   "src/*",
+   "images/**/*",
+   "bower.json"
+  ],
+  "includeDependencies": [
+    "manifest.json",
+    "bower.json"
+  ]
+}
