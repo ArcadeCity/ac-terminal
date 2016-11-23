@@ -7,7 +7,23 @@
         display: block;
       }
     </style>
-    <h1>{{prop1}}</h1>
+
+    <template is="dom-if" if="{{_is(mode, 'big')}}">
+      <div></div>
+    </template>
+
+    <template is="dom-if" if="{{_is(mode, 'small')}}">
+      <div></div>
+    </template>
+
+    <template is="dom-if" if="{{_is(mode, 'txtonly')}}">
+      <div></div>
+    </template>
+
+    <template is="dom-if" if="{{_is(mode, 'imgonly')}}">
+      <div></div>
+    </template>
+
   </template>
 
   <script>
@@ -16,9 +32,9 @@
       is: 'ac-avatar',
 
       properties: {
-        prop1: {
+        mode: {
           type: String,
-          value: 'ac-avatar',
+          value: 'big',
         },
       },
 
