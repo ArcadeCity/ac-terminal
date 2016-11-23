@@ -4,7 +4,7 @@
 <link rel="import" href="/src/ac-spinner.html">
 <link rel="import" href="/src/ac-profile.html">
 
-<dom-module id="ac-terminal-app">
+<dom-module id="ac-home">
   <template>
     <style>
       :host {
@@ -21,19 +21,24 @@
     <!-- When loading -->
     <!-- <ac-spinner></ac-spinner> -->
 
-    <ac-profile></ac-profile>
+    ac-avatar
+
+
+    <!-- <ac-profile></ac-profile> -->
+
+
 
   </template>
 
   <script>
     Polymer({
 
-      is: 'ac-terminal-app',
+      is: 'ac-home',
 
       properties: {
         prop1: {
           type: String,
-          value: 'ac-terminal-app',
+          value: 'ac-home',
         },
       },
 

@@ -60,7 +60,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     console.log('Existing user');
     if(sessionStorage.getItem('ac-password')){
       console.log('Password found.');
-      importPage('/src/ac-terminal-app.html').then(function(){
+      importPage('/src/ac-home.html').then(function(){
         var element = document.createElement('ac-terminal-app');
         element.id = 'app';
         document.body.appendChild(element);

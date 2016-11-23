@@ -1,8 +1,8 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/ac-terminal-app.html",
+  "shell": "src/ac-terminal.html",
   "fragments": [
-    "src/ac-terminal-app.html",
+    "src/ac-home.html",
     "src/ac-avatar.html",
     "src/ac-balance.html",
     "src/ac-newuser.html",
