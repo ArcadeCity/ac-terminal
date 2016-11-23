@@ -228,10 +228,25 @@
       width: 180px;
       margin: 5px;
      }
+    
+    .syncbtns {
+      width: 100%;
+     }
 
+     .sync {
+      width: 100%;
+      max-width: 300px;
+      margin: 5px;
+
+     }
+
+     .txtsmall {
+      max-width: 320px;
+     }
      .centertxt {
       text-align: center;
      }
+
 
 
 
@@ -252,7 +267,7 @@
         <ac-button big class="newbtn" on-tap="newuser" bg="base" txtcolor="red" txtbtn>Start new</ac-button>
 
         <div class="whitespace"></div>   
-        <a href="">Sync with other device / backup-file</a>
+        <a on-tap="toSync">Sync with other device / backup-file</a>
 <!--         <ac-button big class="newbtnslim topmarge" on-tap="" bg="base" txtcolor="red" txtbtn>I bought ARC tokens at the tokensale</ac-button>
         <ac-button big class="newbtnslim topmarge" on-tap="" bg="base" txtcolor="red" txtbtn>I have an account on another device</ac-button> -->
 
@@ -292,7 +307,7 @@
        <div class="whitespace"></div>
        <div class="whitespace"></div>
 
-        <ac-button icon="ac-v" on-tap="nextcontrol" bg="red" txtcolor="base" disabled>Continue</ac-button>
+        <ac-button icon="ac-v" on-tap="nextcontrol" bg="base" txtcolor="red" disabled>Continue</ac-button>
         <div class="whitespace"></div>
 
 
@@ -333,6 +348,52 @@
         </div>
         </div>
       </neon-animatable>
+
+<neon-animatable state="5">
+    <div class="total vertic">
+
+          <p class="blue centertxt txtsmall">Do you want to sync from a device or a backup-file?</p>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
+          <div class="syncbtns vertic">
+            <ac-button big class="sync" bg="base" txtcolor="blue" on-tap="saidDevice" txtbtn>device</ac-button>
+            <ac-button big class="sync" bg="base" txtcolor="blue" on-tap="saidBackupfile" txtbtn>backup-file</ac-button>
+          </div>
+          
+        </div>
+    </neon-animatable>
+
+    <neon-animatable state="6">
+        <div class="total vertic">
+        <div class="inner">
+
+        <div class="centervlak flex vertic">
+
+          <p class="blue">Get a shortcode from the device</p>
+          <div class="whitespace"></div>
+          <ac-input color="blue" label="Shortcode device sync" bind-value="{{shortcodedevice}}" center autofocus></ac-input>
+          </div>
+          <ac-button icon="ac-arrowright" on-tap="savePassword" disabled$="{{passcheck}}" bg="base" txtcolor="blue">Continue</ac-button>
+          <div class="whitespace"></div>
+        </div>
+        </div>
+      </neon-animatable>
+
+      <neon-animatable state="7">
+        <div class="total vertic">
+        <div class="inner">
+        <div class="centervlak flex vertic">          
+          <ac-button bg="base" txtcolor="blue" big txtbtn>Choose backup-file</ac-button>
+          </div>
+
+          <ac-button icon="ac-v" on-tap="nextcontrol" bg="base" txtcolor="blue" disabled>Continue</ac-button>
+          <div class="whitespace"></div>
+          </div>
+        </div>
+      </neon-animatable>
+
+
 
     </neon-animated-pages>
     <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
@@ -481,8 +542,20 @@
 
       saidNo: function() {
         this.state = 3;
-      }
+      },
 
+      toSync: function() {
+        this.state = 5;
+      },
+
+      saidDevice: function() {
+        this.state = 6;
+      },
+
+
+      saidBackupfile: function() {
+        this.state = 7;
+      }
     });
   </script>
 </dom-module>
