@@ -1,32 +1,74 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
 
-<link rel="import" href="/src/ac-spinner.html">
-<link rel="import" href="/src/ac-profile.html">
+<link rel="import" href="ac-sizeview.html">
+<link rel="import" href="ac-avatar.html">
+<link rel="import" href="ac-balance.html">
+
 
 <dom-module id="ac-home">
   <template>
     <style>
-      :host {
-        display: block;
-      }
+    :host {
+      display: block;
+      margin: 0px;
+      padding: 0px;
+      --title-big: 40px;
+      --title-bigheight: 46px;
+    }
 
-      ac-spinner {
-        width: 100%;
-        height: 100%;
-      }
+    neon-animated-pages {
+      height: 100%;
+    }
 
     </style>
 
     <!-- When loading -->
     <!-- <ac-spinner></ac-spinner> -->
+    <ac-vault vaultdata="{{vault}}"></ac-vault>
 
-    ac-avatar
+    <neon-animated-pages id="pages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
+      <neon-animatable state="home">
 
-    <!-- <ac-profile></ac-profile> -->
+        <ac-avatar
+          username="{{vault.username}}"
+          artwork="{{vault.avatarurl}}"
+          mode="imageandname"
+          on-tap="toProfile">
+        </ac-avatar>
 
+        <ac-balance
+          refcur="EUR"
+          on-tap="toWallet"
+          arcbalance="{{vault.arcbalance}}"
+          ethbalance="{{vault.ethbalance}}">
+        </ac-balance>
 
+      </neon-animatable>
+
+      <neon-animatable state="profile">
+
+        <!-- The Profile view -->
+        <ac-profile></ac-profile>
+
+      </neon-animatable>
+
+      <neon-animatable state="wallet">
+
+        <!-- The Wallet view -->
+        <ac-wallet></ac-wallet>
+
+      </neon-animatable>
+
+      <neon-animatable state="backup">
+
+        <!-- The backup view -->
+
+      </neon-animatable>
+
+    </neon-animated-pages>
 
   </template>
 
@@ -43,7 +85,7 @@
       },
 
       ready: function() {
-        this.stage = document.querySelector('#stage');
+        this.state = 'home';
       },
 
     });
