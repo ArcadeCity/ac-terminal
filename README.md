@@ -30,7 +30,7 @@ The user can import the ARC wallet by uploading the json file and entering the p
 The user can transfer ARC tokens straight from any other wallet into the ARC terminal, by making a transaction to this new address of this newly created terminal.
 
 ## Existing user on a new device
-A user that opens the app, has the option to click on the button to upload the backup or sync with another device.
+A user opens the app, has the option to click on the button to upload the backup or sync with another device.
 The user can upload the json file, enter the password and the useraccount gets imported.
 The user can also choose to sync two devices.
 To do so he needs the device where the terminal is already active (device A) and the new device, that he wants to sync (new device). The user is asked to get the new device and device A ready. On the new device he is asked to enter a shortcode to sync. The user gets this shortcode on device A, in his profile view. When the shortcode is entered on new device, a dialogue pops up on device A, asking for permission to sync the account on a new device. If permission is granted, the user account is imported on the new device.
