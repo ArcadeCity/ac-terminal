@@ -6,27 +6,37 @@ The Arcade City Terminal will be the main entry screen into the Arcade City ecos
 It provides the Arcadians the possibility to create and and manage a basic profile and exchange ARC tokens in a wallet.
 
 ## New user
-A new Arcadian opens the app and can create his own wallet in Arcade City. He must choose a strong password (min 9 characters) and needs to enter this twice. A new wallet is created. The new user needs to download the json file to store his encrypted private key and is asked to keep it safe, together with his password.
+A new Arcadian opens the app (terminal.arcade.city) and can create his own wallet in Arcade City. He must choose a strong password (min 9 characters) and needs to enter this twice. A new useraccount is created. 
+Terminal 
+The new user enters the terminal view, with empty avatar, empty username, empty balance, reference currency and an overview of all games provided in Arcade City (to start with ridesharing).
 
-## User with a wallet on new device
-A user that already has a wallet in Arcade City, can upload his json file and enter his password, to import his existing wallet.
+## Making a backup
+Next to the avatar and username, there is a warning sign, it will be there as long as the user hasn’t made a backup. Clicking on it, or on the avatar/username, takes the user to the profile view, with on top of it, instructions to make a backup.
+The user can download the json file and can choose to store it on the device or on a cloud storage.
 
-## New session on device with my wallet
-A user that already has a wallet installed on his device, can open the app and unlock it by entering his pasword.
-
-## Terminal 
-On the main terminal screen, the user sees his avatar, username, balance, reference currency and an overview of all games provided in Arcade City (to start with ridesharing).
-
-## Profile 
-The user can go to the profile screen, to personalize his account.
-The user can change his profile picture and username. The user can upload a file for profile picture, or take a picture with the camera in his device. The image can be cropped before saving.
-A user can set the currency to which he wants the ARC tokens to refer to. The user can choose between BTC/ETH/USD/EUR. In the balance of the wallet, this reference currency will be shown, besides the ARC token balance.
-On the profile screen, the user sees a history of all transactions he made.
+## Profile
+The user can go to the profile view, to personalize his account. The user can change his profile picture and username. The user can upload a file for profile picture, or take a picture with the camera in his device. The image can be cropped before saving. A user can set the currency to which he wants the ARC tokens to refer to. The user can choose between BTC/ETH/USD/EUR. In the balance of the wallet, this reference currency will be shown, besides the ARC token balance. On the profile screen, the user sees a history of all transactions he made.
 
 ## Wallet
-By ckicking on the balance, the user goes to wallet screen, where he can send tokens to another user, by entering the amount and the shortcode of the receiver. Once the transaction is completed, the current status of that transaction is shown and gets updated untill done. 
-The user can receive tokens by giving his shortcode to the person wanting to send tokens.
+By clicking on the balance on the terminal, the user goes to wallet view.
+He sees his ARC balance, the reference currency, the shortcode, and a button to do a transaction.
 
+The user has different options to do something in the wallet, he can send and receive tokens from another user or he can upload the tokens he bought in the token sale, either from the ARC wallet, or any other wallet.
+
+The user can send tokens to another user, by entering the amount and the shortcode of the receiver. Once the transaction is completed, the current status of that transaction is shown and gets updated until done. The user can receive tokens by giving his shortcode to the person wanting to send tokens.
+
+The user can import the ARC wallet by uploading the json file and entering the password, or by entering the private key from the paper wallet.
+
+The user can transfer ARC tokens straight from any other wallet into the ARC terminal, by making a transaction to this new address of this newly created terminal.
+
+## Existing user on a new device
+A user that opens the app, has the option to click on the button to upload the backup or sync with another device.
+The user can upload the json file, enter the password and the useraccount gets imported.
+The user can also choose to sync two devices.
+To do so he needs the device where the terminal is already active (device A) and the new device, that he wants to sync (new device). The user is asked to get the new device and device A ready. On the new device he is asked to enter a shortcode to sync. The user gets this shortcode on device A, in his profile view. When the shortcode is entered on new device, a dialogue pops up on device A, asking for permission to sync the account on a new device. If permission is granted, the user account is imported on the new device.
+
+## New session on device with my account
+A user that already has an account installed on his device, can open the app and unlock it by entering his password.
 
 
 
