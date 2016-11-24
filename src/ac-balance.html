@@ -19,7 +19,7 @@
         @apply(--ac-font-body1);
         @apply(--montserrat-semibold);
         color: var(--ac-blue);
-      }    
+      }
 
       .ARC {
         font-size: 20px;
@@ -29,8 +29,8 @@
 
     </style>
     <div class="ac-balance">
-      <h1>{{prop1}}<span class="ARC"> ARC</span></h1>
-      <p>{{prop1}}<span class="ARC"> ARC</span></p>
+      <h1>{{arcbalance}}<span class="ARC"> ARC</span></h1>
+      <p>{{arcbalance}}<span class="ARC"> ARC</span></p>
     </div>
   </template>
 
@@ -40,11 +40,20 @@
       is: 'ac-balance',
 
       properties: {
-        prop1: {
-          type: String,
-          value: '440',
+        arcbalance: {
+          type: Number,
+          value: 440,
+          observer: '_arcbalance'
         },
       },
+
+      ready: function() {},
+
+      _arcbalance: function() {
+        var charcount = this.arcbalance.toString().length;
+        this.balancesize = charcount * this.basesize;
+        
+      }
 
     });
   </script>
