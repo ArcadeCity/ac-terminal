@@ -18,6 +18,10 @@
       --title-bigheight: 46px;
     }
 
+    .white {
+      color: white;
+    }
+
     neon-animated-pages {
       height: 100%;
     }
@@ -28,7 +32,7 @@
     <!-- <ac-spinner></ac-spinner> -->
     <ac-vault vaultdata="{{vault}}" currentwallet="{{currentwallet}}"></ac-vault>
 
-    <neon-animated-pages id="pages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
+    <neon-animated-pages id="homepages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
       <neon-animatable state="home">
 
@@ -45,6 +49,7 @@
           arcbalance="{{vault.arcbalance}}"
           ethbalance="{{vault.ethbalance}}">
         </ac-balance>
+        <h1 class="white">?</h1>
 
       </neon-animatable>
 

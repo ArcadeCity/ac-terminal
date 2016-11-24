@@ -1,13 +1,37 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/ac-style/ac-style.html">
 
 <dom-module id="ac-balance">
   <template>
     <style>
       :host {
         display: block;
+        @apply(--layout-vertical)
       }
+
+      h1 {
+        @apply(--ac-font-h1);
+        @apply(--montserrat-semibold);
+        color: var(--ac-red);
+      }
+
+      p {
+        @apply(--ac-font-body1);
+        @apply(--montserrat-semibold);
+        color: var(--ac-blue);
+      }    
+
+      .ARC {
+        font-size: 20px;
+        line-height: 24px;
+      }
+
+
     </style>
-    <h1>{{prop1}}</h1>
+    <div class="ac-balance">
+      <h1>{{prop1}}<span class="ARC"> ARC</span></h1>
+      <p>{{prop1}}<span class="ARC"> ARC</span></p>
+    </div>
   </template>
 
   <script>
@@ -18,7 +42,7 @@
       properties: {
         prop1: {
           type: String,
-          value: 'ac-balance',
+          value: '440',
         },
       },
 

@@ -6,22 +6,25 @@
       :host {
         display: block;
       }
+      .total {
+        color: red;
+      }
     </style>
 
     <template is="dom-if" if="{{_is(mode, 'big')}}">
-      <div></div>
+      <div class="total"><p>big</p></div>
     </template>
 
     <template is="dom-if" if="{{_is(mode, 'small')}}">
-      <div></div>
+      <div><p>small</p></div>
     </template>
 
     <template is="dom-if" if="{{_is(mode, 'txtonly')}}">
-      <div></div>
+      <div><p>txtonly</p></div>
     </template>
 
     <template is="dom-if" if="{{_is(mode, 'imgonly')}}">
-      <div></div>
+      <div><p>imgonly</p></div>
     </template>
 
   </template>
@@ -36,6 +39,14 @@
           type: String,
           value: 'big',
         },
+      },
+      
+      _is: function(a, b) {
+        if (b === undefined){
+          b = true;
+        }
+        //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
+        return a === b;
       },
 
     });
