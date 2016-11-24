@@ -6,7 +6,6 @@
 <link rel="import" href="ac-avatar.html">
 <link rel="import" href="ac-balance.html">
 
-
 <dom-module id="ac-home">
   <template>
     <style>
@@ -26,7 +25,7 @@
 
     <!-- When loading -->
     <!-- <ac-spinner></ac-spinner> -->
-    <ac-vault vaultdata="{{vault}}"></ac-vault>
+    <ac-vault vaultdata="{{vault}}" currentwallet="{{currentwallet}}"></ac-vault>
 
     <neon-animated-pages id="pages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
@@ -51,14 +50,18 @@
       <neon-animatable state="profile">
 
         <!-- The Profile view -->
-        <ac-profile></ac-profile>
+        <ac-profile
+          profiledata="{{vault.profiledata}}">
+        </ac-profile>
 
       </neon-animatable>
 
       <neon-animatable state="wallet">
 
         <!-- The Wallet view -->
-        <ac-wallet></ac-wallet>
+        <ac-wallet
+          walletdata="{{vault.currentwallet}}">
+        </ac-wallet>
 
       </neon-animatable>
 
