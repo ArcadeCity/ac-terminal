@@ -1,18 +1,98 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/ac-style/ac-style.html">
 
 <dom-module id="ac-avatar">
   <template>
     <style>
       :host {
-        display: block;
+        display: inline-block;
       }
-      .total {
-        color: red;
+
+      h1 {
+       @apply(--ac-font-h1);
       }
+      h2 {
+       @apply(--ac-font-h2);
+      }
+      h3 {
+       @apply(--ac-font-h3);
+      }
+      h4 {
+       @apply(--ac-font-h4);
+      }
+      p {
+       @apply(--ac-font-body1);
+      }
+
+
+
+      .arc-avatar-big {
+        display: inline-block;
+        width: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-start-justified);
+        box-sizing: border-box;
+        padding: 20px 20px 0px 20px;
+      }
+
+      .avatar-big {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        overflow: hidden;
+        border-radius: 50%;
+      }
+
+      .avatar-big img {
+        width: 100%;
+        height: 100%;
+      }
+
+
+      .username-big {
+        width: 100%;
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        @apply(--layout-start);
+        /*color: #7157D9;*/
+        color: var(--ac-white);
+        box-sizing: border-box;
+        padding-left: 10px;
+      }
+
+      .username-big p {
+        @apply(--montserrat-semibold);
+        font-size: 14px;
+        line-height: 16px;
+      }
+
+      .pub {
+        width: 50%;
+      }
+
+      .pub p {
+        font-size: 10px;
+        line-height: 12px;
+        @apply(--montserrat-reg);
+        @apply(--ac-font-nowrap);
+        opacity: 0.4;
+      }
+
+
     </style>
 
+
     <template is="dom-if" if="{{_is(mode, 'big')}}">
-      <div class="total"><p>big</p></div>
+      <div class="arc-avatar-big">
+        <div class="avatar-big">
+          <img src="http://scontent.cdninstagram.com/t51.2885-15/s480x480/e35/11337208_756057397836760_400585356_n.jpg?ig_cache_key=MTAzMzU3NTQxMjk1OTE0NzMwMA%3D%3D.2">
+        </div>
+        <div class="username-big">
+          <p>The Flash</p>
+          <div class="pub"><p>ef906oolpmcepo4499Oppx</p></div>
+        </div>
+      </div>
     </template>
 
     <template is="dom-if" if="{{_is(mode, 'small')}}">

@@ -5,32 +5,90 @@
   <template>
     <style>
       :host {
-        display: block;
-        @apply(--layout-vertical)
+        display: inline-block;
+        --balance-h1:60px;
+        --balance-h1-lineheight:72px;
+        --prefcurr-p:22px;
+        --prefcurr-p-lineheight:24px;
+        width: 100%;
+        height: 100%;
+      }
+
+      .arc-balance {
+        width: 100%;
+        height: 100%;
+
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
       }
 
       h1 {
-        @apply(--ac-font-h1);
-        @apply(--montserrat-semibold);
+        @apply(--montserrat-ultralight);
+        -webkit-margin-before: 0px;
+        -webkit-margin-after: 0px;
+        -webkit-margin-start:0em;
+        -webkit-margin-end:0em;
+        margin: 0px 0px 0px 0px;
+        padding: 0px;
+
+        font-size: var(--balance-h1);
+        line-height: var(--balance-h1-lineheight);
+        
         color: var(--ac-red);
       }
 
       p {
-        @apply(--ac-font-body1);
-        @apply(--montserrat-semibold);
-        color: var(--ac-blue);
+        @apply(--montserrat-light);
+        font-size: var(--prefcurr-p);
+        line-height: var(--prefcurr-p-lineheight);
+        -webkit-margin-before:0px;
+        -webkit-margin-after:0px;
+        -webkit-margin-start:0em;
+        -webkit-margin-end:0em;
+        margin: 0px;
+
+        color: var(--ac-red);
+        opacity: 0.75;
+      }
+
+      .balancetotal {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);        
+        @apply(--layout-end);        
+        margin: 0px;
+        padding: 0px;
+
       }    
 
-      .ARC {
+      .ARCletters {
         font-size: 20px;
         line-height: 24px;
+        margin-left: 6px;
+        @apply(--montserrat-light);
+
+      }
+
+      .prefcurrletters {
+        @apply(--montserrat-bold);
+        color: var(--ac-red);
+        opacity: 0.5;
+        margin-left: 4px;
+      }
+
+      .mintopmargin {
+        margin:-4px 0px 0px 0px;
+        opacity: 0.75;
       }
 
 
     </style>
-    <div class="ac-balance">
-      <h1>{{prop1}}<span class="ARC"> ARC</span></h1>
-      <p>{{prop1}}<span class="ARC"> ARC</span></p>
+    <div class="arc-balance">
+      <div class="balancetotal">
+        <h1>{{arcbalance}}</h1><h1><span class="ARCletters"> ARC</span></h1>
+      </div>
+      <div class="balancetotal mintopmargin">
+        <p class="prefcurrletters">{{balanceref}} {{prefcurrency}}</p>
+      </div>
     </div>
   </template>
 
@@ -40,10 +98,18 @@
       is: 'ac-balance',
 
       properties: {
-        prop1: {
-          type: String,
-          value: '440',
+        arcbalance: {
+          type: Number,
+          value: 440,
         },
+        balanceref: {
+          type: Number,
+          value: 44,
+        },
+        prefcurrency: {
+          type: String,
+          value: '€',
+        }
       },
 
     });

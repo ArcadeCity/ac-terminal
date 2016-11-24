@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
 <link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../../bower_components/ac-button/ac-button.html">
 
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-avatar.html">
@@ -16,6 +17,9 @@
       padding: 0px;
       --title-big: 40px;
       --title-bigheight: 46px;
+      width: 100%;
+      height: 100vh;
+
     }
 
     .white {
@@ -26,6 +30,27 @@
       height: 100%;
     }
 
+    ac-avatar {
+      width: 100%;
+    }
+
+    ac-balance {
+      width: 100%;
+      height: 30vh;
+    }
+
+    .games {
+      width: 100%;
+      @apply(--layout-vertical);      
+      @apply(--layout-center-center);      
+      box-sizing: border-box;
+      padding: 0px 10vw 0px 10vw;    
+    }
+
+    .games ac-button {
+      margin-top: 5px;
+      width: 100%;      
+    }
     </style>
 
     <!-- When loading -->
@@ -49,7 +74,21 @@
           arcbalance="{{vault.arcbalance}}"
           ethbalance="{{vault.ethbalance}}">
         </ac-balance>
-        <h1 class="white">?</h1>
+        <div class="games">
+          <ac-button txtbtn txtcolor="red" bg="base">Ridesharing</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeBnB</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>GeeksArcadians</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeMarket</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeBnB</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>GeeksArcadians</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeMarket</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeBnB</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>GeeksArcadians</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeMarket</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeBnB</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>GeeksArcadians</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeMarket</ac-button>            
+        </div>
 
       </neon-animatable>
 
