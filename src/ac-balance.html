@@ -60,6 +60,7 @@
 
       }    
 
+
       .ARCletters {
         font-size: 20px;
         line-height: 24px;
@@ -101,6 +102,7 @@
         arcbalance: {
           type: Number,
           value: 440,
+          observer: '_arcbalance'
         },
         balanceref: {
           type: Number,
@@ -111,6 +113,14 @@
           value: '€',
         }
       },
+
+      ready: function() {},
+
+      _arcbalance: function() {
+        var charcount = this.arcbalance.toString().length;
+        this.balancesize = charcount * this.basesize;
+        
+      }
 
     });
   </script>
