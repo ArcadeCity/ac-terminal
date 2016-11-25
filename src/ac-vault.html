@@ -1,0 +1,98 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<script src="src/lightwallet.min.js"></script>
+<dom-module id="ac-vault">
+ 
+
+  <script>
+    Polymer({
+
+      is: 'ac-vault',
+
+      properties: {
+        password: {
+          type: String,
+          observer: '_password'
+        },
+
+        keystore: {
+          type: Object,
+        },
+        currentaccount: {
+          type: String
+        },
+        currentprofile: {
+          type: Object,
+          observer: '_profile'
+        }
+
+        // arcbalance: {
+        //   type: Number,
+        //   notify: true
+        // },
+        // profile: {
+        //   type: Number,
+        //   notify: true
+        // }
+      },
+
+      _password: function(){
+
+      },
+      _profile: function(){
+        console.log('ac-vault ->','profile updated',this.profile);
+      },
+
+      createVault: function() {
+        if (!this.password){
+            throw new Error('no password set for creating Vault');
+        }
+        var self = this;
+        lightwallet.keystore.createVault({
+          password: this.password,
+        }, function(err, ks) {
+          self.keystore = ks;
+        });
+      },
+      _getpwDerivedKey: function(cb){
+        if (this.pwDerivedKey){
+          return cb(null,this.pwDerivedKey);
+        }
+        var self=this;
+        self.keystore.keyFromPassword(self.password, function(err, pwDerivedKey) {
+            if (err){
+              return cb(err);
+            }
+            self.pwDerivedKey = pwDerivedKey;
+            cb(null,self.pwDerivedKey);
+            //if (err) throw err;
+            // if (self.pastedpk) {
+            //   //debugger;
+            //   self.self.keystore.importPrivateKey(self.pastedpk,pwDerivedKey)
+            // } else {
+            //self.keystore.generateNewAddress(pwDerivedKey, 1);
+            // }
+            
+            //var private = self.ks.exportPrivateKey(self.account, pwDerivedKey);
+            ///self.private = private;
+
+          });
+      },
+
+      generateNewAddress: function(amount){
+          if (!this.keystore){
+            throw new Error('no keystore available');
+          }
+          var self=this;
+          this._getpwDerivedKey(function(err,){
+            self.keystore.generateNewAddress(pwDerivedKey, amount || 1);
+          });
+      },
+
+      _getCurrentaccount: function(){
+        var addr = this.keystore.getAddresses();
+        if (addr.length>0){
+          this.currentaccount = self.fixaddress(addr[0]);
+        }
+    });
+  </script>
+</dom-module>
