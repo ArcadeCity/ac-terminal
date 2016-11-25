@@ -31,10 +31,14 @@
         width: 100%;
         @apply(--layout-horizontal);
         @apply(--layout-start-justified);
-        box-sizing: border-box;
-        padding: 20px 20px 0px 20px;
       }
 
+
+      .arc-avatar-big:hover {
+        cursor: pointer;
+      }    
+
+      
       .avatar-big {
         width: 40px;
         height: 40px;
@@ -63,17 +67,17 @@
 
       .username-big p {
         @apply(--montserrat-semibold);
-        font-size: 14px;
+        font-size: 13px;
         line-height: 16px;
       }
 
       .pub {
-        width: 50%;
+        width: 80px;
       }
 
       .pub p {
-        font-size: 10px;
-        line-height: 12px;
+        font-size: 9px;
+        line-height: 13px;
         @apply(--montserrat-reg);
         @apply(--ac-font-nowrap);
         opacity: 0.4;
@@ -86,10 +90,10 @@
     <template is="dom-if" if="{{_is(mode, 'big')}}">
       <div class="arc-avatar-big">
         <div class="avatar-big">
-          <img src="http://scontent.cdninstagram.com/t51.2885-15/s480x480/e35/11337208_756057397836760_400585356_n.jpg?ig_cache_key=MTAzMzU3NTQxMjk1OTE0NzMwMA%3D%3D.2">
+          <img src="https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400">
         </div>
         <div class="username-big">
-          <p>The Flash</p>
+          <p>Saddy McShitface</p>
           <div class="pub"><p>ef906oolpmcepo4499Oppx</p></div>
         </div>
       </div>

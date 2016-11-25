@@ -23,7 +23,7 @@
       }
 
       h1 {
-        @apply(--montserrat-ultralight);
+        @apply(--montserrat-hairline);
         -webkit-margin-before: 0px;
         -webkit-margin-after: 0px;
         -webkit-margin-start:0em;
@@ -35,6 +35,8 @@
         line-height: var(--balance-h1-lineheight);
         
         color: var(--ac-red);
+        text-shadow: -1px 1px 8px rgba(249,85,85,0.2), 1px -1px 18px rgba(249,85,85,0.2);
+
       }
 
       p {
@@ -60,12 +62,15 @@
 
       }    
 
+      .balancetotal:hover {
+        cursor: pointer;
+      }    
 
       .ARCletters {
         font-size: 20px;
         line-height: 24px;
         margin-left: 6px;
-        @apply(--montserrat-light);
+        @apply(--montserrat-ultralight);
 
       }
 
@@ -87,9 +92,9 @@
       <div class="balancetotal">
         <h1>{{arcbalance}}</h1><h1><span class="ARCletters"> ARC</span></h1>
       </div>
-      <div class="balancetotal mintopmargin">
+<!--       <div class="balancetotal mintopmargin">
         <p class="prefcurrletters">{{balanceref}} {{prefcurrency}}</p>
-      </div>
+      </div> -->
     </div>
   </template>
 
@@ -114,7 +119,8 @@
         }
       },
 
-      ready: function() {},
+      ready: function() {
+      },
 
       _arcbalance: function() {
         var charcount = this.arcbalance.toString().length;
