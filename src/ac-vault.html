@@ -41,10 +41,10 @@
       },
 
       createVault: function(_password, fn) {
-        //debugger;
         if (!_password){
             throw new Error('no password set for creating Vault');
         }
+
         var self = this;
         lightwallet.keystore.createVault({
           password: _password,
@@ -56,10 +56,15 @@
             version:1,
             username: 'MrArc',
             avatarurl: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
-          }
+          };
 
+          localStorage.setItem('ac-avatar', JSON.stringify(self.currentidentity));
+
+          var serialized = ks.serialize();
+          localStorage.setItem('ac-vault', serialized);
+          fn();
         });
-        fn();
+
       },
 
       _saveVault : function(){

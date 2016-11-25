@@ -86,6 +86,7 @@
     <ac-vault
       password="{{password}}"
       currentwallet="{{wallet}}"
+      currentaccount="{{account}}"
       currentidentity="{{identity}}">
     </ac-vault>
 
@@ -97,7 +98,7 @@
         <ac-avatar
           username="{{identity.username}}"
           artwork="{{identity.avatarurl}}"
-          pub="{{pub}}"
+          pub="{{account}}"
           mode="big"
           on-tap="toProfile">
         </ac-avatar>
@@ -192,6 +193,7 @@
 
       ready: function() {
         this.state = 'home';
+        this.password = sessionStorage.getItem('ac-password');
       },
 
       toHome: function() {
