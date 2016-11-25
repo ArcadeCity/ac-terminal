@@ -2,7 +2,7 @@
 <link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
 <script src="scripts/lightwallet.min.js"></script>
 <dom-module id="ac-vault">
- 
+
   <template>
     <iron-localstorage
       id="localstorage"
@@ -40,14 +40,14 @@
         console.log('ac-vault ->','identity updated',this.identity);
       },
 
-      createVault: function() {
-        debugger;
-        if (!this.password){
+      createVault: function(_password, fn) {
+        //debugger;
+        if (!_password){
             throw new Error('no password set for creating Vault');
         }
         var self = this;
         lightwallet.keystore.createVault({
-          password: this.password,
+          password: _password,
         }, function(err, ks) {
           self.keystore = ks;
           self.generateNewAddress();
@@ -55,10 +55,11 @@
           self.currentidentity = {
             version:1,
             username: 'MrArc',
-            avatarurl: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400' 
+            avatarurl: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
           }
 
         });
+        fn();
       },
 
       _saveVault : function(){
@@ -85,7 +86,7 @@
             // } else {
             //self.keystore.generateNewAddress(pwDerivedKey, 1);
             // }
-            
+
             //var private = self.ks.exportPrivateKey(self.account, pwDerivedKey);
             ///self.private = private;
 

@@ -9,7 +9,7 @@
 <link rel="import" href="../bower_components/ac-button/ac-button.html">
 
 <link rel="import" href="ac-sizeview.html">
-<link rel="import" href="ac-wallet.html">
+<link rel="import" href="ac-vault.html">
 
 <script type="text/javascript" src="../bower_components/crypto-js/crypto-js.js"></script>
 
@@ -278,7 +278,7 @@
           <div class="flex"></div>
           <ac-button big class="newbtn" on-tap="newuser" bg="base" txtcolor="red" txtbtn>Start new</ac-button>
           <div class="whitespace"></div>
-          <a on-tap="toSync">Sync with other device / backup-file</a>
+          <a on-tap="toSync">Sync with other device or upload backup file</a>
         </div>
       </div>
     </neon-animatable>
@@ -355,6 +355,9 @@
 </template>
 <!-- Creates the element's prototype and registers it -->
 <script>
+
+var vault;
+
 Polymer({
   is: 'ac-newuser',
 
@@ -399,6 +402,7 @@ Polymer({
 
   attached: function() {
     console.log('ac-newuser attached.');
+    vault = document.querySelector('ac-vault');
   },
 
   checkForEnter: function (e) {
@@ -411,13 +415,14 @@ Polymer({
 
   savePassword: function() {
     // Encrypt localstorage userobject with password.
-    console.log('encr started');
     var encrypted = CryptoJS.AES.encrypt(this.password, this.password).toString();
-    console.log('encr: ', encrypted);
-    localStorage.setItem("ac-password", encrypted);
-    sessionStorage.setItem("ac-password", this.password);
-    localStorage.setItem("ac-init", "1");
-    this.restart();
+    vault.createVault(this.password, function() {
+      localStorage.setItem("ac-password", encrypted);
+      sessionStorage.setItem("ac-password", this.password);
+      localStorage.setItem("ac-init", "1");
+      this.restart();
+    }.bind(this));
+
   },
 
   ready: function(){
@@ -433,7 +438,6 @@ Polymer({
   },
 
   _passwordcheck: function() {
-    console.log(this.password, this.password1);
     if(this.password && this.password===this.password1){
       this.passcheck = false;
     } else {
@@ -445,24 +449,6 @@ Polymer({
     } else {
       this.emptypassw = false;
     }
-  },
-
-  donate: function() {
-    var self = this;
-
-    self.$.helpers.getfile('./contracts/ARCToken.json', function(err, arccontractjson) {
-      console.log('send some ARC to ', self.$.helpers.fixaddress(self.account));
-      var url = 'https://eth.arcadecity.world:3000/donate/' + self.$.helpers.fixaddress(self.account) + '/' + arccontractjson.address;
-      console.log('tapping from faucet',url);
-      self.$.donaterequest.send({
-        url: url
-      }).then(function() {
-        console.log('donation requested');
-        console.log('check balance at ',self.etherscanroot + '/token/'+arccontractjson.address+'?a='+self.$.helpers.fixaddress(self.account));
-        //            var btn = document.querySelector('#donatebtn');
-        //            btn.hidden = true;
-      });
-    });
   },
 
   restart: function(){
