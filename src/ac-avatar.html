@@ -36,9 +36,9 @@
 
       .arc-avatar-big:hover {
         cursor: pointer;
-      }    
+      }
 
-      
+
       .avatar-big {
         width: 40px;
         height: 40px;
@@ -93,8 +93,8 @@
           <img src="https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400">
         </div>
         <div class="username-big">
-          <p>Saddy McShitface</p>
-          <div class="pub"><p>ef906oolpmcepo4499Oppx</p></div>
+          <p>{{username}}</p>
+          <div class="pub"><p>{{pub}}</p></div>
         </div>
       </div>
     </template>
@@ -124,7 +124,7 @@
           value: 'big',
         },
       },
-      
+
       _is: function(a, b) {
         if (b === undefined){
           b = true;
