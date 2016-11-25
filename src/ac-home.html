@@ -33,6 +33,7 @@
 
     .hometotal {
       background-color: var(--ac-base);
+      height: 100%;
     }
 
     ac-avatar {
@@ -60,18 +61,18 @@
 
     .games {
       width: 100%;
-      @apply(--layout-vertical);      
-      @apply(--layout-center-center);      
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
       box-sizing: border-box;
-      padding: 0px 10vw 0px 10vw;    
+      padding: 0px 10vw 0px 10vw;
     }
 
     .games ac-button {
       margin-top: 5px;
-      width: 100%; 
+      width: 100%;
       /*background-color: rgba(255,255,255,0.015);*/
       background-color: #251C4A;
-      @apply(--base-shadow-and-inset);     
+      @apply(--base-shadow-and-inset);
     }
 
     .square {
@@ -108,26 +109,28 @@
           arcbalance="{{wallet.arcbalance}}"
           ethbalance="{{wallet.ethbalance}}">
         </ac-balance>
+
         <div class="games">
           <ac-button txtbtn txtcolor="red" bg="base">Ridesharing</ac-button>
-          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeBnB</ac-button>
-          <ac-button txtbtn txtcolor="red" bg="base" disabled>GeeksArcadians</ac-button>
-          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeMarket</ac-button>
-          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeBnB</ac-button>
-          <ac-button txtbtn txtcolor="red" bg="base" disabled>GeeksArcadians</ac-button>
-          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeMarket</ac-button>
-          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeBnB</ac-button>
-          <ac-button txtbtn txtcolor="red" bg="base" disabled>GeeksArcadians</ac-button>
-          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeMarket</ac-button>
-          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeBnB</ac-button>
-          <ac-button txtbtn txtcolor="red" bg="base" disabled>GeeksArcadians</ac-button>
-          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeMarket</ac-button>            
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcBnB</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>Geekangels</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>DogWalkers</ac-button>
         </div>
+
       </div>
       </neon-animatable>
 
       <neon-animatable state="profile">
         <!-- The Profile view -->
+        <ac-button
+          bg="base"
+          icon="declinenew"
+          on-tap="toHome"
+          small
+          id="exitbtn"
+          txtcolor="turquoise">
+        </ac-button>
+
         <ac-profile
           profiledata="{{vault.profiledata}}">
         </ac-profile>
@@ -137,6 +140,15 @@
       <neon-animatable state="wallet">
 
         <!-- The Wallet view -->
+        <ac-button
+          bg="base"
+          icon="declinenew"
+          on-tap="toHome"
+          small
+          id="exitbtn"
+          txtcolor="turquoise">
+        </ac-button>
+
         <ac-wallet
           walletdata="{{wallet}}">
         </ac-wallet>
@@ -169,10 +181,17 @@
         this.state = 'home';
       },
 
+      toHome: function() {
 
+        this.state = 'home';
+      },
 
       toWallet: function() {
         this.state = 'wallet';
+      },
+
+      toProfile: function() {
+        this.state = 'profile';
       }
 
     });

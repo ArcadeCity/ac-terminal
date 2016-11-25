@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="ac-balance">
   <template>
@@ -33,7 +34,7 @@
 
         font-size: var(--balance-h1);
         line-height: var(--balance-h1-lineheight);
-        
+
         color: var(--ac-red);
         text-shadow: -1px 1px 8px rgba(249,85,85,0.2), 1px -1px 18px rgba(249,85,85,0.2);
 
@@ -55,16 +56,16 @@
 
       .balancetotal {
         @apply(--layout-horizontal);
-        @apply(--layout-center-justified);        
-        @apply(--layout-end);        
+        @apply(--layout-center-justified);
+        @apply(--layout-end);
         margin: 0px;
         padding: 0px;
 
-      }    
+      }
 
       .balancetotal:hover {
         cursor: pointer;
-      }    
+      }
 
       .ARCletters {
         font-size: 20px;
@@ -88,13 +89,14 @@
 
 
     </style>
+
     <div class="arc-balance">
       <div class="balancetotal">
         <h1>{{arcbalance}}</h1><h1><span class="ARCletters"> ARC</span></h1>
       </div>
-<!--       <div class="balancetotal mintopmargin">
+      <div class="balancetotal mintopmargin">
         <p class="prefcurrletters">{{balanceref}} {{prefcurrency}}</p>
-      </div> -->
+      </div>
     </div>
   </template>
 
@@ -125,7 +127,12 @@
       _arcbalance: function() {
         var charcount = this.arcbalance.toString().length;
         this.balancesize = charcount * this.basesize;
-        
+        this.balanceref = this.convertcurrency(this.arcbalance);
+      },
+
+      convertcurrency: function(e) {
+        var x = e / 7.5;
+        return x.toFixed(2);
       }
 
     });
