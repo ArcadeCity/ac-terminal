@@ -1,7 +1,14 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
 <script src="scripts/lightwallet.min.js"></script>
 <dom-module id="ac-vault">
  
+  <template>
+    <iron-localstorage
+      id="localstorage"
+      name="ac-vault">
+    </iron-localstorage>
+  </template>
 
   <script>
     Polymer({
@@ -20,29 +27,21 @@
         currentaccount: {
           type: String
         },
-        currentprofile: {
+        currentidentity: {
           type: Object,
-          observer: '_profile'
+          observer: '_identity'
         }
-
-        // arcbalance: {
-        //   type: Number,
-        //   notify: true
-        // },
-        // profile: {
-        //   type: Number,
-        //   notify: true
-        // }
       },
 
       _password: function(){
 
       },
-      _profile: function(){
-        console.log('ac-vault ->','profile updated',this.profile);
+      _identity: function(){
+        console.log('ac-vault ->','identity updated',this.identity);
       },
 
       createVault: function() {
+        debugger;
         if (!this.password){
             throw new Error('no password set for creating Vault');
         }
@@ -51,8 +50,23 @@
           password: this.password,
         }, function(err, ks) {
           self.keystore = ks;
+          self.generateNewAddress();
+          self._currentAccount();
+          self.currentidentity = {
+            version:1,
+            username: 'MrArc',
+            avatarurl: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400' 
+          }
+
         });
       },
+
+      _saveVault : function(){
+
+
+
+      },
+
       _getpwDerivedKey: function(cb){
         if (this.pwDerivedKey){
           return cb(null,this.pwDerivedKey);
@@ -88,7 +102,7 @@
         });
       },
 
-      _getCurrentaccount: function(){
+      _currentAccount: function(){
         var addr = this.keystore.getAddresses();
         if (addr.length>0){
           this.currentaccount = self.fixaddress(addr[0]);

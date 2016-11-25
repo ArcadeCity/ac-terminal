@@ -462,6 +462,7 @@ Polymer({
     console.log('ac-newuser attached.');
   },
 
+<<<<<<< HEAD
   checkForEnter: function (e) {
     // check if 'enter' was pressed
     if (e.keyCode === 13) {
@@ -500,12 +501,12 @@ Polymer({
     } else {
       this.passcheck = true;
     }
-
-    if(this.password === ''){
-      this.emptypassw = true;
-    } else {
-      this.emptypassw = false;
-    }
+    //
+    // if(this.password === ''){
+    //   this.emptypassw = true;
+    // } else {
+    //   this.emptypassw = false;
+    // }
   },
 
   donate: function() {
@@ -574,10 +575,191 @@ Polymer({
     this.state = 'syncwithdevice';
   },
 
-
   saidBackupfile: function() {
     this.state = 'syncwithbackup';
   }
 });
 </script>
+=======
+          <ac-button icon="ac-v" on-tap="nextcontrol" bg="base" txtcolor="blue" disabled>Continue</ac-button>
+          <div class="whitespace"></div>
+          </div>
+        </div>
+      </neon-animatable>
+
+
+
+    </neon-animated-pages>
+
+    <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+  </template>
+  <!-- Creates the element's prototype and registers it -->
+  <script>
+    Polymer({
+      is: 'ac-newuser',
+
+      behaviors: [
+        Polymer.NeonAnimationRunnerBehavior
+      ],
+
+      properties: {
+        password: {
+          type: String,
+          observer: '_passwordcheck'
+        },
+        password1: {
+          type: String,
+          observer: '_passwordcheck'
+        },
+        passcheck: {
+          type: Boolean,
+          value: true
+        },
+
+        entryAnimation: {
+          type: String,
+          value: 'slide-from-right-animation'
+        },
+
+        exitAnimation: {
+          type: String,
+          value: 'slide-left-animation'
+        },
+
+        sizeview: {
+          type: String,
+          observer: '_sizeview'
+        },
+
+        emptypassw: {
+          type: Boolean,
+          value: true
+        }
+      },
+
+      attached: function() {
+        console.log('ac-newuser attached.');
+      },
+
+      checkForEnter: function (e) {
+          // check if 'enter' was pressed
+          if (e.keyCode === 13) {
+              // enter pressed!
+              console.log('thats an enter on ', e.target);
+          }
+      },
+
+      createVault: function() {
+        // Encrypt localstorage userobject with password.
+        console.log('encr started');
+        var encrypted = CryptoJS.AES.encrypt(this.password, this.password).toString();
+        console.log('encr: ', encrypted);
+        localStorage.setItem("ac-password", encrypted);
+        sessionStorage.setItem("ac-password", this.password);
+        localStorage.setItem("ac-init", "1");
+
+        this.$.vault.createVault();
+
+        this.restart();
+      },
+
+      ready: function(){
+        this.state = 'start';
+      },
+
+      newuser: function(){
+        this.state = 'passw1';
+      },
+
+      nextcontrol: function() {
+        this.state = 'passw2';
+      },
+
+      _passwordcheck: function() {
+        console.log(this.password, this.password1);
+        if(this.password && this.password===this.password1){
+          this.passcheck = false;
+        } else {
+          this.passcheck = true;
+        }
+
+        if(this.password === ''){
+          this.emptypassw = true;
+        } else {
+          this.emptypassw = false;
+        }
+      },
+
+      donate: function() {
+        var self = this;
+
+        self.$.helpers.getfile('./contracts/ARCToken.json', function(err, arccontractjson) {
+          console.log('send some ARC to ', self.$.helpers.fixaddress(self.account));
+          var url = 'https://eth.arcadecity.world:3000/donate/' + self.$.helpers.fixaddress(self.account) + '/' + arccontractjson.address;
+          console.log('tapping from faucet',url);
+          self.$.donaterequest.send({
+            url: url
+          }).then(function() {
+            console.log('donation requested');
+            console.log('check balance at ',self.etherscanroot + '/token/'+arccontractjson.address+'?a='+self.$.helpers.fixaddress(self.account));
+//            var btn = document.querySelector('#donatebtn');
+//            btn.hidden = true;
+          });
+        });
+      },
+
+      restart: function(){
+        location.reload();
+      },
+
+      _sizeview: function(){
+        switch(this.sizeview) {
+          case 'phone':
+            // this.customStyle['--avatar-size'] = '45px';
+            // this.updateStyles();
+          break;
+          case 'desktop':
+            // this.customStyle['--avatar-size'] = '50px';
+            // this.updateStyles();
+          break;
+          case 'xlarge':
+            // this.customStyle['--avatar-size'] = '60px';
+            // this.updateStyles();
+          break;
+          default:
+          console.log('!!! ** Niks');
+        }
+      },
+
+      saidYes: function() {
+        this.state = 'whereareurtokens';
+      },
+
+      saidARCwallet: function() {
+        this.state = 'uploadarcwallet';
+      },
+
+      saidExternal: function() {
+        this.state = 'externalwallet';
+      },
+
+
+      toPassw1: function() {
+        this.state = 'passw1';
+      },
+
+      toSync: function() {
+        this.state = 'syncbackup';
+      },
+
+      saidDevice: function() {
+        this.state = 'syncwithdevice';
+      },
+
+
+      saidBackupfile: function() {
+        this.state = 'syncwithbackup';
+      }
+    });
+  </script>
 </dom-module>
