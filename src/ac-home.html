@@ -84,7 +84,11 @@
 
     <!-- When loading -->
     <!-- <ac-spinner></ac-spinner> -->
-    <ac-vault currentwallet="{{wallet}}" currentavatar="{{avatar}}"></ac-vault>
+    <ac-vault
+      password="{{password}}"
+      currentwallet="{{wallet}}"
+      currentidentity="{{identity}}">      
+    </ac-vault>
 
     <neon-animated-pages id="homepages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
@@ -92,8 +96,8 @@
       <div class="hometotal">
 
         <ac-avatar
-          username="{{avatar.username}}"
-          artwork="{{avatar.avatarurl}}"
+          username="{{identity.username}}"
+          artwork="{{identity.avatarurl}}"
           mode="big"
           on-tap="toProfile">
         </ac-avatar>
