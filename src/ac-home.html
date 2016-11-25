@@ -106,8 +106,8 @@
         <ac-balance
           refcur="EUR"
           on-tap="toWallet"
-          arcbalance="{{wallet.arcbalance}}"
-          ethbalance="{{wallet.ethbalance}}">
+          arcbalance="{{arcbalance}}"
+          ethbalance="{{ethbalance}}">
         </ac-balance>
 
         <div class="games">
@@ -150,7 +150,9 @@
         </ac-button>
 
         <ac-wallet
-          walletdata="{{wallet}}">
+          walletdata="{{wallet}}"
+          arcbalance="{{arcbalance}}"
+          ethbalance="{{ethbalance}}">
         </ac-wallet>
 
       </neon-animatable>
@@ -158,6 +160,12 @@
       <neon-animatable state="backup">
 
         <!-- The backup view -->
+
+      </neon-animatable>
+
+      <neon-animatable state="userprefs">
+
+        <!-- The user prefs view -->
 
       </neon-animatable>
 
