@@ -283,11 +283,9 @@
       </div>
     </neon-animatable>
 
-
     <neon-animatable state="passw1">
       <div class="total vertic">
         <div class="inner">
-
           <div class="centervlak flex vertic">
             <p class="yellow">Choose a password</p>
             <div class="whitespace"></div>
@@ -302,9 +300,7 @@
     <neon-animatable state="passw2">
       <div class="total vertic">
         <div class="inner">
-
           <div class="centervlak flex vertic">
-
             <p class="yellow">Retype your password</p>
             <div class="whitespace"></div>
             <ac-input id="p2" color="yellow" label="Password control" bind-value="{{password1}}" type="password" center autofocus></ac-input>
@@ -317,25 +313,20 @@
 
     <neon-animatable state="syncbackup">
       <div class="total vertic">
-
         <p class="blue centertxt txtsmall">Do you want to sync from a device or a backup-file?</p>
         <div class="whitespace"></div>
         <div class="whitespace"></div>
-
         <div class="doublebtns vertic">
           <ac-button big class="double" bg="base" txtcolor="blue" on-tap="saidDevice" txtbtn>device</ac-button>
           <ac-button big class="double" bg="base" txtcolor="blue" on-tap="saidBackupfile" txtbtn>backup-file</ac-button>
         </div>
-
       </div>
     </neon-animatable>
 
     <neon-animatable state="syncwithdevice">
       <div class="total vertic">
         <div class="inner">
-
           <div class="centervlak flex vertic">
-
             <p class="blue">Get a shortcode from the device</p>
             <div class="whitespace"></div>
             <ac-input color="blue" label="Shortcode device sync" bind-value="{{shortcodedevice}}" center autofocus></ac-input>
@@ -352,7 +343,6 @@
           <div class="centervlak flex vertic">
             <ac-button bg="base" txtcolor="blue" big txtbtn>Choose backup-file</ac-button>
           </div>
-
           <ac-button icon="ac-v" on-tap="nextcontrol" bg="base" txtcolor="blue" disabled>Continue</ac-button>
           <div class="whitespace"></div>
         </div>
