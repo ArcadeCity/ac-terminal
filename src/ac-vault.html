@@ -1,5 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<script src="src/lightwallet.min.js"></script>
+<script src="scripts/lightwallet.min.js"></script>
 <dom-module id="ac-vault">
  
 
@@ -78,14 +78,14 @@
           });
       },
 
-      generateNewAddress: function(amount){
-          if (!this.keystore){
-            throw new Error('no keystore available');
-          }
-          var self=this;
-          this._getpwDerivedKey(function(err,){
-            self.keystore.generateNewAddress(pwDerivedKey, amount || 1);
-          });
+      generateNewAddress: function(amount) {
+        if (!this.keystore) {
+          throw new Error('no keystore available');
+        }
+        var self = this;
+        this._getpwDerivedKey(function(err,pwDerivedKey ) {
+          self.keystore.generateNewAddress(pwDerivedKey, amount || 1);
+        });
       },
 
       _getCurrentaccount: function(){
@@ -93,6 +93,7 @@
         if (addr.length>0){
           this.currentaccount = self.fixaddress(addr[0]);
         }
+      }
     });
   </script>
 </dom-module>
