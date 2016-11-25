@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
 <link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../../bower_components/ac-button/ac-button.html">
 
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-avatar.html">
@@ -17,11 +18,67 @@
       padding: 0px;
       --title-big: 40px;
       --title-bigheight: 46px;
+      width: 100%;
+      height: 100vh;
+
+    }
+
+    .white {
+      color: white;
     }
 
     neon-animated-pages {
       height: 100%;
     }
+
+    .hometotal {
+      background-color: var(--ac-base);
+    }
+
+    ac-avatar {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0px 0px 16px 10vw;
+      height: 16vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background-color: var(--ac-base);
+      z-index: 3;
+      @apply(--layout-horizontal);
+      @apply(--layout-end);
+
+    }
+
+    ac-balance {
+      width: 100%;
+      margin: 16vh 0px 3vh 0px;
+      height: 27vh;
+    }
+
+    .games {
+      width: 100%;
+      @apply(--layout-vertical);      
+      @apply(--layout-center-center);      
+      box-sizing: border-box;
+      padding: 0px 10vw 0px 10vw;    
+    }
+
+    .games ac-button {
+      margin-top: 5px;
+      width: 100%; 
+      /*background-color: rgba(255,255,255,0.015);*/
+      background-color: #251C4A;
+      @apply(--base-shadow-and-inset);     
+    }
+
+    .square {
+      height: 80vw;
+    }
+
+
 
     </style>
 
@@ -29,9 +86,10 @@
     <!-- <ac-spinner></ac-spinner> -->
     <ac-vault currentwallet="{{wallet}}" currentavatar="{{avatar}}"></ac-vault>
 
-    <neon-animated-pages id="pages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
+    <neon-animated-pages id="homepages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
       <neon-animatable state="home">
+      <div class="hometotal">
 
         <ac-avatar
           username="{{avatar.username}}"
@@ -46,11 +104,25 @@
           arcbalance="{{wallet.arcbalance}}"
           ethbalance="{{wallet.ethbalance}}">
         </ac-balance>
-
+        <div class="games">
+          <ac-button txtbtn txtcolor="red" bg="base">Ridesharing</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeBnB</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>GeeksArcadians</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeMarket</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeBnB</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>GeeksArcadians</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeMarket</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeBnB</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>GeeksArcadians</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeMarket</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeBnB</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>GeeksArcadians</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="base" disabled>ArcadeMarket</ac-button>            
+        </div>
+      </div>
       </neon-animatable>
 
       <neon-animatable state="profile">
-
         <!-- The Profile view -->
         <ac-profile
           profiledata="{{vault.profiledata}}">
@@ -92,6 +164,8 @@
       ready: function() {
         this.state = 'home';
       },
+
+
 
       toWallet: function() {
         this.state = 'wallet';
