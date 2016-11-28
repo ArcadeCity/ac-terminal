@@ -271,7 +271,7 @@
         name="ac-init"
         value="{{acinit}}"
     >
-    </iron-localstorage>  
+    </iron-localstorage>
 
   <neon-animated-pages id="pages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
@@ -414,12 +414,12 @@ Polymer({
   savePassword: function() {
     // Encrypt localstorage userobject with password.
     var encrypted = CryptoJS.AES.encrypt(this.password, this.password).toString();
-    // vault.createVault(this.password, function() {
-    //   localStorage.setItem("ac-password", encrypted);
-    //   sessionStorage.setItem("ac-password", this.password);
-    //   localStorage.setItem("ac-init", "1");
-    //   this.restart();
-    // }.bind(this));
+    vault.createVault(this.password, function() {
+      localStorage.setItem("ac-password", encrypted);
+      sessionStorage.setItem("ac-password", this.password);
+      localStorage.setItem("ac-init", "1");
+      this.restart();
+    }.bind(this));
 //    this.restart();
 
       this.acinit = 1;
@@ -431,7 +431,7 @@ Polymer({
 
   ready: function() {
     this.state = 'start';
-   
+
   },
   newuser: function(){
     this.state = 'passw1';

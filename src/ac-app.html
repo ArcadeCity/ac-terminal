@@ -9,13 +9,13 @@
     <iron-localstorage
         id="localstorage"
         name="ac-init"
-        value="{{acinit}}"
-    >
-    </iron-localstorage>  
+        value="{{acinit}}">
+    </iron-localstorage>
+      
     <ac-vault
       password="{{password}}"
       currentkeystore="{{keystore}}"
-      currentidentity="{{identity}}">  
+      currentidentity="{{identity}}">
     </ac-vault>
 
     <iron-pages selected="[[selected]]" attr-for-selected="data-page">
@@ -34,7 +34,7 @@
 
       is: 'ac-app',
 
-      
+
       attached: function() {
 
         // Setup some basic routing
