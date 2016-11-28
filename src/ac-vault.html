@@ -6,7 +6,8 @@
   <template>
     <iron-localstorage
       id="localstorage"
-      name="ac-vault">
+      name="ac-vault"
+      value="{{acvault}}">
     </iron-localstorage>
   </template>
 
@@ -36,8 +37,53 @@
       _password: function(){
 
       },
-      _identity: function(){
-        console.log('ac-vault ->','identity updated',this.identity);
+      _currentidentity: function(){
+        console.log('ac-vault ->','currentidentity updated',this.currentidentity);
+      },
+
+      loadVault: function(){
+
+        try{
+          switch (acvault.version){
+            case 1:
+              this.keystore = keystore.deserialize(acvault.keystore);
+              this.currentaccount = this.keystore.getAddresses()[0];
+              this.currentidentity = acvault.identity;
+              break;
+            default:
+              throw new Error('Vault version unknown',acvault.version);
+              break;
+          }
+        catch(e){
+          trow new Error('Vault could not be loaded',e);
+        }
+        
+
+      },
+
+      importPrivateKey: function(pk) {
+        var self = this;
+        this._getpwDerivedKey(function(err, pwDerivedKey) {
+          self.keystore.importPrivateKey(pk, pwDerivedKey);
+        });
+      },
+
+      saveVault: function(){
+
+          var serializedKeystore = this.keystore.serialize();
+          var serializedIdentity = JSON.stringify(currentidentity || {});
+
+
+          var vault = {
+            version:1,
+            keystore: serializedKeystore,
+            identity: serializedIdentity
+          };
+        
+//encryption.multiEncryptString(keystore, pwDerivedKey, msg, myPubKey, theirPubKeyArray [, hdPathString])
+
+          this.set('ac-vault', vault);
+
       },
 
       createVault: function(_password, fn) {
@@ -58,18 +104,16 @@
             avatarurl: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
           };
 
-          localStorage.setItem('ac-avatar', JSON.stringify(self.currentidentity));
+          //this.$.localStorage.setItem('ac-avatar', JSON.stringify(self.currentidentity));
 
-          var serialized = ks.serialize();
-          localStorage.setItem('ac-vault', serialized);
+          self.saveVault();
+
+          this.ks.passwordProvider = function(callback) {
+            callback(null, self.uploadpassword);
+          };
+
           fn();
         });
-
-      },
-
-      _saveVault : function(){
-
-
 
       },
 
