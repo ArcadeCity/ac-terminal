@@ -22,8 +22,45 @@
 
       <neon-animatable state="first">
         <h1>Do you own ARC tokens?</h1>
-        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="" txtbtn>Yes</ac-button>
-        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="" txtbtn>No</ac-button>
+        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="toimportwallet" txtbtn>Yes</ac-button>
+        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="tocreatewallet" txtbtn>No</ac-button>
+      </neon-animatable>
+
+      <neon-animatable state="importwallet">
+        <h1>Do you have an ARC Wallet json?</h1>
+        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="touploadjson" txtbtn>Yes</ac-button>
+        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="toprivatekey" txtbtn>No</ac-button>
+      </neon-animatable>
+
+      <neon-animatable state="uploadjson">
+        <h1>Upload the ARC Wallet JSON</h1>
+        <!-- input -->
+        <p>Enter password</p>
+        <ac-input id="p1" color="yellow" label="Password" bind-value="{{password}}" type="password" center autofocus></ac-input>
+        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="createwallet" txtbtn>Finish</ac-button>
+      </neon-animatable>
+
+      <neon-animatable state="impprivkey">
+        <h1>Import private key</h1>
+        <!-- input -->
+        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="topassword" txtbtn>Next</ac-button>
+      </neon-animatable>
+
+      <neon-animatable state="password">
+        <div class="total vertic">
+          <div class="inner">
+            <div class="centervlak flex vertic">
+              <p class="yellow">Choose a password and repeat</p>
+              <div class="whitespace"></div>
+              <ac-input id="p1" color="yellow" label="Password" bind-value="{{password}}" type="password" center autofocus></ac-input>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <ac-input id="p2" color="yellow" label="Password control" bind-value="{{password1}}" type="password" center autofocus></ac-input>
+            </div>
+            <ac-button icon="ac-v" on-tap="savePassword" disabled$="{{passcheck}}" bg="base" txtcolor="yellow">Finish</ac-button>
+            <div class="whitespace"></div>
+          </div>
+        </div>
       </neon-animatable>
 
     </neon-animated-pages>
@@ -44,6 +81,31 @@
           value: 'first'
         }
       },
+
+      ready: function() {},
+
+      toimportwallet: function() {
+        this.state = 'importwallet';
+      },
+
+      toprivatekey: function() {
+        this.state = 'impprivkey';
+      },
+
+      topassword: function() {
+        this.state = 'password';
+      },
+
+      touploadjson: function() {
+        this.state = 'uploadjson';
+      },
+
+      tocreatewallet: function() {
+        // create new wallet and go home
+        this.fire('toHome');
+      },
+
+
 
     });
   </script>
