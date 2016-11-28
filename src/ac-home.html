@@ -8,6 +8,7 @@
 <link rel="import" href="ac-balance.html">
 <link rel="import" href="ac-wallet.html">
 <link rel="import" href="ac-vault.html">
+<link rel="import" href="ac-createwallet.html">
 
 <dom-module id="ac-home">
   <template>
@@ -20,7 +21,6 @@
       --title-bigheight: 46px;
       width: 100%;
       height: 100vh;
-
     }
 
     .white {
@@ -50,7 +50,6 @@
       z-index: 3;
       @apply(--layout-horizontal);
       @apply(--layout-end);
-
     }
 
     ac-balance {
@@ -103,12 +102,15 @@
           on-tap="toProfile">
         </ac-avatar>
 
-        <ac-balance
+        <!-- <ac-balance
           refcur="EUR"
           on-tap="toWallet"
           arcbalance="{{arcbalance}}"
           ethbalance="{{ethbalance}}">
-        </ac-balance>
+        </ac-balance> -->
+        <!-- <template is="dom-if" if="{{!wallet}}"> -->
+          <ac-createwallet></ac-createwallet>
+        <!-- </template> -->
 
         <!-- @Bennisan, this feels wrong to me > we don't have any games yet, why are we putting this here? KF -->
         <!-- <div class="games">
