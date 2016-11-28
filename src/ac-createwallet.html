@@ -1,0 +1,43 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../../bower_components/ac-button/ac-button.html">
+
+<dom-module id="ac-createwallet">
+  <template>
+    <style>
+    :host {
+      display: block;
+      background-color: red;
+      margin: 0px;
+      padding: 0px;
+      height: 100%;
+      --title-big: 40px;
+      --title-bigheight: 46px;
+    }
+    </style>
+    <neon-animated-pages id="createwalletpgs" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
+
+      <neon-animatable state="first">
+        <h1>Do you own ARC tokens?</h1>
+        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="" txtbtn>Yes</ac-button>
+        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="" txtbtn>No</ac-button>
+      </neon-animatable>
+
+    </neon-animated-pages>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'ac-createwallet',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'ac-createwallet',
+        },
+      },
+
+    });
+  </script>
+</dom-module>
