@@ -11,6 +11,8 @@
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-vault.html">
 
+<!-- <script src="../../bower_components/page/page.js"></script> -->
+
 <script type="text/javascript" src="../bower_components/crypto-js/crypto-js.js"></script>
 
 <dom-module id="ac-newuser">
@@ -264,6 +266,12 @@
   </style>
 
   <ac-vault id="vault"></ac-vault>
+  <iron-localstorage
+        id="localstorage"
+        name="ac-init"
+        value="{{acinit}}"
+    >
+    </iron-localstorage>  
 
   <neon-animated-pages id="pages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
@@ -412,14 +420,19 @@ Polymer({
     //   localStorage.setItem("ac-init", "1");
     //   this.restart();
     // }.bind(this));
-    this.restart();
+//    this.restart();
+
+      this.acinit = 1;
+
+      page.redirect('/home');
+
 
   },
 
-  ready: function(){
+  ready: function() {
     this.state = 'start';
+   
   },
-
   newuser: function(){
     this.state = 'passw1';
   },

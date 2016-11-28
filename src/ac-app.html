@@ -1,10 +1,17 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
 <script src="../../bower_components/page/page.js"></script>
 
 <dom-module id="ac-app">
   <template>
+    <iron-localstorage
+        id="localstorage"
+        name="ac-init"
+        value="{{acinit}}"
+    >
+    </iron-localstorage>  
     <ac-vault
       password="{{password}}"
       currentkeystore="{{keystore}}"
@@ -27,11 +34,16 @@
 
       is: 'ac-app',
 
-      ready: function() {
+      
+      attached: function() {
 
         // Setup some basic routing
         page('/', () => {
-          page.redirect('/newuser');
+          if (this.acinit){
+            page.redirect('/home');
+          }else{
+            page.redirect('/newuser');
+          }
         });
 
         page('/newuser', () => {
