@@ -26,15 +26,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   // Listen for template bound event to know when bindings
   // have resolved and content has been stamped to the page
-  stage.addEventListener('dom-change', function() {
-    console.log('Entering Arcade City Customs...');
-  });
+  // stage.addEventListener('dom-change', function() {
+  //   console.log('Entering Arcade City Customs...');
+  // });
 
   // See https://github.com/Polymer/polymer/issues/1381
-  window.addEventListener('WebComponentsReady', function() {
-    //stage.generate();
-    // imports are loaded and elements have been registered
-  });
+  // window.addEventListener('WebComponentsReady', function() {
+  //   //stage.generate();
+  //   // imports are loaded and elements have been registered
+  // });
 
   // function importPage(url){
   //   return new Promise(function(resolve, reject){

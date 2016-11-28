@@ -41,7 +41,7 @@
 
         host: {
           type: String,
-        }
+        },
 
         token : {
           type: Object,
@@ -61,7 +61,7 @@
         this.web3 = new Web3();
         this.web3.setProvider(web3Provider);
 
-        this.account = self.$.helpers.fixaddress((this.keystore.getAddresses()[0]);
+        this.account = self.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
 
       },
 

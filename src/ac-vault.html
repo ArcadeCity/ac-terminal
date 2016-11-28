@@ -57,8 +57,9 @@
               throw new Error('Vault version unknown',acvault.version);
               break;
           }
+        }
         catch(e){
-          trow new Error('Vault could not be loaded',e);
+          throw new Error('Vault could not be loaded',e);
         }
         
 
