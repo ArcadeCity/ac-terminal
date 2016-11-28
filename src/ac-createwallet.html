@@ -5,63 +5,194 @@
 <dom-module id="ac-createwallet">
   <template>
     <style>
-    :host {
-      display: block;
-      background-color: red;
-      margin: 0px;
-      padding: 0px;
-      height: 100%;
-      --title-big: 40px;
-      --title-bigheight: 46px;
-    }
-    neon-animated-pages {
-      height: 100%;
-    }
+ :host {
+    display: block;
+    margin: 0px;
+    padding: 0px;
+    --title-big: 40px;
+    --title-bigheight: 46px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .total {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 10vw;
+    margin: 0px;
+    background-color: var(--ac-base);
+    text-align: center;
+    /*background: url(../images/AC-intro-bg2b.png) #1d143f;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: auto 100%;*/
+  }
+
+  neon-animated-pages {
+    height: 100%;
+  }
+
+    .horiz {
+    @apply(--layout-horizontal);
+    @apply(--layout-center-center);
+  }
+
+  .vertic {
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+  }
+
+  .maxwidth {
+    width: 100%;
+    max-width: 400px;
+  }
+   .maxwidth ac-input {
+    width: 100%;
+    max-width: 400px;
+  } 
+
+  h1 {
+    @apply(--ac-font-h1);
+    text-align: center;
+    white-space: normal;
+    line-height: 48px;
+  }
+
+  h2 {
+    @apply(--ac-font-h2);
+  }
+
+  h3 {
+    @apply(--ac-font-h3);
+  }
+
+  h4 {
+    @apply(--ac-font-h4);
+  }
+
+  p {
+    @apply(--ac-font-body1);
+  }
+
+  a {
+    @apply(--ac-font-ahref);
+  }
+
+  small {
+    @apply(--ac-font-small);
+  }
+
+  .white {
+    color: var(--ac-white);
+  }
+
+  .blue {
+    color: var(--ac-blue);
+  }
+
+  .red {
+    color: var(--ac-red);
+  }
+
+  .yellow {
+    color: var(--ac-yellow);
+  }
+
+
+  .yesnobtns {
+    width: 100%;
+  }
+
+  .yesno {
+    width: 80%;
+    max-width: 280px;
+
+    margin: 5px;
+  }
+
+  .whitespace {
+    width: 100%;
+    height: 20px;
+  }
+
+  .centervlak {
+    width: 100%;
+    max-width: 400px;
+  }
+  .flex {
+    @apply(--layout-flex);
+  }
+
+  .inner {
+    width: 90%;
+    height: 76%;
+    @apply(--layout-vertical);
+    @apply(--layout-center);
+    @apply(--layout-start-justified);
+    /*@apply(--layout-wrap);*/
+    box-sizing: border-box;
+    /*background-color: red;*/
+  }
     </style>
     <neon-animated-pages id="createwalletpgs" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
       <neon-animatable state="first">
-        <h1>Do you own ARC tokens?</h1>
-        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="toimportwallet" txtbtn>Yes</ac-button>
-        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="tocreatewallet" txtbtn>No</ac-button>
-      </neon-animatable>
-
-      <neon-animatable state="importwallet">
-        <h1>Do you have an ARC Wallet json?</h1>
-        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="touploadjson" txtbtn>Yes</ac-button>
-        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="toprivatekey" txtbtn>No</ac-button>
-      </neon-animatable>
-
-      <neon-animatable state="uploadjson">
-        <h1>Upload the ARC Wallet JSON</h1>
-        <!-- input -->
-        <p>Enter password</p>
-        <ac-input id="p1" color="yellow" label="Password" bind-value="{{password}}" type="password" center autofocus></ac-input>
-        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="createwallet" txtbtn>Finish</ac-button>
-      </neon-animatable>
-
-      <neon-animatable state="impprivkey">
-        <h1>Import private key</h1>
-        <!-- input -->
-        <ac-button big class="double" bg="base" txtcolor="blue" on-tap="topassword" txtbtn>Next</ac-button>
-      </neon-animatable>
-
-      <neon-animatable state="password">
         <div class="total vertic">
-          <div class="inner">
-            <div class="centervlak flex vertic">
-              <p class="yellow">Choose a password and repeat</p>
-              <div class="whitespace"></div>
-              <ac-input id="p1" color="yellow" label="Password" bind-value="{{password}}" type="password" center autofocus></ac-input>
-              <div class="whitespace"></div>
-              <div class="whitespace"></div>
-              <ac-input id="p2" color="yellow" label="Password control" bind-value="{{password1}}" type="password" center autofocus></ac-input>
-            </div>
-            <ac-button icon="ac-v" on-tap="savePassword" disabled$="{{passcheck}}" bg="base" txtcolor="yellow">Finish</ac-button>
-            <div class="whitespace"></div>
+          <p class="red">Do you own ARC-tokens?</p>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+          <div class="yesnobtns vertic">
+            <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toimportwallet" txtbtn>Yes</ac-button>
+            <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="tocreatewallet" txtbtn>No</ac-button>
           </div>
         </div>
       </neon-animatable>
+
+      <neon-animatable state="importwallet">
+        <div class="total vertic">
+          <p class="red">Do you have an ARC-Wallet json-file?</p>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
+          <div class="yesnobtns vertic">
+            <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="touploadjson" txtbtn>Yes</ac-button>
+            <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toprivatekey" txtbtn>No</ac-button>
+          </div>
+        </div>
+      </neon-animatable>
+
+      <neon-animatable state="uploadjson">
+        <div class="total vertic">
+        <div class="inner">
+          <div class="centervlak flex vertic">
+            <p class="yellow">Upload your ARC-wallet and unlock</p>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <ac-button small bg="yellow" txtcolor="base" on-tap="createwallet" txtbtn>Choose file</ac-button>
+            <div class="whitespace"></div>
+            <ac-input id="p1" color="yellow" label="Password of ARC-wallet" bind-value="{{password}}" type="password" center autofocus></ac-input>
+          </div>
+          <ac-button icon="ac-v" on-tap="createwallet" disabled$="{{uploadcheck}}" bg="btncolor" txtcolor="yellow">Continue</ac-button>
+        </div>
+        </div>
+      </neon-animatable>
+
+      <neon-animatable state="impprivkey">
+
+        <div class="total vertic">
+        <div class="inner">
+          <div class="centervlak flex vertic">
+            <p class="yellow">Enter the private key of the wallet containing your ARC-tokens</p>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <ac-input color="yellow" label="Private key of ARC-wallet" bind-value="{{privatekey}}" center autofocus></ac-input>
+          </div>
+          <ac-button icon="ac-v" on-tap="finish" disabled$="{{keycheck}}" bg="btncolor" txtcolor="yellow">Finish</ac-button>
+        </div>
+        </div>
 
     </neon-animated-pages>
   </template>
@@ -79,7 +210,16 @@
         state: {
           type: String,
           value: 'first'
-        }
+        },
+        uploadcheck: {
+          type: Boolean,
+          value: true          
+        },
+
+        keycheck: {
+          type: Boolean,
+          value: true          
+        },
       },
 
       ready: function() {},

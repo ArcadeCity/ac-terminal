@@ -60,7 +60,7 @@
 
     ac-createwallet {
       width: 100%;
-      height: 84vh;
+      height: 100vh;
     }
 
     .games {
@@ -95,6 +95,11 @@
 
     <neon-animated-pages id="homepages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
+      <neon-animatable state="init">
+        <ac-createwallet on-to-home=""></ac-createwallet>
+      </neon-animatable>
+
+
       <neon-animatable state="home">
       <div class="hometotal">
 
@@ -113,7 +118,6 @@
           ethbalance="{{ethbalance}}">
         </ac-balance> -->
         <!-- <template is="dom-if" if="{{!wallet}}"> -->
-        <ac-createwallet on-to-home=""></ac-createwallet>
         <!-- </template> -->
 
         <!-- @Bennisan, this feels wrong to me > we don't have any games yet, why are we putting this here? KF -->
@@ -197,7 +201,7 @@
       },
 
       ready: function() {
-        this.state = 'home';
+        this.state = 'init';
         this.password = sessionStorage.getItem('ac-password');
       },
 
