@@ -14,6 +14,9 @@
       --title-big: 40px;
       --title-bigheight: 46px;
     }
+    neon-animated-pages {
+      height: 100%;
+    }
     </style>
     <neon-animated-pages id="createwalletpgs" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
@@ -36,6 +39,10 @@
           type: String,
           value: 'ac-createwallet',
         },
+        state: {
+          type: String,
+          value: 'first'
+        }
       },
 
     });
