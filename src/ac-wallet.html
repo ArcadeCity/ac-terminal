@@ -1,5 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="./ac-helpers.html">
 <dom-module id="ac-wallet">
+
   <template>
     <style>
       :host {
@@ -12,8 +14,10 @@
         --title-bigheight: 46px;
       }
     </style>
+    <ac-helpers id="helpers"></ac-helpers>
     <h1>{{prop1}}</h1>
     <h1>helloooo</h1>
+
   </template>
 
   <script>
@@ -25,6 +29,14 @@
         keystore: {
           type: Object,
           observer: '_keystore'
+        },
+        ethbalance: {
+          type: Number,
+          notify: true
+        },
+        arcbalance: {
+          type: Number,
+          notify: true
         },
 
         host: {
@@ -49,15 +61,30 @@
         this.web3 = new Web3();
         this.web3.setProvider(web3Provider);
 
+        this.account = self.$.helpers.fixaddress((this.keystore.getAddresses()[0]);
+
       },
 
 
       sendTokens: function(to,amount){
+        throw new Error('not implemented');
+      },
 
+      updateBalance: function(e) {
 
+        var self = this;
 
-      }
+        var MyContract = self.web3.eth.contract(this.token.abi);
+        var myContractInstance = MyContract.at(this.token.address);
 
+        self.ethbalance = self.web3.eth.getBalance(self.account).toNumber();
+        self.arcbalance = MyContract.at(this.token.address).balanceOf(self.account).toNumber();
+        console.log('ETH balance is', self.accountbalance);
+        console.log('ARC balance is', self.arcbalance);
+
+      },      
+
+    
 
     });
   </script>
