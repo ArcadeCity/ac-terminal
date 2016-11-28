@@ -287,21 +287,10 @@
       <div class="total vertic">
         <div class="inner">
           <div class="centervlak flex vertic">
-            <p class="yellow">Choose a password</p>
+            <p class="yellow">Choose a password and repeat</p>
             <div class="whitespace"></div>
             <ac-input id="p1" color="yellow" label="Password" bind-value="{{password}}" type="password" center autofocus></ac-input>
-          </div>
-          <ac-button icon="ac-arrowright" on-tap="nextcontrol" bg="base" txtcolor="yellow" disabled$="{{emptypassw}}">Continue</ac-button>
-          <div class="whitespace"></div>
-        </div>
-      </div>
-    </neon-animatable>
-
-    <neon-animatable state="passw2">
-      <div class="total vertic">
-        <div class="inner">
-          <div class="centervlak flex vertic">
-            <p class="yellow">Retype your password</p>
+            <div class="whitespace"></div>
             <div class="whitespace"></div>
             <ac-input id="p2" color="yellow" label="Password control" bind-value="{{password1}}" type="password" center autofocus></ac-input>
           </div>
@@ -416,12 +405,13 @@ Polymer({
   savePassword: function() {
     // Encrypt localstorage userobject with password.
     var encrypted = CryptoJS.AES.encrypt(this.password, this.password).toString();
-    vault.createVault(this.password, function() {
-      localStorage.setItem("ac-password", encrypted);
-      sessionStorage.setItem("ac-password", this.password);
-      localStorage.setItem("ac-init", "1");
-      this.restart();
-    }.bind(this));
+    // vault.createVault(this.password, function() {
+    //   localStorage.setItem("ac-password", encrypted);
+    //   sessionStorage.setItem("ac-password", this.password);
+    //   localStorage.setItem("ac-init", "1");
+    //   this.restart();
+    // }.bind(this));
+    this.restart();
 
   },
 
@@ -452,7 +442,19 @@ Polymer({
   },
 
   restart: function(){
-    location.reload();
+    // Remove the new-user component
+    var newuser = document.querySelector('ac-newuser');
+    newuser.remove();
+
+    // Add the Home component
+    importPage('/src/ac-home.html').then(function(){
+      var element = document.createElement('ac-home');
+      element.id = 'app';
+      document.body.appendChild(element);
+    }, function(err){
+      console.log(err, 'error');
+    });
+    //location.reload();
   },
 
   _sizeview: function(){
@@ -503,5 +505,13 @@ Polymer({
     this.state = 'syncwithbackup';
   }
 });
+
+function importPage(url){
+  return new Promise(function(resolve, reject){
+    Polymer.Base.importHref(url, function(e){
+      resolve(e.target.import);
+    }, reject);
+  });
+}
 </script>
 </dom-module>
