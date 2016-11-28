@@ -7,9 +7,9 @@
     <link rel="manifest" href="/manifest.json">
     <script src="/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 
-
     <link rel="import" href="/bower_components/iron-localstorage/iron-localstorage.html">
-    <link rel="import" href="src/ac-spinner.html">
+    <!-- <link rel="import" href="src/ac-spinner.html"> -->
+    <link rel="import" href="/src/ac-app.html">
     <style>
       body {
         margin: 0px;
@@ -31,14 +31,15 @@
   </head>
 
   <body unresolved class="fullbleed layout vertical">
-    <template is="dom-bind" id="stage">
+    <!-- <template is="dom-bind" id="stage">
       <iron-localstorage
         id="localstorage"
         name="ac-init"
         on-iron-localstorage-load-empty="generate"
         on-iron-localstorage-load="homestate">
       </iron-localstorage>
-    </template>
+    </template> -->
+    <x-app></x-app>    
   </body>
   <script src="/src/scripts/app.js"></script>
 </html>
