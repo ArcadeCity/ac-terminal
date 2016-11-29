@@ -125,7 +125,7 @@
           arcbalance="{{arcbalance}}"
           ethbalance="{{ethbalance}}">
         </ac-balance>
-        
+
         <!-- <template is="dom-if" if="{{!wallet}}"> -->
         <!-- </template> -->
 
@@ -227,18 +227,18 @@
         });
 
         page('/home', () => {
-          if (Polymer.isInstance(this.$.activity)) {
+          // if (Polymer.isInstance(this.$.activity)) {
             this.selected = 'home';
-            return;
-          }
+            // return;
+          // }
 
-          Polymer.Base.importHref(
-            '/src/ac-home.html', () => {
-              this.selected = 'home';
-            }, () => {
-              console.log('Something failed!');
-            }, true
-          );
+          // Polymer.Base.importHref(
+          //   '/src/ac-home.html', () => {
+          //     this.selected = 'home';
+          //   }, () => {
+          //     console.log('Something failed!');
+          //   }, true
+          // );
         });
 
         page({
