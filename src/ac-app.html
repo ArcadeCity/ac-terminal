@@ -9,6 +9,7 @@
 <link rel="import" href="ac-balance.html">
 <link rel="import" href="ac-wallet.html">
 <link rel="import" href="ac-vault.html">
+<link rel="import" href="ac-profile.html">
 <link rel="import" href="ac-createwallet.html">
 <link rel="import" href="ac-tokentransfer.html">
 
@@ -146,23 +147,12 @@
       <neon-animatable data-page="profile">
 
         <div class="hometotal">
-
           <!-- The Profile view -->
-          <ac-button
-            bg="base"
-            icon="declinenew"
-            on-tap="toHome"
-            small
-            id="exitbtn"
-            txtcolor="turquoise">
-          </ac-button>
-
           <ac-profile
             profiledata="{{identity}}">
           </ac-profile>
-
         </div>
-    
+
       </neon-animatable>
 
       <neon-animatable data-page="wallet">

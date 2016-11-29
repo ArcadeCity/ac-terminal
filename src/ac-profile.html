@@ -501,27 +501,6 @@
         }
       },
 
-      donate: function() {
-        var self = this;
-
-        self.faucetview = true;
-
-        self.$.helpers.getfile('./contracts/ARCToken.json', function(err, arccontractjson) {
-          console.log('send some ARC to ', self.$.helpers.fixaddress(window.account));
-          var url = 'https://eth.arcadecity.world:3000/donate/' + self.$.helpers.fixaddress(window.account) + '/' + arccontractjson.address;
-          console.log('tapping from faucet',url);
-          self.$.donaterequest.send({
-            url: url
-          }).then(function() {
-            console.log('donation requested');
-            console.log('check balance at ',self.etherscanroot + '/token/'+arccontractjson.address+'?a='+self.$.helpers.fixaddress(window.account));
-            self.faucetview = false;
-
-           localStorage.setItem('test-arc', true);
-          });
-        });
-      },
-
       initprofile: function() {
         var userobject = {avatar: 'Qmf9u5L5cZiYY3DNWeWkG5ybyu7H1UPZnXxoDroy4HyeMs', aka: 'Mr. AC'};
         localStorage.setItem('ac-profile', JSON.stringify(userobject));
@@ -550,7 +529,8 @@
       },
 
       toProfile: function() {
-        app.set('route.path', '/profile/');
+        //app.set('route.path', '/profile/');
+        page.redirect('/profile');
       },
 
       toCancel: function() {
@@ -568,7 +548,8 @@
       },
 
       toHome: function() {
-        app.set('route.path', '/');
+        //app.set('route.path', '/');
+        page.redirect('/home');
       },
 
       uploadavatar: function() {
