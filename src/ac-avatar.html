@@ -90,11 +90,11 @@
     <template is="dom-if" if="{{_is(mode, 'big')}}">
       <div class="arc-avatar-big">
         <div class="avatar-big">
-          <img src="https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400">
+          <img src="{{artwork}}">
         </div>
         <div class="username-big">
           <p>{{username}}</p>
-          <div class="pub"><p>{{pub}}</p></div>
+          <div class="pub"><p>{{pubkey}}</p></div>
         </div>
       </div>
     </template>
@@ -123,6 +123,15 @@
           type: String,
           value: 'big',
         },
+        username: {
+          type: String
+        },
+        artwork: {
+          type: String
+        },
+        pubkey: {
+          type: String          
+        }
       },
 
       _is: function(a, b) {

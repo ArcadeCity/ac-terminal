@@ -116,7 +116,7 @@
         <ac-avatar
           username="{{identity.username}}"
           artwork="{{identity.avatarurl}}"
-          pub="{{account}}"
+          pubkey="{{account}}"
           mode="big"
           on-tap="toProfile">
         </ac-avatar>
@@ -158,11 +158,11 @@
           </ac-button>
 
           <ac-profile
-            profiledata="{{vault.profiledata}}">
+            profiledata="{{identity}}">
           </ac-profile>
 
         </div>
-
+    
       </neon-animatable>
 
       <neon-animatable data-page="wallet">

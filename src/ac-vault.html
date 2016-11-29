@@ -37,7 +37,7 @@
         currentidentity: {
           type: Object,
           notify: true,
-          observer: '_identity'
+          //observer: '_identity'
         }
       },
 
@@ -82,7 +82,7 @@
       saveVault: function(){
 
           var serializedKeystore = this.keystore.serialize();
-          var serializedIdentity = JSON.stringify(currentidentity || {});
+          var serializedIdentity = JSON.stringify(this.currentidentity || {});
 
           var vault = {
             version:1,
@@ -109,18 +109,18 @@
             throw new Error(err);
           }
           self.keystore = ks;
-          // self.generateNewAddress();
-          // self._currentAccount();
+          //self.generateNewAddress();
+          //self._currentAccount();
 
-          // self.currentidentity = {
-          //   version:1,
-          //   username: 'MrArc',
-          //   avatarurl: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
-          // };
+          self.currentidentity = {
+            version:1,
+            username: 'MrArc',
+            avatarurl: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
+          };
 
-          // self.$.localStorage.setItem('ac-avatar', JSON.stringify(self.currentidentity));
+          localStorage.setItem('ac-avatar', JSON.stringify(self.currentidentity));
 
-          // self.saveVault();
+          self.saveVault();
 
           // self.ks.passwordProvider = function(callback) {
           //   callback(null, self.uploadpassword);
