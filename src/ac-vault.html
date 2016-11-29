@@ -40,6 +40,7 @@
       _password: function(){
 
       },
+
       _currentidentity: function(){
         console.log('ac-vault ->','currentidentity updated',this.currentidentity);
       },
@@ -61,7 +62,6 @@
         catch(e){
           throw new Error('Vault could not be loaded',e);
         }
-        
 
       },
 
@@ -77,13 +77,12 @@
           var serializedKeystore = this.keystore.serialize();
           var serializedIdentity = JSON.stringify(currentidentity || {});
 
-
           var vault = {
             version:1,
             keystore: serializedKeystore,
             identity: serializedIdentity
           };
-        
+
 //encryption.multiEncryptString(keystore, pwDerivedKey, msg, myPubKey, theirPubKeyArray [, hdPathString])
 
           this.set('ac-vault', vault);
@@ -102,21 +101,23 @@
           self.keystore = ks;
           self.generateNewAddress();
           self._currentAccount();
+
           self.currentidentity = {
             version:1,
             username: 'MrArc',
             avatarurl: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
           };
 
-          //this.$.localStorage.setItem('ac-avatar', JSON.stringify(self.currentidentity));
+          self.$.localStorage.setItem('ac-avatar', JSON.stringify(self.currentidentity));
 
           self.saveVault();
 
-          this.ks.passwordProvider = function(callback) {
+          self.ks.passwordProvider = function(callback) {
             callback(null, self.uploadpassword);
           };
 
           fn();
+
         });
 
       },
