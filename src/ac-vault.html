@@ -119,7 +119,6 @@
             throw new Error(err);
           }
           self.keystore = ks;
-          debugger;
           self.generateNewAddress();
           self._currentAccount();
 
@@ -129,13 +128,7 @@
             avatarurl: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
           };
 
-          //localStorage.setItem('ac-avatar', JSON.stringify(self.currentidentity));
-//debugger;
           self.saveVault();
-
-          // self.ks.passwordProvider = function(callback) {
-          //   callback(null, self.uploadpassword);
-          // };
 
           fn();
 
