@@ -12,6 +12,7 @@
 <link rel="import" href="ac-profile.html">
 <link rel="import" href="ac-createwallet.html">
 <link rel="import" href="ac-tokentransfer.html">
+<link rel="import" href="ac-password.html">
 
 <dom-module id="ac-app">
   <template>
@@ -180,11 +181,12 @@
 
           <ac-tokentransfer></ac-tokentransfer>
 
-          <!-- <ac-wallet
+          <ac-wallet
             keystore="{{keystore}}"
             arcbalance="{{arcbalance}}"
             ethbalance="{{ethbalance}}">
-          </ac-wallet> -->
+          </ac-wallet>
+          
         </div>
 
       </neon-animatable>
@@ -253,7 +255,7 @@
             }, true
           );
         });
-        
+
         page('/password', () => {
 
           if (!this.$.thevault.hasVault()){
