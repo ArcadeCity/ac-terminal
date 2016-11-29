@@ -51,7 +51,7 @@
    .maxwidth ac-input {
     width: 100%;
     max-width: 400px;
-  } 
+  }
 
   h1 {
     @apply(--ac-font-h1);
@@ -214,12 +214,12 @@
         },
         uploadcheck: {
           type: Boolean,
-          value: true          
+          value: true
         },
 
         keycheck: {
           type: Boolean,
-          value: true          
+          value: true
         },
       },
 
@@ -243,7 +243,10 @@
 
       tocreatewallet: function() {
         // create new wallet and go home
-        this.fire('toHome');
+        console.log('go home');
+        //this.fire('toHome');
+        page.redirect('/home');
+
       },
 
 
