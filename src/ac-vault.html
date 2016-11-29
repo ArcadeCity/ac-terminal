@@ -1,14 +1,14 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
+<!-- <link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html"> -->
 <script src="scripts/lightwallet.min.js"></script>
 <dom-module id="ac-vault">
 
   <template>
-    <iron-localstorage
+  <!--   <iron-localstorage
       id="localstorage"
       name="ac-vault"
       value="{{acvault}}">
-    </iron-localstorage>
+    </iron-localstorage> -->
   </template>
 
   <script>
@@ -49,20 +49,23 @@
         console.log('ac-vault ->','currentidentity updated',this.currentidentity);
       },
 
-      loadVault: function(){
+      loadVault: function(password){
+
+        this.vault = JSON.parse(window.localStorage.getItem('ac-vault'));
 
         try{
-          if(!this.acvault){
-            throw new Error('acvault is not defined.');
+          if(!this.vault){
+            throw new Error('vault is not defined.');
           }
-          switch (this.acvault.version){
+          switch (this.vault.version){
             case 1:
-              this.keystore = keystore.deserialize(this.acvault.keystore);
+              this.password = password;
+              this.keystore = keystore.deserialize(this.vault.keystore);
               this.currentaccount = this.keystore.getAddresses()[0];
-              this.currentidentity = this.acvault.identity;
+              this.currentidentity = this.vault.identity;
               break;
             default:
-              throw new Error('Vault version unknown',this.acvault.version);
+              throw new Error('Vault version unknown',this.vault.version);
               break;
           }
         }
@@ -92,8 +95,15 @@
 
 //encryption.multiEncryptString(keystore, pwDerivedKey, msg, myPubKey, theirPubKeyArray [, hdPathString])
 
-          this.set('ac-vault', vault);
+          window.localStorage.setItem('ac-vault', JSON.stringify(vault));
 
+      },
+
+      hasVault: function(){
+        debugger;
+          var vault = window.localStorage.getItem('ac-vault');
+
+        return (vault);
       },
 
       createVault: function(_password, fn) {
@@ -118,8 +128,8 @@
             avatarurl: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
           };
 
-          localStorage.setItem('ac-avatar', JSON.stringify(self.currentidentity));
-
+          //localStorage.setItem('ac-avatar', JSON.stringify(self.currentidentity));
+//debugger;
           self.saveVault();
 
           // self.ks.passwordProvider = function(callback) {
@@ -135,6 +145,9 @@
       _getpwDerivedKey: function(cb){
         if (this.pwDerivedKey){
           return cb(null,this.pwDerivedKey);
+        }
+        if (!this.password){
+          throw new Error('no password set');
         }
         var self=this;
         self.keystore.keyFromPassword(self.password, function(err, pwDerivedKey) {

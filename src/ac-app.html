@@ -103,6 +103,10 @@
 
     <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[selected]]" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
+      <neon-animatable data-page="password">
+        <ac-password id="newuser" on-password-received="passwordreceived"></ac-password>
+      </neon-animatable>
+
       <neon-animatable data-page="init">
         <ac-createwallet on-to-home="toHome"></ac-createwallet>
       </neon-animatable>
@@ -216,12 +220,19 @@
 
       },
 
+      passwordreceived: function(e){
+        if (!this.$.thevault.hasVault()){
+          return page.redirect('/');
+        }
+        this.$.thevault.loadVault(e.detail.password);
+      },
+
       attached: function() {
 
         // Setup some basic routing
         page('/', () => {
-          if (this.acinit){
-            page.redirect('/home');
+          if (this.$.thevault.hasVault()){
+            page.redirect('/password');
           }else{
             page.redirect('/newuser');
           }
@@ -241,11 +252,26 @@
             }, true
           );
         });
+        
+        page('/password', () => {
+          if (Polymer.isInstance(this.$.password)) {
+            this.selected = 'password';
+            return;
+          }
+
+          Polymer.Base.importHref(
+            '/src/ac-password.html', () => {
+              this.selected = 'password';
+            }, () => {
+              console.log('Something failed!');
+            }, true
+          );
+        });
 
         page('/home', () => {
           // if (Polymer.isInstance(this.$.activity)) {
             if (!this.$.thevault.keystore){
-              page.redirect('/newuser');
+              page.redirect('/');
             }else{
               this.selected = 'home';
             }

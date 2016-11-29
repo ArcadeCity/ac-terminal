@@ -266,12 +266,6 @@
   </style>
 
   <ac-vault id="vault"></ac-vault>
-  <iron-localstorage
-        id="localstorage"
-        name="ac-init"
-        value="{{acinit}}"
-    >
-    </iron-localstorage>
 
   <neon-animated-pages id="pages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
@@ -525,12 +519,12 @@ Polymer({
   }
 });
 
-function importPage(url){
-  return new Promise(function(resolve, reject){
-    Polymer.Base.importHref(url, function(e){
-      resolve(e.target.import);
-    }, reject);
-  });
-}
+// function importPage(url){
+//   return new Promise(function(resolve, reject){
+//     Polymer.Base.importHref(url, function(e){
+//       resolve(e.target.import);
+//     }, reject);
+//   });
+// }
 </script>
 </dom-module>
