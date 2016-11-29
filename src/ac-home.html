@@ -87,11 +87,11 @@
 
     <!-- When loading -->
     <!-- <ac-spinner></ac-spinner> -->
-   
+
     <neon-animated-pages id="homepages" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
       <neon-animatable state="init">
-        <ac-createwallet on-to-home=""></ac-createwallet>
+        <ac-createwallet on-to-home="toHome"></ac-createwallet>
       </neon-animatable>
 
 
@@ -201,7 +201,6 @@
       },
 
       toHome: function() {
-
         this.state = 'home';
       },
 
