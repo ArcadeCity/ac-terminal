@@ -1,0 +1,672 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../bower_components/ac-input/ac-input.html">
+<link rel="import" href="../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="./ac-helpers.html">
+<link rel="import" href="./ac-sizeview.html">
+<link rel="import" href="./ac-whisperer.html">
+<link rel="import" href="./ac-config.html">
+
+
+<dom-module id="ac-tokentransfer">
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+        background-color: transparent;;
+        --balance-h1: 40px;
+        --balance-lineheight: 52px;
+        --coin-margins: 0px 0px 7px 6px;
+        --code-h2: 32px;
+        --code-lineheight: 36px;
+        --code-small: 10px;
+        width: 100%;
+
+      }
+
+      h1 {
+        @apply(--ac-font-h1);
+        text-align: center;
+        font-size: var(--balance-h1);
+        line-height: var(--balance-lineheight);
+      }
+
+
+      h2 {
+        @apply(--ac-font-h2);
+        @apply(--opensans-semibold);
+        font-size: var(--code-h2);
+        line-height: var(--code-lineheight);
+      }
+
+      p {
+        @apply(--ac-font-body1);
+      }
+
+      small {
+        @apply(--ac-font-small);
+        @apply(--opensans-semibold);
+        font-size: var(--code-small);
+      }
+
+
+      .total {
+        width: 100%;
+        @apply(--layout-vertical);
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 3vh;
+      }
+
+      .totalpart {
+        width: 100%;
+        box-sizing: border-box;
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+
+      }
+
+      .sendcoiners {
+        width: 80%;
+        max-width: 600px;
+        box-sizing: border-box;
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+      }
+
+
+      .topbar {
+        width: 100%;
+        background-color: transparent;
+        height: var(--topbar-height);
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        box-sizing: border-box;
+        padding: 10px 20px 10px 20px;
+        }
+
+      .flex {
+        @apply(--layout-horizontal);
+        @apply(--layout-flex);
+      }
+
+
+
+
+      .tussenschot {
+        width: 100%;
+        border: 0;
+        margin: 0px;
+        color: var(--ac-grey3);
+        background-color: var(--ac-grey2);
+        height: 1px;
+      }
+
+      .inbutton {
+        width: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-end);
+      }
+
+     .coinbtn {
+      margin-left: 5px;
+     }
+
+     #sendcoins {
+      width: 100%;
+      max-width: 500px;
+      box-sizing: border-box;
+     }
+
+     #receivecoins {
+      width: 100%;
+      max-width: 500px;
+      box-sizing: border-box;
+      @apply(--layout-horizontal);
+      @apply(--layout-center-center);
+     }
+
+
+     .whitespace {
+      height: 2vh;
+     }
+
+     .code {
+      margin: 0px 0px 0px 0px;
+     }
+
+     .code h2 {
+      padding: 10px;
+      box-sizing: border-box;
+      color: var(--ac-yellow);
+      @apply(--montserrat-reg);
+
+     }
+
+
+
+     .announce {
+      width: 100%;
+      max-width: 500px;
+      box-sizing: border-box;
+/*      padding: 10px 0px 10px 0px;*/
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
+     }
+
+     .announce p {
+      color: var(--ac-yellow);
+     }
+
+     .marginbtm {
+      margin-left: 15px;
+      margin: var(--coin-margins);
+     }
+
+     .temp {
+      margin-top: 6vh;
+      color: var(--ac-grey4);
+     }
+
+     .refresher {
+        transition: all 1s linear;
+     }
+
+
+     .spinner {
+      -webkit-animation: rotate 0.5s linear infinite;
+      -moz-animation: rotate 0.5s linear infinite;
+      animation: rotate 0.5s linear infinite;
+     }
+
+
+     .spinonce {
+      -webkit-animation: rotate 0.5s linear infinite;
+      -moz-animation: rotate 0.5s linear infinite;
+      animation: rotate 0.5s linear infinite;
+
+     }
+
+      @-webkit-keyframes rotate {
+          from {-webkit-transform: rotate(0deg);}
+          to {-webkit-transform: rotate(180deg);}
+      }
+
+      @-moz-keyframes rotate {
+          from {-moz-transform: rotate(0deg);}
+          to {-moz-transform: rotate(180deg);}
+      }
+
+      @keyframes rotate {
+          from {transform: rotate(0deg);}
+          to {transform: rotate(180deg);}
+      }
+
+
+      .avatar {
+        width:70px;
+        height: 70px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: transparent;
+
+      }
+
+      .avatar img {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+/*      .btns {
+        width: 100%;
+        margin-top: 15px;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+
+      .btns ac-button {
+        margin: 5px;
+      }
+*/
+      .initbtns {
+        width: 100%;
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+
+      }
+
+      .initbtns ac-button {
+        width: 200px;
+      }
+
+
+      .initbtns p {
+        color: var(--ac-yellow);
+        @apply(--montserrat-semibold);
+        margin-top:10px;
+        border-bottom: 1px dashed var(--ac-yellow);
+        font-size: 16px;
+      }
+
+      .confirmbtns {
+          @apply(--layout-horizontal);
+          @apply(--layout-center-center);
+        margin-top: 15px;
+        }
+
+        .confirmbtn {
+          margin: 0px 2px 0px 2px;
+        }
+
+        .sender {
+          margin-bottom: 15px;
+        }
+
+
+
+    </style>
+
+    <ac-helpers id="helpers"></ac-helpers>
+    <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+    <!-- <ac-config web3host="{{web3host}}" ipfs="{{ipfs}}" etherscanroot="{{etherscanroot}}"></ac-config> -->
+
+    <ac-whisperer
+    web3="{{web3}}"
+    topic="{{topic}}"
+    progress="{{progress}}"
+    decimals="5"
+    on-message-received="handlewhispermessage"
+    id="whisper"></ac-whisperer>
+
+    <div class="total">
+      <div class="totalpart">
+        <template is="dom-if" if="{{sendcollsclosed}}">
+        <div class="initbtns">
+        <div class="whitespace"></div>
+
+            <ac-button txtbtn txtcolor="base" bg="yellow" on-tap="togglesendcoins" class="sender">send ARC</ac-button>
+        <template is="dom-if" if="{{receivecollsclosed}}">
+
+            <p on-tap="togglereceivecoins">shortcode</p>
+          </template>
+<!--             <ac-button txtbtn txtcolor="red" bg="base" on-tap="togglereceivecoins">shortcode</ac-button> -->
+
+            <!-- <ac-button txtbtn txtcolor="base" bg="red" on-tap="togglereceivecoins"><div class="inbutton">receive</div></ac-button> -->
+        <div class="whitespace"></div>
+
+          </div>
+        </template>
+        <div class="sendcoiners">
+
+        <iron-collapse id="sendcoins">
+        <template is="dom-if" if="{{_is(sendcoinstate,'first')}}">
+
+          <ac-input color="yellow" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
+          <ac-input color="yellow" class="sendinput" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
+
+<!--           <div class="btns">
+            <ac-button small icon="declinenew" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+            <ac-button small icon="ac-v" confirmsmall on-tap="toWaiting" class="closebtn"></ac-button>
+          </div> -->
+
+          <div class="confirmbtns">
+         <ac-button icon="ac-decline" on-tap="togglesendcoins" small class="confirmbtn" bg="base" txtcolor="yellow"></ac-button>
+            <ac-button on-tap="toWaiting" bg="yellow" txtcolor="big" icon="ac-v"></ac-button>
+          </div>
+
+        </template>
+
+        <template is="dom-if" if="{{_is(sendcoinstate,'second')}}">
+          <div class="announce">
+          <p>Your transaction is being executed.</p>
+          <ac-button small icon="declinenew" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+          </div>
+        </template>
+        </iron-collapse>
+        <iron-collapse id="receivecoins">
+          <div class="code">
+            <!-- <small>Temporary code</small> -->
+            <h2>{{topic}}</h2>
+          </div>
+          <ac-button icon="ac-decline" on-tap="togglereceivecoins" small class="confirmbtn" bg="base" txtcolor="yellow"></ac-button>
+        </iron-collapse>
+        </div>
+
+        <div class="whitespace"></div>
+        <div class="whitespace"></div>
+
+      </div>
+      <div class="totalpart">
+        <template is="dom-repeat" items="{{history}}">
+          <div class="avatar" id="avatar">
+            <img src="{{item.avatar}}">
+          </div>
+          <p><span>{{item.receiver}}</span> &Delta;<span>{{item.amount}}</span></p>
+          <!-- <p class="temp">&Delta;<span>{{item.amount}}</span><span>{{item.receiver}}</span></p> -->
+        </template>
+      </div>
+
+
+<!--     <div>
+      <h1>E <span>{{ethbalance}}</span></h1>
+      <h1>L <span>{{arcbalance}}</span></h1>
+      <p on-tap="getLocalbalance">Refresh</p>
+      <h1>Send funds to another locals user</h1>
+      <p>enter the # of the other user</p>
+      <ac-input autofocus bind-value="{{pincode}}" label="Pincode" center></ac-input>
+      <locals-confirm on-confirm="toWaiting" type="next"></locals-confirm> -->
+
+      <!-- Hier hebben we dan de key van de partner -->
+      <!-- <p>TO: <span>{{partnerpubkey}}</span></p>
+      <ac-button text on-tap="transfer">verstuur</locals-button> -->
+    </div>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'ac-tokentransfer',
+
+      properties: {
+        foo: {
+          type: String,
+          value: 'ac-tokentransfer',
+          notify: true
+        },
+
+        sizeview: {
+          type: String,
+          observer: '_sizeview'
+        },
+
+        web3: {
+          type: Object
+        },
+
+        sendcoinstate: {
+          type: String,
+          value: 'first',
+          observer: '_sendcoinstate'
+        },
+
+        balanceloaded: {
+          type: Boolean,
+          value: false
+        },
+
+        topic: {
+          type: Number,
+        },
+
+        collsclosed: {
+          type: Boolean,
+          value: true
+        },
+
+        sendcollsclosed: {
+          type: Boolean,
+          value: true
+        },
+
+        receivecollsclosed: {
+          type: Boolean,
+          value: true
+        },
+
+        history: {
+          type: Array,
+          value: []
+        },
+
+        contractaddr: {
+          type: String,
+          //value: '0xe94a4e5615E5d1BAfbDBc8a221D9b0995f67A752'
+        },
+        arcbalance: {
+          type: Number,
+          notify: true
+        },
+        ethbalance: {
+          type: Number
+        },
+
+      },
+
+      _pincode: function() {
+        console.log(this.pincode);
+      },
+
+      ready: function(){
+        this._getARCbalance();
+        var self = this;
+
+        window.setInterval(function(){
+          self._getARCbalance();
+        }, 5000);
+
+
+        this.sendcoinstate = 'first';
+        this.password = sessionStorage.getItem('ac-password');
+      },
+
+      attached: function(){
+        var self=this;
+      },
+
+      handlewhispermessage: function(m) {
+        var self = this;
+        var message = JSON.parse(m.detail.message);
+        console.log('incoming tokentransfer msg: ', message);
+        switch (message.command) {
+          case 'requestpubkeyforlocalstransfer':
+            self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
+              'command': 'sendpubkey',
+              'pubkey': window.account
+            }));
+            break;
+          case 'sendpubkey':
+            var transferamount = this.amount * 1e18;
+            console.log('Send ARC to ', message.pubkey);
+            this.transfer(transferamount, this.$.helpers.fixaddress(message.pubkey), function(err, result) {
+              console.log('Transfer started. Sending confirmation to ',m.detail.from);
+              self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
+                'command': 'confirmtransfer',
+                'amount': transferamount,
+              }));
+            });
+            //var username = //self._getUsername(message.pubkey,function(username, avatarurl){
+
+            break;
+          case 'confirmtransfer':
+            // TODO : show transfer in history...
+            console.log('transfer confirmed...', message.amount, 'received');
+
+
+
+            break;
+          default:
+            console.log('unknown message', message);
+        }
+      },
+
+
+
+      toWaiting: function(){
+        var self = this;
+        //debugger;
+        //this.handler = document.querySelector('locals-verification-validator');
+        //console.log('wallet: ',this.$.whisper.topic, ' pin: ', this.pincode);
+        //debugger;
+        this.$.whisper.whisperpost(this.pincode, JSON.stringify({
+                'command': 'requestpubkeyforlocalstransfer',
+              }));
+        this.state = 'waiting';
+        this.sendcoinstate = 'second';
+      },
+
+      clearInputs: function(){
+        this.pincode = '';
+        this.amount = '';
+        console.log("Cleared inputs!!!!!! PINCODE=",this.pincode,' & AMOUNT=',this.amount);
+      },
+
+      refreshBalance:function() {
+        this.spinclass = 'spinonce';
+        this._getARCbalance();
+        var self = this;
+        setTimeout(function(){
+            self.spinclass = '';
+        },500)
+      },
+
+      _getARCbalance: function() {
+        if(!this.web3) return;
+        //console.log('ac-tokentransfer ', Date.now());
+        this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
+
+        var self = this;
+
+        this.importHref(this.contracturl, function(e) {
+          var contractjson = JSON.parse(e.target.import.body.innerText);
+          var tokenContract = self.web3.eth.contract(contractjson.abi);
+          var tokenContractInstance = tokenContract.at(contractjson.address);
+          var account = self.$.helpers.fixaddress(window.account);
+          self.arcbalance = tokenContractInstance.balanceOf(account) / 1e18;
+          self.balanceloaded = true;
+          self.fire('balance-loaded');
+          self.fire('map-update');
+        });
+
+      },
+
+      transfer: function(amount,pubkey,cb){
+
+        var self = this;
+
+        this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
+        this.importHref(this.contracturl, function(e) {
+          this.contractjson = JSON.parse(e.target.import.body.innerText);
+             self.web3.eth.getGasPrice(function(err, result){
+            var gasPrice = result.toNumber(10);
+          console.log('gasprice: ', gasPrice);
+
+          var MyContract = self.web3.eth.contract(self.contractjson.abi);
+          var myContractInstance = MyContract.at(self.contractjson.address);
+            console.log('doing transfer of ',amount,' LC to: ', pubkey, 'from: ', window.account);
+            myContractInstance.transfer.sendTransaction(pubkey, amount, {
+              from: self.$.helpers.fixaddress(window.account),
+              gasPrice: gasPrice,
+              gasLimit: 3000000,
+              gas: 2000000
+            }, function(err, result){
+              console.log(err, result);
+              var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(window.account));
+                self.arcbalance = coinbalance;
+                if (cb){
+                  cb(err,result);
+                }
+            });
+
+          });
+        });
+
+        this.clearInputs();
+        var sendcoins = self.$.sendcoins;
+        sendcoins.toggle();
+        this.collsclosed=!this.collsclosed;
+        this.sendcoinstate = 'first';
+      },
+
+    toHome: function() {
+      this.fire('to-home');
+    },
+
+    _sizeview: function(){
+      switch(this.sizeview) {
+          case 'phone':
+              this.customStyle['--balance-h1'] = '40px';
+              this.customStyle['--balance-lineheight'] = '52px';
+              this.customStyle['--code-h2'] = '32px';
+              this.customStyle['--code-lineheight'] = '36px';
+              this.customStyle['--code-small'] = '10px';
+              this.customStyle['--coin-margins'] = '0px 0px 7px 6px';
+                this.customStyle['--topbar-height'] = '100px';
+              this.updateStyles();
+              break;
+          case 'desktop':
+              this.customStyle['--balance-h1'] = '60px';
+              this.customStyle['--balance-lineheight'] = '78px';
+              this.customStyle['--code-h2'] = '44px';
+              this.customStyle['--code-lineheight'] = '50px';
+              this.customStyle['--code-small'] = '12px';
+              this.customStyle['--coin-margins'] = '0px 0px 10px 6px';
+                this.customStyle['--topbar-height'] = '100px';
+              this.updateStyles();
+              break;
+          case 'xlarge':
+              this.customStyle['--balance-h1'] = '120px';
+              this.customStyle['--balance-lineheight'] = '152px';
+              this.customStyle['--code-h2'] = '98px';
+              this.customStyle['--code-lineheight'] = '104px';
+              this.customStyle['--code-small'] = '24px';
+              this.customStyle['--coin-margins'] = '0px 0px 20px 6px';
+                this.customStyle['--topbar-height'] = '100px';
+              this.updateStyles();
+              break;
+          default:
+          console.log("!!! ** Niks");
+      }
+    },
+
+
+    _is: function(a, b) {
+      if (b === undefined){
+        b = true;
+      }
+      //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
+      return a === b;
+    },
+
+      togglesendcoins: function() {
+        var sendcoins = this.$.sendcoins;
+        sendcoins.toggle();
+        this.sendcollsclosed=!this.sendcollsclosed;
+        this.sendcoinstate = 'first';
+      },
+
+      togglereceivecoins: function() {
+        // this.whisper = this.$.whisper;
+        // this.topic = this.whisper.topic;
+        // console.log("******** topic in wallet: ****",this.topic)
+        var receivecoins = this.$.receivecoins;
+        receivecoins.toggle();
+        this.receivecollsclosed=!this.receivecollsclosed;
+      },
+
+
+      _sendcoinstate: function(){
+        // console.log('********************* !!!! SENCOINSTATE', this.sendcoinstate);
+      }
+
+
+
+
+
+    });
+  })();
+  </script>
+</dom-module>

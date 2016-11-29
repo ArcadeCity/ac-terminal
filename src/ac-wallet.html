@@ -1,5 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="./ac-helpers.html">
+<link rel="import" href="./ac-tokentransfer.html">
+<link rel="import" href="./ac-balance.html">
+
 <dom-module id="ac-wallet">
 
   <template>
@@ -14,9 +17,10 @@
         --title-bigheight: 46px;
       }
     </style>
+
     <ac-helpers id="helpers"></ac-helpers>
-    <h1>{{prop1}}</h1>
-    <h1>helloooo</h1>
+
+
 
   </template>
 
@@ -82,9 +86,9 @@
         console.log('ETH balance is', self.accountbalance);
         console.log('ARC balance is', self.arcbalance);
 
-      },      
+      },
 
-    
+
 
     });
   </script>

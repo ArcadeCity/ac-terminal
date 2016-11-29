@@ -1,30 +1,607 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/ac-input/ac-input.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-request.html">
+<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="./ac-wallet.html">
+<link rel="import" href="./ac-ipfs.html">
+<link rel="import" href="./ac-helpers.html">
+<link rel="import" href="./ac-config.html">
+<link rel="import" href="./ac-tokentransfer.html">
+<link rel="import" href="./ac-sizeview.html">
 
 <dom-module id="ac-profile">
+  <!-- Defines the element's style and local DOM -->
   <template>
     <style>
       :host {
         display: block;
+        /*--toppart-height: 15vh;
+        --toppart-padding: 10px 20px 10px 20px;*/
+        --container-height: 85vh;
+        --avatarsmall-size: 44px;
+        --avatar-size: 90px;
+
+        --flex-align1:end;
+        --flex-align2:flex-end;
+      }
+
+      .avatar {
+        width:var(--avatar-size);
+        height: var(--avatar-size);
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: transparent;
+      }
+
+      .avatar img {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .userinfosmall {
+        width: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        box-sizing: border-box;
+      }
+
+      .avatarsmall {
+        width: var(--avatarsmall-size);
+        height: var(--avatarsmall-size);
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: transparent;
+        z-index: 3;
+
+      }
+
+      .avatarsmall img {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .usernamesmall {
+        margin: 0px 0px 0px -8px;
+        padding: 5px 8px 6px 18px;
+        @apply(--montserrat-light);
+        color:var(--ac-blue);
+        font-size: 20px;
+        background-color: transparent;
+        z-index: 1;
+        /*background-color: rgba(31,23,66,0.05);*/
+        /*text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);*/
+      }
+
+      .usernamesmallmap {
+        margin: 0px 0px 0px -8px;
+        padding: 5px 8px 6px 18px;
+        @apply(--montserrat-reg);
+        color:var(--ac-blue);
+        font-size: 20px;
+        background-color: white;
+        z-index: 1;
+        /*background-color: rgba(31,23,66,0.05);*/
+        /*text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);*/
+      }
+
+      .topbar {
+        width: 100%;
+        height: 12vh;
+        /*height: var(--topbar-height);*/
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        box-sizing: border-box;
+        padding: 10px 20px 0px 25px;
+        border-bottom:1px solid transparent;
+        position: fixed;
+        top: 0px;
+        background-color: transparent;
+      }
+
+      .flex {
+        @apply(--layout-horizontal);
+        @apply(--layout-flex);
+      }
+
+      .main {
+        overflow-y: scroll;
+        height: 100vh;
+        width: 100%;
+        @apply(--base-structure);
+
+      }
+
+      .content {
+        width: 100%;
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+        @apply(--base-structure);
+        box-sizing: border-box;
+        padding: 16vh 0px 0px 0px;
       }
 
       h1 {
-        color: white;
+        @apply(--ac-font-h1);
       }
-    </style>
-    <h1>{{prop1}}</h1>
-  </template>
 
+      h2 {
+        @apply(--ac-font-h2);
+        color:#4CACF5;
+
+        width: 33%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 12px;
+      }
+
+      h3 {
+        @apply(--ac-font-h3);
+      }
+      p {
+        @apply(--ac-font-body1);
+      }
+
+      .whitespace {
+        width: 100%;
+        display: block;
+        height: 20px;
+      }
+
+      .offeramount {
+        @apply(--layout-horizontal);
+        @apply(--layout-end);
+        @apply(--layout-center-justified);
+        height: 100%;
+        box-sizing: border-box;
+        padding: 20px 0px 20px 0px;
+        width: 80%;
+      }
+
+      .offeramount h1 {
+        color: var(--ac-red);
+        @apply(--montserrat-ultralight);
+        margin: 0px;
+        font-size: 56px;
+        line-height: 64px;
+      }
+      .offeramount p {
+        color: var(--ac-red);
+        font-size: 16px;
+        line-height: 34px;
+        margin: 0px;
+      }
+
+      .confirmbtns {
+          position: fixed;
+          bottom: 40px;
+          right: 40px;
+          z-index: 3;
+          @apply(--layout-horizontal);
+          @apply(--layout-center-center);
+        }
+
+      .confirmbtnszz {
+          z-index: 3;
+          @apply(--layout-horizontal);
+          @apply(--layout-center-center);
+        }
+
+
+        .confirmbtn {
+          margin: 0px 2px 0px 2px;
+        }
+
+        ac-wallet {
+          display: none;
+        }
+
+      .usernamebig {
+        @apply(--montserrat-light);
+        color:var(--ac-blue);
+        margin: 0px;
+        font-size: 30px;
+        line-height: 38px;
+        }
+
+        .pubkey {
+          width: 100px;
+        }
+
+        .pubkey p {
+          @apply(--ac-font-nowrap);
+          color:var(--ac-blue);
+          @apply(--montserrat-reg);
+          font-size: 12px;
+        }
+
+        .faucetview {
+          box-sizing: border-box;
+          padding:5vh;
+          border-top: 1px solid rgba(255,255,255,0.1);
+          width: 100%;
+          @apply(--layout-horizontal);
+          @apply(--layout-center-center);
+        }
+
+    </style>
+    <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+
+    <ac-helpers id="helpers"></ac-helpers>
+    <ac-config etherscanroot="{{etherscanroot}}"></ac-config>
+
+    <iron-request id="donaterequest"></iron-request>
+
+    <template is="dom-if" if="{{!accountlocked}}">
+
+      <!-- no profile view -->
+      <template is="dom-if" if="{{_is(viewstate, 'none')}}">
+      </template>
+
+      <!-- small profile view -->
+      <template is="dom-if" if="{{_is(viewstate, 'smallviewmap')}}">
+
+        <div class="userinfosmall"  on-tap="toProfile">
+          <div class="avatarsmall" id="avatar">
+            <ac-ipfsupload hidefileinput hash="{{avatarhash}}" url="{{avatarurl}}" id="ipfsupload"></ac-ipfsupload>
+            <img src="{{avatarurl}}">
+          </div>
+          <p class="usernamesmallmap">{{username}}</p>
+
+        </div>
+
+      </template>
+
+
+      <template is="dom-if" if="{{_is(viewstate, 'smallview')}}">
+
+
+        <div class="userinfosmall"  on-tap="toProfile">
+          <div class="avatarsmall" id="avatar">
+            <ac-ipfsupload hidefileinput hash="{{avatarhash}}" url="{{avatarurl}}" id="ipfsupload"></ac-ipfsupload>
+            <img src="{{avatarurl}}">
+          </div>
+          <p class="usernamesmall">{{username}}</p>
+
+        </div>
+
+      </template>
+
+      <!-- View profile view -->
+      <template is="dom-if" if="{{_is(viewstate, 'overview')}}">
+        <div class="topbar">
+          <p class="flex" on-tap="change"></p>
+          <ac-button bg="base" icon="declinenew" on-tap="toHome" small id="exitbtn" txtcolor="turquoise"></ac-button>
+        </div>
+        <div class="main">
+          <div class="content">
+            <div class="avatar" on-tap="toEdit">
+              <img src="{{avatarurl}}" alt="" />
+            </div>
+
+            <div class="whitespace"></div>
+
+            <div class="pubkey"><p>{{account}}</p></div>
+
+            <h1 class="usernamebig">{{username}}</h1>
+
+            <div class="offeramount">
+              <h1>{{arcbalance}}</h1>
+              <p>ARC</p>
+            </div>
+
+            <div class="whitespace"></div>
+
+
+            <ac-tokentransfer web3="{{web3}}"></ac-tokentransfer>
+            <!-- <p>ETH Balance: {{balance}}</p>-->
+
+          <!-- <ac-button on-tap="toEdit" icon="ac-filter" bg="yellow" txtcolor="base" small></ac-button> -->
+<!--
+            <template is="dom-if" if="{{faucetview}}">
+            <div class="faucetview">
+              <ac-button id="donatebtn" on-tap="donate" txtbtn bg="blue" txtcolor="base" small>Give me test-ARC</ac-button>
+            </div>
+            </template>
+
+
+            <div class="faucetview">
+
+            <template is="dom-if" if="{{allowanceview}}">
+              <ac-button id="allowancebtn" on-tap="giveallowance" txtbtn bg="yellow" txtcolor="base" small>This Arcade City dapp may spend ARC tokens in my name</ac-button>
+          </template>
+          </div> -->
+
+            <!-- <ac-button on-tap="toEdit" icon="ac-filter" bg="yellow" txtcolor="base" small></ac-button> -->
+          </div>
+        </div>
+      </template>
+
+      <!-- Edit profile view -->
+      <template is="dom-if" if="{{_is(viewstate, 'edit')}}">
+        <div class="topbar">
+          <p class="flex" on-tap="change"></p>
+          <ac-button  bg="base" icon="declinenew" on-tap="viewstatehome" small id="exitbtn" txtcolor="turquoise"></ac-button>
+        </div>
+        <div class="main">
+          <div class="content">
+            <div class="whitespace"></div>
+            <!-- <div class="avatar"> -->
+            <ac-ipfsupload class="avatar" hidefileinput hash="{{newavatar}}" url="{{newavatarurl}}" id="ipfsupload">
+              <img src="{{newavatarurl}}">
+            </ac-ipfsupload>
+            <!-- </div> -->
+
+            <div>
+            <div class="whitespace"></div>
+
+              <ac-input center color="blue" on-bind-value-changed="inputchanged" id="newusername" bind-value="{{newusername}}" inputvalue="{{username}}" placeholder="{{username}}" autofocus></ac-input>
+
+            </div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+
+            <div class="confirmbtnszz">
+
+              <ac-icon icon="ac-decline" on-tap="toCancel" small class="confirmbtn" iconcolor="yellow"></ac-icon>
+              <ac-button on-tap="toSave" bg="yellow" txtcolor="big" icon="ac-v"></ac-button>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </template>
+
+    </template>
+
+    <iron-localstorage
+      name="ac-profile"
+      value="{{userdata}}"
+      on-iron-localstorage-load-empty="initprofile"
+      on-iron-localstorage-load="loadprofile">
+    </iron-localstorage>
+
+    <ac-ipfs id="ipfs" ipfs="{{ipfs}}"></ac-ipfs>
+
+    <!-- <ac-wallet id="acwallet" web3="{{web3}}" account="{{acount}}" balance="{{balance}}" arcbalance="{{arcbalance}}"></ac-wallet> -->
+  </template>
+  <!-- Creates the element's prototype and registers it -->
   <script>
     Polymer({
-
       is: 'ac-profile',
-
       properties: {
-        prop1: {
-          type: String,
-          value: 'ac-profile',
+        accountlocked: {
+          type: Boolean,
+          value: true,
+          notify: true
         },
+        password: {
+          type: String,
+          observer: '_password'
+        },
+        currentavatar: {
+          type: String
+        },
+        ipfs: {
+          type: Object
+        },
+        viewstate: {
+          type: String,
+          value: 'overview'
+        },
+        userdata: {
+          type: Object,
+          notify: true
+        },
+        faucetview: {
+          type: Boolean
+        },
+        // account: {
+        //   type: String,
+        //   notify: true
+        // },
+        arcbalance: {
+          type: Number,
+          observer: '_arcbalance'
+        },
+        web3: {
+          type: Object
+        },
+        sizeview: {
+          type: String,
+          observer: '_sizeview'
+        }
+
+
       },
+
+      ready: function() {
+
+        //this.faucetview = localStorage.getItem('test-arc');
+        this.allowanceview = false;
+        this.faucetview = false;
+        window.addEventListener('arc-there', function(e) {
+          //console.log('profile knows arc there?', e);
+          this.account = window.account;
+          this.arcbalance = window.arcbalance;
+          //console.log(e.detail.msg);
+        }.bind(this));
+        this.loadprofile();
+
+        window.addEventListener('profile-update', function() {
+          console.log('profile gets update');
+          //this.account = window.account;
+          //this.arcbalance = window.arcbalance;
+          this.loadprofile();
+
+
+
+        }.bind(this));
+
+        window.addEventListener('map-ready', function() {
+          console.log('profile gets update');
+          //this.account = window.account;
+          this.loadprofile();
+
+        }.bind(this));
+
+
+      },
+
+      attached: function() {
+        this.donateview = false;
+        this.accountlocked = true;
+        this.password = sessionStorage.getItem('ac-password');
+        this.loadprofile();
+        // document.addEventListener('web3-ready', function() {
+        //   console.log('web3');
+        //   this.account = app.$.wallet.account;
+        // }.bind(this));
+      },
+
+      giveallowance: function() {
+        var self = this;
+        //this.$.allowancebtn.disabled = true;
+        app.$.transact.createAllowance(function(e){
+          console.log('allowance created', e);
+          self.allowanceview = false;
+        });
+      },
+
+      _password: function() {
+        this.fire('map-update');
+        if(this.password) {
+          this.accountlocked = false;
+        }
+      },
+
+      viewstatehome: function() {
+        this.viewstate = 'overview';
+      },
+
+      _arcbalance: function() {
+
+        var self = this;
+
+        app.$.transact.checkAllowance(function(err, allowance) {
+          console.log('Allowance ', allowance);
+          if(allowance == 0 && this.arcbalance != 0) {
+            self.allowanceview = true;
+          } else {
+            self.allowanceview = false;
+          }
+        });
+
+        if(this.arcbalance < 1){
+          this.faucetview = true;
+        }
+      },
+
+      donate: function() {
+        var self = this;
+
+        self.faucetview = true;
+
+        self.$.helpers.getfile('./contracts/ARCToken.json', function(err, arccontractjson) {
+          console.log('send some ARC to ', self.$.helpers.fixaddress(window.account));
+          var url = 'https://eth.arcadecity.world:3000/donate/' + self.$.helpers.fixaddress(window.account) + '/' + arccontractjson.address;
+          console.log('tapping from faucet',url);
+          self.$.donaterequest.send({
+            url: url
+          }).then(function() {
+            console.log('donation requested');
+            console.log('check balance at ',self.etherscanroot + '/token/'+arccontractjson.address+'?a='+self.$.helpers.fixaddress(window.account));
+            self.faucetview = false;
+
+           localStorage.setItem('test-arc', true);
+          });
+        });
+      },
+
+      initprofile: function() {
+        var userobject = {avatar: 'Qmf9u5L5cZiYY3DNWeWkG5ybyu7H1UPZnXxoDroy4HyeMs', aka: 'Mr. AC'};
+        localStorage.setItem('ac-profile', JSON.stringify(userobject));
+      },
+
+      loadprofile: function() {
+        if(!localStorage.getItem('ac-profile')) {
+          return;
+        }
+
+        var userobject = localStorage.getItem('ac-profile');
+        this.userdata = JSON.parse(userobject);
+        this.currentavatar = this.userdata.avatar;
+        this.avatarurl = this.$.ipfs.geturl(this.userdata.avatar);
+        this.username = this.userdata.aka;
+      },
+
+      toSave: function() {
+        var userdata = {avatar: this.newavatar, aka: this.newusername };
+        console.log('old:', this.username, ' new: ', this.newusername);
+        console.log('old:', this.currentavatar, ' new: ', this.newavatar);
+        localStorage.setItem('ac-profile', JSON.stringify(userdata));
+        this.loadprofile();
+        this.viewstate = 'overview';
+        this.fire('profile-update');
+      },
+
+      toProfile: function() {
+        app.set('route.path', '/profile/');
+      },
+
+      toCancel: function() {
+        this.viewstate = 'overview';
+      },
+
+      toEdit: function() {
+        this.newavatar = this.userdata.avatar;
+        this.newavatarurl = this.$.ipfs.geturl(this.userdata.avatar);
+        this.viewstate = 'edit';
+      },
+
+      inputchanged: function(e) {
+        this.newusername = e.detail.value;
+      },
+
+      toHome: function() {
+        app.set('route.path', '/');
+      },
+
+      uploadavatar: function() {
+        console.log('start avatar upload');
+      },
+
+      _is: function(a, b) {
+        if (b === undefined){
+          b = true;
+        }
+        //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
+        return a === b;
+      },
+
+    _sizeview: function(){
+      switch(this.sizeview) {
+          case 'phone':
+                this.customStyle['--avatar-size'] = '90px';
+              this.updateStyles();
+              break;
+          case 'desktop':
+                this.customStyle['--avatar-size'] = '130px';
+              this.updateStyles();
+              break;
+          case 'xlarge':
+                this.customStyle['--avatar-size'] = '130px';
+              this.updateStyles();
+              break;
+          default:
+          console.log("!!! ** Niks");
+      }
+    }
+
 
     });
   </script>

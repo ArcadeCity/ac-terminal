@@ -10,6 +10,7 @@
 <link rel="import" href="ac-wallet.html">
 <link rel="import" href="ac-vault.html">
 <link rel="import" href="ac-createwallet.html">
+<link rel="import" href="ac-tokentransfer.html">
 
 <dom-module id="ac-app">
   <template>
@@ -127,6 +128,7 @@
           ethbalance="{{ethbalance}}">
         </ac-balance>
 
+
         <!-- <template is="dom-if" if="{{!wallet}}"> -->
         <!-- </template> -->
 
@@ -142,39 +144,54 @@
       </neon-animatable>
 
       <neon-animatable data-page="profile">
-        <!-- The Profile view -->
-        <ac-button
-          bg="base"
-          icon="declinenew"
-          on-tap="toHome"
-          small
-          id="exitbtn"
-          txtcolor="turquoise">
-        </ac-button>
 
-        <ac-profile
-          profiledata="{{vault.profiledata}}">
-        </ac-profile>
+        <div class="hometotal">
+
+          <!-- The Profile view -->
+          <ac-button
+            bg="base"
+            icon="declinenew"
+            on-tap="toHome"
+            small
+            id="exitbtn"
+            txtcolor="turquoise">
+          </ac-button>
+
+          <ac-profile
+            profiledata="{{vault.profiledata}}">
+          </ac-profile>
+
+        </div>
 
       </neon-animatable>
 
       <neon-animatable data-page="wallet">
+        <div class="hometotal">
 
-        <!-- The Wallet view -->
-        <ac-button
-          bg="base"
-          icon="declinenew"
-          on-tap="toHome"
-          small
-          id="exitbtn"
-          txtcolor="turquoise">
-        </ac-button>
+          <!-- The Wallet view -->
+          <ac-button
+            bg="base"
+            icon="declinenew"
+            on-tap="toHome"
+            small
+            id="exitbtn"
+            txtcolor="turquoise">
+          </ac-button>
 
-        <ac-wallet
-          keystore="{{keystore}}"
-          arcbalance="{{arcbalance}}"
-          ethbalance="{{ethbalance}}">
-        </ac-wallet>
+          <ac-balance
+            refcur="EUR"
+            arcbalance="{{arcbalance}}"
+            ethbalance="{{ethbalance}}">
+          </ac-balance>
+
+          <ac-tokentransfer></ac-tokentransfer>
+
+          <!-- <ac-wallet
+            keystore="{{keystore}}"
+            arcbalance="{{arcbalance}}"
+            ethbalance="{{ethbalance}}">
+          </ac-wallet> -->
+        </div>
 
       </neon-animatable>
 
@@ -238,7 +255,7 @@
         page('/home', () => {
           // if (Polymer.isInstance(this.$.activity)) {
             if (!this.$.thevault.keystore){
-              page.redirect('/newuser'); 
+              page.redirect('/newuser');
             }else{
               this.selected = 'home';
             }
@@ -254,6 +271,14 @@
           // );
         });
 
+        page('/wallet', () => {
+          this.selected = 'wallet';
+        });
+
+        page('/profile', () => {
+          this.selected = 'profile';
+        });
+
         page({
           hashbang: true
         });
@@ -263,6 +288,14 @@
       toWallet: function() {
         page.redirect('/wallet');
       },
+
+      toHome: function() {
+        page.redirect('/home');
+      },
+
+      toProfile: function() {
+        page.redirect('/profile');
+      }
 
     });
   </script>
