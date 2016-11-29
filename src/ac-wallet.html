@@ -1,4 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<script src="../../bower_components/web3/dist/web3.min.js"></script>
+<script src="../../bower_components/hooked-web3-provider/build/hooked-web3-provider.min.js"></script>
+
 <link rel="import" href="./ac-helpers.html">
 <link rel="import" href="./ac-tokentransfer.html">
 <link rel="import" href="./ac-balance.html">
@@ -20,8 +23,6 @@
 
     <ac-helpers id="helpers"></ac-helpers>
 
-
-
   </template>
 
   <script>
@@ -36,11 +37,13 @@
         },
         ethbalance: {
           type: Number,
-          notify: true
+          notify: true,
+          value: 1
         },
         arcbalance: {
           type: Number,
-          notify: true
+          notify: true,
+          value: 10
         },
 
         host: {
@@ -55,7 +58,13 @@
 
       },
 
+      attached: function() {
+        console.log('ac-wallet attached');
+      },
+
       _keystore: function(){
+
+        debugger;
 
         var web3Provider = new HookedWeb3Provider({
           host: this.host,
@@ -65,7 +74,7 @@
         this.web3 = new Web3();
         this.web3.setProvider(web3Provider);
 
-        this.account = self.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
+        this.account = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
 
       },
 
@@ -76,15 +85,13 @@
 
       updateBalance: function(e) {
 
-        var self = this;
-
-        var MyContract = self.web3.eth.contract(this.token.abi);
+        var MyContract = this.web3.eth.contract(this.token.abi);
         var myContractInstance = MyContract.at(this.token.address);
 
-        self.ethbalance = self.web3.eth.getBalance(self.account).toNumber();
-        self.arcbalance = MyContract.at(this.token.address).balanceOf(self.account).toNumber();
-        console.log('ETH balance is', self.accountbalance);
-        console.log('ARC balance is', self.arcbalance);
+        this.ethbalance = this.web3.eth.getBalance(this.account).toNumber();
+        this.arcbalance = MyContract.at(this.token.address).balanceOf(this.account).toNumber();
+        console.log('ETH balance is', this.accountbalance);
+        console.log('ARC balance is', this.arcbalance);
 
       },
 
