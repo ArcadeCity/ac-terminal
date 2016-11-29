@@ -93,6 +93,7 @@
     </iron-localstorage>
 
     <ac-vault
+      id="thevault"
       password="{{password}}"
       currentkeystore="{{keystore}}"
       currentidentity="{{identity}}">
@@ -105,7 +106,7 @@
       </neon-animatable>
 
       <neon-animatable data-page="newuser">
-        <ac-newuser></ac-newuser>
+        <ac-newuser id="newuser" on-newuser-created="createnewuser"></ac-newuser>
       </neon-animatable>
 
       <neon-animatable data-page="home">
@@ -199,6 +200,14 @@
 
       is: 'ac-app',
 
+      createnewuser: function(e) {
+
+        this.$.thevault.createVault(e.detail.password, function() {
+          page.redirect('/home');
+        });
+
+
+      },
 
       attached: function() {
 
@@ -212,7 +221,7 @@
         });
 
         page('/newuser', () => {
-          if (Polymer.isInstance(this.$.browse)) {
+          if (Polymer.isInstance(this.$.newuser)) {
             this.selected = 'newuser';
             return;
           }
@@ -228,7 +237,11 @@
 
         page('/home', () => {
           // if (Polymer.isInstance(this.$.activity)) {
-            this.selected = 'home';
+            if (!this.$.thevault.keystore){
+              page.redirect('/newuser'); 
+            }else{
+              this.selected = 'home';
+            }
             // return;
           // }
 

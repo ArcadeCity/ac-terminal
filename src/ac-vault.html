@@ -24,15 +24,19 @@
 
         keystore: {
           type: Object,
+          notify: true,
         },
         currentkeystore: {
           type: Object,
+          notify: true,
         },
         currentaccount: {
-          type: String
+          type: String,
+          notify: true,
         },
         currentidentity: {
           type: Object,
+          notify: true,
           observer: '_identity'
         }
       },
@@ -101,23 +105,26 @@
         lightwallet.keystore.createVault({
           password: _password,
         }, function(err, ks) {
+          if (err){
+            throw new Error(err);
+          }
           self.keystore = ks;
-          self.generateNewAddress();
-          self._currentAccount();
+          // self.generateNewAddress();
+          // self._currentAccount();
 
-          self.currentidentity = {
-            version:1,
-            username: 'MrArc',
-            avatarurl: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
-          };
+          // self.currentidentity = {
+          //   version:1,
+          //   username: 'MrArc',
+          //   avatarurl: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
+          // };
 
-          self.$.localStorage.setItem('ac-avatar', JSON.stringify(self.currentidentity));
+          // self.$.localStorage.setItem('ac-avatar', JSON.stringify(self.currentidentity));
 
-          self.saveVault();
+          // self.saveVault();
 
-          self.ks.passwordProvider = function(callback) {
-            callback(null, self.uploadpassword);
-          };
+          // self.ks.passwordProvider = function(callback) {
+          //   callback(null, self.uploadpassword);
+          // };
 
           fn();
 

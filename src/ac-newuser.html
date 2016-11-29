@@ -303,7 +303,7 @@
             <div class="whitespace"></div>
             <ac-input id="p2" color="yellow" label="Password control" bind-value="{{password1}}" type="password" center autofocus></ac-input>
           </div>
-          <ac-button icon="ac-v" on-tap="savePassword" disabled$="{{passcheck}}" bg="base" txtcolor="yellow">Continue</ac-button>
+          <ac-button icon="ac-v" on-tap="createnewuser" disabled$="{{passcheck}}" bg="base" txtcolor="yellow">Continue</ac-button>
           <div class="whitespace"></div>
         </div>
       </div>
@@ -329,7 +329,7 @@
             <div class="whitespace"></div>
             <ac-input color="blue" label="Shortcode device sync" bind-value="{{shortcodedevice}}" center autofocus></ac-input>
           </div>
-          <ac-button icon="ac-arrowright" on-tap="" disabled$="{{passcheck}}" bg="base" txtcolor="blue">Continue</ac-button>
+          <ac-button icon="ac-arrowright" on-tap="makenewuser" disabled$="{{passcheck}}" bg="base" txtcolor="blue">Continue</ac-button>
           <div class="whitespace"></div>
         </div>
       </div>
@@ -398,6 +398,12 @@ Polymer({
     }
   },
 
+  createnewuser: function(){
+    this.fire('newuser-created',{password:this.password});
+    //localStorage.setItem("ac-password", encrypted);
+    sessionStorage.setItem("ac-password", this.password);
+  },
+
   attached: function() {
     console.log('ac-newuser attached.');
     vault = document.querySelector('ac-vault');
@@ -413,18 +419,18 @@ Polymer({
 
   savePassword: function() {
     // Encrypt localstorage userobject with password.
-    var encrypted = CryptoJS.AES.encrypt(this.password, this.password).toString();
-    vault.createVault(this.password, function() {
-      localStorage.setItem("ac-password", encrypted);
-      sessionStorage.setItem("ac-password", this.password);
-      localStorage.setItem("ac-init", "1");
-      this.restart();
-    }.bind(this));
+    // var encrypted = CryptoJS.AES.encrypt(this.password, this.password).toString();
+    // vault.createVault(this.password, function() {
+    //   localStorage.setItem("ac-password", encrypted);
+    //   sessionStorage.setItem("ac-password", this.password);
+    //   localStorage.setItem("ac-init", "1");
+    //   this.restart();
+    // }.bind(this));
 //    this.restart();
 
-      this.acinit = 1;
+//      this.acinit = 1;
 
-      page.redirect('/home');
+//      page.redirect('/home');
 
 
   },
@@ -455,20 +461,20 @@ Polymer({
     }
   },
 
-  restart: function(){
-    // Remove the new-user component
-    var newuser = document.querySelector('ac-newuser');
-    newuser.remove();
+  // restart: function(){
+  //   // Remove the new-user component
+  //   var newuser = document.querySelector('ac-newuser');
+  //   newuser.remove();
 
-    // Add the Home component
-    importPage('/src/ac-home.html').then(function(){
-      var element = document.createElement('ac-home');
-      element.id = 'app';
-      document.body.appendChild(element);
-    }, function(err){
-      console.log(err, 'error');
-    });
-  },
+  //   // Add the Home component
+  //   importPage('/src/ac-home.html').then(function(){
+  //     var element = document.createElement('ac-home');
+  //     element.id = 'app';
+  //     document.body.appendChild(element);
+  //   }, function(err){
+  //     console.log(err, 'error');
+  //   });
+  // },
 
   _sizeview: function(){
     switch(this.sizeview) {
