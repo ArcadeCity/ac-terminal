@@ -47,14 +47,17 @@
       loadVault: function(){
 
         try{
-          switch (acvault.version){
+          if(!this.acvault){
+            throw new Error('acvault is not defined.');
+          }
+          switch (this.acvault.version){
             case 1:
-              this.keystore = keystore.deserialize(acvault.keystore);
+              this.keystore = keystore.deserialize(this.acvault.keystore);
               this.currentaccount = this.keystore.getAddresses()[0];
-              this.currentidentity = acvault.identity;
+              this.currentidentity = this.acvault.identity;
               break;
             default:
-              throw new Error('Vault version unknown',acvault.version);
+              throw new Error('Vault version unknown',this.acvault.version);
               break;
           }
         }
