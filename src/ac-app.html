@@ -225,6 +225,7 @@
           return page.redirect('/');
         }
         this.$.thevault.loadVault(e.detail.password);
+        page.redirect('/home');
       },
 
       attached: function() {
@@ -254,6 +255,11 @@
         });
         
         page('/password', () => {
+
+          if (!this.$.thevault.hasVault()){
+           return page.redirect('/');
+          }
+
           if (Polymer.isInstance(this.$.password)) {
             this.selected = 'password';
             return;
