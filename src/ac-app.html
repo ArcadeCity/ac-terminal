@@ -21,8 +21,7 @@
     display: block;
     margin: 0px;
     padding: 0px;
-    --title-big: 40px;
-    --title-bigheight: 46px;
+    --ac-balance-height: 50px;
     width: 100%;
     height: 100vh;
   }
@@ -39,6 +38,13 @@
     background-color: var(--ac-base);
     height: 100%;
   }
+
+  .homecontent {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 10vw 16px 10vw;
+    height: 84vh;    
+  } 
 
   ac-avatar {
     width: 100%;
@@ -57,9 +63,9 @@
   }
 
   ac-balance {
-    width: 100%;
-    margin: 16vh 0px 3vh 0px;
-    height: 27vh;
+/*    width: 100%;
+    margin: 16vh 0px 3vh 0px;*/
+    height: var(--ac-balance-height);
   }
 
   ac-createwallet {
@@ -127,6 +133,8 @@
           on-tap="toProfile">
         </ac-avatar>
 
+        <div class="homecontent">
+
         <ac-balance
           refcur="EUR"
           on-tap="toWallet"
@@ -134,6 +142,14 @@
           ethbalance="{{ethbalance}}">
         </ac-balance>
 
+        <ac-tokentransfer></ac-tokentransfer>
+
+        <ac-wallet
+          keystore="[[keystore]]"
+          arcbalance="{{arcbalance}}"
+          ethbalance="{{ethbalance}}">
+        </ac-wallet>
+        </div>
 
         <!-- <template is="dom-if" if="{{!wallet}}"> -->
         <!-- </template> -->

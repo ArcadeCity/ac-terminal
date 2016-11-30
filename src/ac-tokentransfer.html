@@ -33,7 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --code-h2: 32px;
         --code-lineheight: 36px;
         --code-small: 10px;
-        width: 100%;
+        /*width: inherit;*/
 
       }
 
@@ -64,14 +64,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       .total {
-        width: 100%;
+        /*width: inherit;*/
         @apply(--layout-vertical);
-        border-top: 1px solid rgba(255,255,255,0.1);
-        padding-top: 3vh;
+/*        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 3vh;*/
       }
 
       .totalpart {
-        width: 100%;
+        /*width: inherit;*/
         box-sizing: border-box;
         @apply(--layout-vertical);
         @apply(--layout-center-center);
@@ -242,7 +242,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 */
       .initbtns {
-        width: 100%;
+        /*width: inherit;*/
         @apply(--layout-vertical);
         @apply(--layout-center-center);
 
@@ -250,6 +250,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .initbtns ac-button {
         width: 200px;
+        @apply(--base-shadow-and-inset);
       }
 
 
@@ -295,15 +296,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="totalpart">
         <template is="dom-if" if="{{sendcollsclosed}}">
         <div class="initbtns">
-        <div class="whitespace"></div>
-
-            <ac-button txtbtn txtcolor="base" bg="yellow" on-tap="togglesendcoins" class="sender">send ARC</ac-button>
-        <template is="dom-if" if="{{receivecollsclosed}}">
-
-            <p on-tap="togglereceivecoins">shortcode</p>
+          <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="togglesendcoins" class="sender">send ARC</ac-button>
+          <template is="dom-if" if="{{receivecollsclosed}}">
+            <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="togglereceivecoins">receive ARC</ac-button>
+            <!--  <p on-tap="togglereceivecoins">shortcode</p>  -->
           </template>
-<!--             <ac-button txtbtn txtcolor="red" bg="base" on-tap="togglereceivecoins">shortcode</ac-button> -->
-
+            <!-- <ac-button txtbtn txtcolor="red" bg="base" on-tap="togglereceivecoins">shortcode</ac-button> -->
             <!-- <ac-button txtbtn txtcolor="base" bg="red" on-tap="togglereceivecoins"><div class="inbutton">receive</div></ac-button> -->
         <div class="whitespace"></div>
 
