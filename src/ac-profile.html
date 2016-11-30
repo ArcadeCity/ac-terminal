@@ -1,6 +1,10 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+
 <link rel="import" href="../bower_components/ac-style/ac-style.html">
 <link rel="import" href="../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../bower_components/ac-input/ac-input.html">
 
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-avatar.html">
@@ -15,12 +19,20 @@
         height: 100%;
       }
 
+      h1 {
+        @apply(--ac-font-h1);
+      }
+
+      p {
+        @apply(--ac-font-body1);
+      }
+
       .total {
         display: block;
         width: 100%;
         height: 100%;
         background-color: var(--ac-base);
-        overflow-y: scroll;
+        /*overflow-y: scroll;*/
       }
 
       .whitespace {
@@ -29,13 +41,23 @@
       }
 
       .profilepic {
-        display: block;
         width: 100%;
         box-sizing: border-box;
-        padding: 10vh 0px 5vh 0px;     
+        padding: 10vh 0px 3vh 0px;     
         @apply(--layout-vertical);
         @apply(--layout-center-center);
-        border: 2px dotted rgba(255,255,255,0.05);
+        border-bottom: 2px dotted rgba(255,255,255,0.05);
+
+      }
+
+      .profilepicinner {
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        @apply(--layout-end);
+      }
+
+      .profilepicinner ac-button {
+        margin-top: -20px;
       }
 
       .uploadbtn {
@@ -43,11 +65,23 @@
       }
 
       .profileusername {
-        display: block;
         width: 100%;
-        height: 200px;
-        @apply(--layout-horizontal);
-        @apply(--layout-center-center);               
+        box-sizing: border-box;
+        padding: 3vh 0px 3vh 0px;     
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+        border-bottom: 2px dotted rgba(255,255,255,0.05);              
+      }
+
+
+      .profileusername ac-input {
+        width: 80%;
+        max-width: 600px;
+        overflow: hidden;           
+      }
+
+      .profileusername p {
+        color: white;          
       }
 
       .scrollcontainer {
@@ -55,24 +89,59 @@
         background-color: var(--ac-base);
       }
 
+      .confirmbtns {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0px;     
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);        
+      }
 
+      .confirmbtns ac-button {
+        margin: 2px;     
+      }
+
+      .confirmbtns ac-icon {
+        margin-right: 4px;     
+      }
+
+      .topback {
+        width: 100%;
+        background-color: var(--ac-base);
+        box-sizing: border-box;
+        padding: 5vh 0px 0px 5vw;
+        opacity: 0.5;      
+      }
     </style>
 
     <div class="total">
+    <div class="topback">
+    <ac-icon icon="ac-arrowleft" iconcolor="yellow" on-tap="backtohome" small>back</ac-icon>
+    </div>
       <div class="scrollcontainer">
       <div class="profilepic">
+        <div class="profilepicinner">
 
-          <ac-avatar
-            username="{{identity.username}}"
-            artwork="https://pbs.twimg.com/profile_images/2849872800/cbe52909627305c4d0ca07f5ca94edeb_400x400.png"
-            pubkey="{{account}}"
-            mode="imgbigonly">
-          </ac-avatar>
-          <div class="whitespace"></div>
-          <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" small>upload new picture</ac-button>
+        <ac-avatar
+          username="{{identity.username}}"
+          artwork="https://pbs.twimg.com/profile_images/2849872800/cbe52909627305c4d0ca07f5ca94edeb_400x400.png"
+          pubkey="{{account}}"
+          mode="imgbigonly">
+        </ac-avatar>
+        <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" small>upload new picture</ac-button>
+        </div>
 
       </div>
       <div class="profileusername">
+        <ac-input color="yellow" label="username" type="input" bind-value="{{username}}" center inputvalue="MrArcade"></ac-input>
+        <iron-collapse id="collapse">
+        <div class="confirmbtns">
+          <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="decline" small>decline</ac-icon>
+          <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="confirm" small>confirm</ac-button>
+        </div>
+        </iron-collapse>
+        <div class="whitespace"></div>
+
       </div>
       </div>
     </div>
@@ -94,6 +163,9 @@
     Polymer({
       is: 'ac-profile',
       properties: {
+        username: {
+          type: String,
+        },
     
       },
 
@@ -125,8 +197,25 @@
           default:
           console.log("!!! ** Niks");
       }
-    }
+    },
 
+    decline: function(){ 
+      console.log("I've declined!");
+    },
+
+    confirm: function(){ 
+      console.log("I've confirmed!");
+    },
+
+    savenewUsername: function(){
+      var collapser = document.getElementById('collapse');
+      console.log("this is it", collapser);
+      collapser.toggle();
+    },
+
+    backtohome: function(){ 
+      this.fire('to-home');
+    }
 
     });
   </script>

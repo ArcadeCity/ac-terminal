@@ -102,7 +102,7 @@
       currentidentity="{{identity}}">
     </ac-vault>
 
-    <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[selected]]" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
+    <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
       <neon-animatable data-page="password">
         <ac-password id="newuser" on-password-received="passwordreceived"></ac-password>
@@ -154,7 +154,8 @@
         <div class="hometotal">
           <!-- The Profile view -->
           <ac-profile
-            profiledata="{{identity}}">
+            profiledata="{{identity}}"
+            on-to-home="toHome">
           </ac-profile>
         </div>
 
@@ -210,8 +211,19 @@
 
   <script>
     Polymer({
-
       is: 'ac-app',
+      
+      properties: {
+        entryAnimation: {
+          type: String,
+          observer: 'animLogger'
+        },
+        exitAnimation: {
+          type: String,
+          observer: 'animLogger'
+
+        },
+        },
 
       createnewuser: function(e) {
 
@@ -240,6 +252,9 @@
             page.redirect('/newuser');
           }
         });
+
+        this.entryAnimation = 'slide-from-right-animation';
+        this.exitAnimation = 'slide-left-animation';
 
         page('/newuser', () => {
           if (Polymer.isInstance(this.$.newuser)) {
@@ -301,6 +316,8 @@
 
         page('/profile', () => {
           this.selected = 'profile';
+        // this.entryAnimation = 'slide-from-left-animation';
+        // this.exitAnimation = 'slide-right-animation';
         });
 
         page({
@@ -315,11 +332,19 @@
 
       toHome: function() {
         page.redirect('/home');
+        // this.entryAnimation = 'slide-from-right-animation';
+        // this.exitAnimation = 'slide-left-animation';
       },
 
       toProfile: function() {
+        this.entryAnimation = 'slide-from-right-animation';
+        this.exitAnimation = 'slide-left-animation';
         page.redirect('/profile');
-      }
+      },
+
+      animLogger: function(){
+      console.log('NU DAN, entry==',this.entryAnimation,' exit==',this.exitAnimation);
+    },
 
     });
   </script>
