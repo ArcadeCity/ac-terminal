@@ -105,7 +105,8 @@
       id="thevault"
       password="{{password}}"
       currentkeystore="{{keystore}}"
-      currentidentity="{{identity}}">
+      currentidentity="{{identity}}"
+      currentaccount="{{account}}">
     </ac-vault>
 
     <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
@@ -142,7 +143,7 @@
           ethbalance="{{ethbalance}}">
         </ac-balance>
 
-        <ac-tokentransfer></ac-tokentransfer>
+        <ac-tokentransfer account="{{account}}"></ac-tokentransfer>
 
         <ac-wallet
           keystore="[[keystore]]"

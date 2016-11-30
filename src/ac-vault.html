@@ -1,9 +1,12 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <!-- <link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html"> -->
+<link rel="import" href="./ac-helpers.html">
 <script src="scripts/lightwallet.min.js"></script>
 <dom-module id="ac-vault">
 
   <template>
+    <ac-helpers id="helpers"></ac-helpers>
+
   <!--   <iron-localstorage
       id="localstorage"
       name="ac-vault"
@@ -65,8 +68,9 @@
             case 1:
               this.password = password;
               this.keystore = lightwallet.keystore.deserialize(this.vault.keystore);
-              this.currentaccount = this.keystore.getAddresses()[0];
+              this.currentaccount = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
               this.currentidentity = this.vault.identity;
+              console.log('ac-vault -> Vault opened. Account=',this.currentaccount);
               break;
             default:
               throw new Error('Vault version unknown',this.vault.version);
@@ -109,8 +113,8 @@
       },
 
       createVault: function(_password, fn) {
-        if (!_password){
-            throw new Error('no password set for creating Vault');
+        if (!_password) {
+          throw new Error('no password set for creating Vault');
         }
 
         this.password = _password;
@@ -119,22 +123,28 @@
         lightwallet.keystore.createVault({
           password: _password,
         }, function(err, ks) {
-          if (err){
+          if (err) {
             throw new Error(err);
           }
           self.keystore = ks;
-          self.generateNewAddress();
-          self._currentAccount();
+          self.generateNewAddress(1,function() {
+            //self._currentAccount();
 
-          self.currentidentity = {
-            version:1,
-            username: 'MrArc',
-            avatarurl: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
-          };
+            self.currentidentity = {
+              version: 1,
+              username: 'MrArc',
+              avatarurl: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
+            };
 
-          self.saveVault();
+            self.saveVault();
+            self.loadVault();
 
-          fn();
+            if (fn) {
+              fn();
+            }
+
+          });
+
 
         });
 
@@ -153,7 +163,7 @@
               return cb(err);
             }
             self.pwDerivedKey = pwDerivedKey;
-            cb(null,self.pwDerivedKey);
+            cb(null,pwDerivedKey);
             //if (err) throw err;
             // if (self.pastedpk) {
             //   //debugger;
@@ -168,13 +178,16 @@
           });
       },
 
-      generateNewAddress: function(amount) {
+      generateNewAddress: function(amount,cb) {
         if (!this.keystore) {
           throw new Error('no keystore available');
         }
         var self = this;
         this._getpwDerivedKey(function(err,pwDerivedKey ) {
           self.keystore.generateNewAddress(pwDerivedKey, amount || 1);
+//          var a = self.keystore.getAddresses();
+          cb();
+//          debugger;
         });
       },
 

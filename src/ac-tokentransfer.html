@@ -391,6 +391,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           observer: '_sizeview'
         },
 
+        account: {
+          type:String,
+        },
+
         web3: {
           type: Object
         },
@@ -462,7 +466,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       attached: function(){
-        var self=this;
+//        var self=this;
+        console.log('ac-tokentransfer attached');
+        console.log('my account',this.account);
       },
 
       handlewhispermessage: function(m) {
