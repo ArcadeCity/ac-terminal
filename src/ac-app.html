@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
 <link rel="import" href="../../bower_components/ac-button/ac-button.html">
 
+<link rel="import" href="ac-transactionlog.html">
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-avatar.html">
 <link rel="import" href="ac-balance.html">
@@ -256,6 +257,11 @@
 
       </neon-animatable>
 
+      <neon-animatable data-page="stage">
+
+        <ac-transactionlog address="{{account}}"></ac-transactionlog>
+
+      </neon-animatable>
     </neon-animated-pages>
 
 
@@ -377,6 +383,10 @@
           this.selected = 'profile';
         // this.entryAnimation = 'slide-from-left-animation';
         // this.exitAnimation = 'slide-right-animation';
+        });
+        
+        page('/stage', () => {
+          this.selected = 'stage';
         });
 
         page({
