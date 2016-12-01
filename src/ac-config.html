@@ -17,7 +17,7 @@
           type: String,
           notify:true
         },
-        coincontractaddress: {
+        tokencontractaddress: {
           type: String,
           notify: true
         }
@@ -37,7 +37,7 @@
 
             this.web3host = 'https://eth.arcadecity.world:8545';
             this.etherscanroot = 'https://localhost/';
-            this.coincontractaddress = '0xAc709FcB44a43c35F0DA4e3163b117A17F3770f5'
+            this.tokencontractaddress = '0xAc709FcB44a43c35F0DA4e3163b117A17F3770f5'
 
             break;
           case 'ropsten':
@@ -52,7 +52,7 @@
 
             this.web3host = 'https://morden.infura.io/fNrdKYnEHWqldP4JnWZp';
             this.etherscanroot = 'https://etherscan.io/';
-            this.coincontractaddress = '0xAc709FcB44a43c35F0DA4e3163b117A17F3770f5'
+            this.tokencontractaddress = '0xAc709FcB44a43c35F0DA4e3163b117A17F3770f5'
 
           default:
             throw new Error('no environment defined.');
