@@ -37,13 +37,13 @@
 
       .whitespace {
         width: 100%;
-        height: 20px;        
+        height: 20px;
       }
 
       .profilepic {
         width: 100%;
         box-sizing: border-box;
-        padding: 10vh 0px 3vh 0px;     
+        padding: 10vh 0px 3vh 0px;
         @apply(--layout-vertical);
         @apply(--layout-center-center);
         border-bottom: 2px dotted rgba(255,255,255,0.05);
@@ -67,21 +67,21 @@
       .profileusername {
         width: 100%;
         box-sizing: border-box;
-        padding: 3vh 0px 3vh 0px;     
+        padding: 3vh 0px 3vh 0px;
         @apply(--layout-vertical);
         @apply(--layout-center-center);
-        border-bottom: 2px dotted rgba(255,255,255,0.05);              
+        border-bottom: 2px dotted rgba(255,255,255,0.05);
       }
 
 
       .profileusername ac-input {
         width: 80%;
         max-width: 600px;
-        overflow: hidden;           
+        overflow: hidden;
       }
 
       .profileusername p {
-        color: white;          
+        color: white;
       }
 
       .scrollcontainer {
@@ -92,17 +92,17 @@
       .confirmbtns {
         width: 100%;
         box-sizing: border-box;
-        padding: 0px;     
+        padding: 0px;
         @apply(--layout-horizontal);
-        @apply(--layout-center-center);        
+        @apply(--layout-center-center);
       }
 
       .confirmbtns ac-button {
-        margin: 2px;     
+        margin: 2px;
       }
 
       .confirmbtns ac-icon {
-        margin-right: 4px;     
+        margin-right: 4px;
       }
 
       .topback {
@@ -110,7 +110,7 @@
         background-color: var(--ac-base);
         box-sizing: border-box;
         padding: 5vh 0px 0px 5vw;
-        opacity: 0.5;      
+        opacity: 0.5;
       }
     </style>
 
@@ -127,19 +127,22 @@
           artwork="https://pbs.twimg.com/profile_images/2849872800/cbe52909627305c4d0ca07f5ca94edeb_400x400.png"
           pubkey="{{account}}"
           mode="imgbigonly">
+
         </ac-avatar>
         <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" small>upload new picture</ac-button>
         </div>
 
       </div>
       <div class="profileusername">
-        <ac-input color="yellow" label="username" type="input" bind-value="{{username}}" center inputvalue="MrArcade"></ac-input>
+        <ac-input color="yellow" label="username" type="input" bind-value="{{username}}" center inputvalue="{{identity.username}}"></ac-input>
+
         <iron-collapse id="collapse">
-        <div class="confirmbtns">
-          <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="decline" small>decline</ac-icon>
-          <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="confirm" small>confirm</ac-button>
-        </div>
+          <div class="confirmbtns">
+            <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="decline" small>decline</ac-icon>
+            <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="confirm" small>confirm</ac-button>
+          </div>
         </iron-collapse>
+
         <div class="whitespace"></div>
 
       </div>
@@ -156,7 +159,6 @@
       on-iron-localstorage-load="loadprofile">
     </iron-localstorage>
 
-
   </template>
 
   <script>
@@ -165,8 +167,16 @@
       properties: {
         username: {
           type: String,
+          observer: '_username'
         },
-    
+        identity: {
+          type: Object,
+          value: {
+            avatar: 'blablabla',
+            username: 'bennisan'
+          }
+        }
+
       },
 
       ready: function() {
@@ -199,21 +209,33 @@
       }
     },
 
-    decline: function(){ 
+    decline: function(){
       console.log("I've declined!");
     },
 
-    confirm: function(){ 
+    confirm: function(){
       console.log("I've confirmed!");
     },
 
+    _username: function() {
+      console.log(this.username);
+      if(this.username != this.identity.username) {
+        var collapser = document.getElementById('collapse');
+        collapser.show();
+      }
+      if(this.username == this.identity.username) {
+        var collapser = document.getElementById('collapse');
+        collapser.hide();
+      }
+    },
+
     savenewUsername: function(){
-      var collapser = document.getElementById('collapse');
+
       console.log("this is it", collapser);
       collapser.toggle();
     },
 
-    backtohome: function(){ 
+    backtohome: function(){
       this.fire('to-home');
     }
 
