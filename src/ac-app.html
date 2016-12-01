@@ -142,8 +142,6 @@
 
     <ac-web3 host="{{web3host}}" web3="{{web3}}"></ac-web3>
 
-    <ac-transactionlog address="{{account}}"></ac-transactionlog>
-
     <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
       <neon-animatable data-page="password">
@@ -259,6 +257,11 @@
 
       </neon-animatable>
 
+      <neon-animatable data-page="stage">
+
+        <ac-transactionlog address="{{account}}"></ac-transactionlog>
+
+      </neon-animatable>
     </neon-animated-pages>
 
 
@@ -380,6 +383,10 @@
           this.selected = 'profile';
         // this.entryAnimation = 'slide-from-left-animation';
         // this.exitAnimation = 'slide-right-animation';
+        });
+        
+        page('/stage', () => {
+          this.selected = 'stage';
         });
 
         page({

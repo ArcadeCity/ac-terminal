@@ -13,6 +13,7 @@
       properties: {
         address: {
           type: String,
+          observer: '_address',
         },
         logitems: {
           type: Array,
@@ -33,12 +34,8 @@
       },
 
       fillinitial: function() {
-        // if (!this.address || !this.web3){
-        //   return;
-        // }
-        debugger;
-
-        var startBlock = this.web3.blockNumber - 60 * 60 * 24 / 14;
+        
+        var startBlock = this.web3.eth.blockNumber - Math.floor(60 * 60 * 24 / 14);
 
         var filter = this.web3.eth.filter({
           fromBlock: startBlock,
