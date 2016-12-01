@@ -8,6 +8,7 @@
 
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-avatar.html">
+<link rel="import" href="ac-shortcode.html">
 
 <dom-module id="ac-profile">
   <!-- Defines the element's style and local DOM -->
@@ -112,6 +113,13 @@
         padding: 5vh 0px 0px 5vw;
         opacity: 0.5;
       }
+
+      .shortcode {
+        width: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);      
+      }
+
     </style>
 
     <div class="total">
@@ -146,6 +154,10 @@
         <div class="whitespace"></div>
 
       </div>
+      <div class="shortcode">
+        <ac-shortcode bg="btncolor" txtcolor="red">shortcode, bitch</ac-shortcode>
+      </div>
+
       </div>
     </div>
 
@@ -190,15 +202,18 @@
     _sizeview: function(){
       switch(this.sizeview) {
           case 'phone':
-                this.customStyle['--avatar-size'] = '90px';
+              this.align = 'verticcenter';
+              this.customStyle['--avatar-size'] = '90px';
               this.updateStyles();
               break;
           case 'desktop':
-                this.customStyle['--avatar-size'] = '130px';
+              this.align = 'verticstart';
+              this.customStyle['--avatar-size'] = '130px';
               this.updateStyles();
               break;
           case 'xlarge':
-                this.customStyle['--avatar-size'] = '130px';
+              this.align = 'verticstart';
+              this.customStyle['--avatar-size'] = '130px';
               this.updateStyles();
               break;
           default:

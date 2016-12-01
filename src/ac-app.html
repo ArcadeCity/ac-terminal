@@ -24,9 +24,11 @@
     display: block;
     margin: 0px;
     padding: 0px;
-    --ac-balance-height: 50px;
     width: 100%;
     height: 100vh;
+    --ac-balance-width:100%;
+    --ac-balance-height:30vh;
+    --tokentrans-width:100%;
   }
 
   .white {
@@ -65,10 +67,33 @@
     @apply(--layout-end);
   }
 
-  ac-balance {
-/*    width: 100%;
-    margin: 16vh 0px 3vh 0px;*/
+  .arcbalance {
+    width: var(--ac-balance-width);
     height: var(--ac-balance-height);
+  }
+
+  .tokentrans {
+    width: var(--tokentrans-width);
+  }
+
+  .verticcenter {
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+  }
+  .verticstart {
+    @apply(--layout-vertical);
+    @apply(--layout-start);
+    @apply(--layout-center-justified);
+  }
+
+  .horizontcenter {
+    @apply(--layout-horizontal);
+    @apply(--layout-center-center);
+  }
+  .horizontstart {
+    @apply(--layout-horizontal);
+    @apply(--layout-start);
+    @apply(--layout-center-justified);
   }
 
   ac-createwallet {
@@ -98,6 +123,7 @@
 
   </style>
 
+    <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
     <iron-localstorage
         id="localstorage"
         name="ac-init"
@@ -142,17 +168,19 @@
           mode="big"
           on-tap="toProfile">
         </ac-avatar>
-
         <div class="homecontent">
-
+        <div class$="arcbalance {{arcalign}}">
         <ac-balance
           refcur="EUR"
           on-tap="toWallet"
           arcbalance="{{arcbalance}}"
           ethbalance="{{ethbalance}}">
         </ac-balance>
+        </div>
 
-        <ac-tokentransfer account="{{account}}"></ac-tokentransfer>
+        <div class$="tokentrans {{arcalign}}">
+          <ac-tokentransfer account="{{account}}"></ac-tokentransfer>
+        </div>
 
         <ac-wallet
           keystore="[[keystore]]"
@@ -248,7 +276,14 @@
         exitAnimation: {
           type: String,
           observer: 'animLogger'
+        },
 
+        sizeview: {
+          type: String,
+          observer: '_sizeview'          
+        },
+        arcalign: {
+          type: String,
         },
         },
 
@@ -375,6 +410,32 @@
 
       animLogger: function(){
       console.log('NU DAN, entry==',this.entryAnimation,' exit==',this.exitAnimation);
+    },
+
+    _sizeview: function(){
+      switch(this.sizeview) {
+          case 'phone':
+              this.arcalign = 'verticcenter';
+              this.customStyle['--ac-balance-height'] = '30vh';
+              this.customStyle['--ac-balance-width'] = '100%';
+              this.customStyle['--tokentrans-width'] = '100%';
+              this.updateStyles();
+              break;
+          case 'desktop':
+              this.arcalign = 'verticstart';
+              this.customStyle['--ac-balance-height'] = '20vh';
+              this.customStyle['--ac-balance-width'] = '100%';
+              this.updateStyles();
+              break;
+          case 'xlarge':
+              this.arcalign = 'verticstart';
+              this.customStyle['--ac-balance-height'] = '20vh';
+              this.customStyle['--ac-balance-width'] = '100%';
+              this.updateStyles();
+              break;
+          default:
+          console.log("!!! ** Niks");
+      }
     },
 
     });
