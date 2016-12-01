@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/ac-style/ac-style.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="ac-sizeview.html">
 
 <dom-module id="ac-balance">
   <template>
@@ -9,17 +10,47 @@
         display: inline-block;
         --balance-h1:60px;
         --balance-h1-lineheight:72px;
+        --arc-h1:60px;
+        --arc-h1-lineheight:72px;
         --prefcurr-p:22px;
         --prefcurr-p-lineheight:24px;
-        width: inherit;
-        height: inherit;
+        --prefcurr-margins: 0px 0px 10px 20px;
+        min-width: 50%;
+
       }
 
       .arc-balance {
-        width: inherit;
-        height: inherit;
+        width: 100%;
+      }
 
+      .verticcenter {
         @apply(--layout-vertical);
+        @apply(--layout-center-center);
+      }
+      .verticstart {
+        @apply(--layout-vertical);
+        @apply(--layout-start);
+        @apply(--layout-center-justified);
+      }
+      .horizontcenter {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+      .horizontend {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+        @apply(--layout-end);
+      }
+
+      .horizontstartwrap {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-start-justified);
+      }
+
+      .horizontcenterwrap {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
         @apply(--layout-center-center);
       }
 
@@ -54,50 +85,65 @@
         opacity: 0.75;
       }
 
-      .balancetotal {
+/*      .balancetotal {
         @apply(--layout-horizontal);
         @apply(--layout-center-justified);
         @apply(--layout-end);
         margin: 0px;
         padding: 0px;
 
-      }
+      }*/
 
       .balancetotal:hover {
         cursor: pointer;
       }
 
       .ARCletters {
-        font-size: 20px;
-        line-height: 24px;
+        font-size: var(--arc-h1);
+        line-height: var(--arc-h1-lineheight);
         margin-left: 6px;
         @apply(--montserrat-ultralight);
 
       }
 
-      .prefcurrletters {
-        @apply(--montserrat-bold);
-        color: var(--ac-red);
-        opacity: 0.5;
-        margin-left: 4px;
-      }
 
-      .mintopmargin {
-        margin:-4px 0px 0px 0px;
+      .prefcurrletters {
+        margin: var(--prefcurr-margins);
         opacity: 0.75;
       }
 
 
-    </style>
+      .prefcurrletters p {
+        color: var(--ac-red);
+        opacity: 0.5;
+      }
 
-    <div class="arc-balance">
-      <div class="balancetotal">
+      .extramargin {
+        /*margin-right: 15px;*/
+      }
+
+
+
+
+    </style>
+    <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+
+    <div class$="arc-balance {{align}}">
+      <div class="horizontend">
         <h1>{{arcbalance}}</h1><h1><span class="ARCletters"> ARC</span></h1>
       </div>
-      <div class="balancetotal mintopmargin">
-        <p class="prefcurrletters">{{balanceref}} {{prefcurrency}}</p>
+      <div class="horizontend prefcurrletters">
+        <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
+        <p class="extramargin"></p>
+
+        <p>({{balanceref}} {{prefcurrency}})</p>
+        </template>
+        <template is="dom-if" if="{{_is(sizeview,'phone')}}">
+        <p>{{balanceref}} {{prefcurrency}}</p>
+        </template>
       </div>
     </div>
+
   </template>
 
   <script>
@@ -118,7 +164,15 @@
         prefcurrency: {
           type: String,
           value: '€',
-        }
+        },
+        sizeview: {
+          type: String,
+          observer: '_sizeview'          
+        },
+        align: {
+          type: String,
+        },
+
       },
 
       ready: function() {
@@ -133,7 +187,61 @@
       convertcurrency: function(e) {
         var x = e / 7.5;
         return x.toFixed(2);
+      },
+
+
+      _is: function(a, b) {
+        if (b === undefined){
+          b = true;
+        }
+        //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
+        return a === b;
+      },
+
+
+
+    _sizeview: function(){
+      switch(this.sizeview) {
+          case 'phone':
+              this.customStyle['--balance-h1'] = '60px';
+              this.customStyle['--balance-h1-lineheight'] = '72px';
+              this.customStyle['--arc-h1'] = '20px';
+              this.customStyle['--arc-h1-lineheight'] = '24px';
+              this.customStyle['--prefcurr-p'] = '16px';
+              this.customStyle['--prefcurr-p-lineheight'] = '18px';
+              this.customStyle['--prefcurr-margins'] = '0px';
+
+              this.align = 'verticcenter';
+              this.updateStyles();
+              break;
+          case 'desktop':
+              this.customStyle['--balance-h1'] = '90px';
+              this.customStyle['--balance-h1-lineheight'] = '100px';
+              this.customStyle['--arc-h1'] = '24px';
+              this.customStyle['--arc-h1-lineheight'] = '26px';
+              this.customStyle['--prefcurr-p'] = '24px';
+              this.customStyle['--prefcurr-p-lineheight'] = '26px';
+              this.customStyle['--prefcurr-margins'] = '0px 0px 10px 20px';
+
+              this.align = 'horizontstartwrap';
+              this.updateStyles();
+              break;
+          case 'xlarge':
+              this.customStyle['--balance-h1'] = '112px';
+              this.customStyle['--balance-h1-lineheight'] = '120px';
+              this.customStyle['--arc-h1'] = '24px';
+              this.customStyle['--arc-h1-lineheight'] = '26px';
+              this.customStyle['--prefcurr-p'] = '24px';
+              this.customStyle['--prefcurr-p-lineheight'] = '26px';
+              this.customStyle['--prefcurr-margins'] = '0px 0px 10px 20px';
+
+              this.align = 'horizontstartwrap';
+              this.updateStyles();
+              break;
+          default:
+          console.log("!!! ** Niks");
       }
+    },
 
     });
   </script>
