@@ -210,15 +210,15 @@
     },
 
     decline: function(){
-      console.log("I've declined!");
+      //console.log("I've declined!");
     },
 
     confirm: function(){
-      console.log("I've confirmed!");
+      //console.log("I've confirmed!");
     },
 
     _username: function() {
-      console.log(this.username);
+      //console.log(this.username);
       if(this.username != this.identity.username) {
         var collapser = document.getElementById('collapse');
         collapser.show();
@@ -230,9 +230,9 @@
     },
 
     savenewUsername: function(){
-
-      console.log("this is it", collapser);
-      collapser.toggle();
+      this.identity.username = this.username;
+      var collapser = document.getElementById('collapse');
+      collapser.hide();
     },
 
     backtohome: function(){
