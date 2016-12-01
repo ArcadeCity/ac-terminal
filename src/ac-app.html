@@ -9,6 +9,8 @@
 <link rel="import" href="ac-balance.html">
 <link rel="import" href="ac-wallet.html">
 <link rel="import" href="ac-vault.html">
+<link rel="import" href="ac-config.html">
+<link rel="import" href="ac-web3.html">
 <link rel="import" href="ac-profile.html">
 <link rel="import" href="ac-createwallet.html">
 <link rel="import" href="ac-tokentransfer.html">
@@ -101,6 +103,8 @@
         value="{{acinit}}">
     </iron-localstorage>
 
+    <ac-config web3host="{{web3host}}"></ac-config>
+
     <ac-vault
       id="thevault"
       password="{{password}}"
@@ -108,6 +112,8 @@
       currentidentity="{{identity}}"
       currentaccount="{{account}}">
     </ac-vault>
+
+    <ac-web3 host="{{web3host}}" web3="{{web3}}"></ac-web3>
 
     <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 

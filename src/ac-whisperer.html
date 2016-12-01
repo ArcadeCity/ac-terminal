@@ -23,6 +23,7 @@ Example:
 -->
 <dom-module id="ac-whisperer">
   <template>
+      <!-- <ac-web3 web3="{{web3}}"></ac-web3> -->
   </template>
 </dom-module>
 
@@ -73,6 +74,7 @@ Polymer({
     //
     // This is the point where you should make modifications to the DOM (when
     // necessary), or kick off any processes the element wants to perform.
+
     this.mode = 'view';
     this.timerval = 0;
     this.holding = false;
@@ -197,6 +199,7 @@ Polymer({
   },
 
   _web3: function() {
+    debugger;
     var self = this;
     console.log('whisperer web3 started');
   },
@@ -304,11 +307,6 @@ Polymer({
       randomstring += chars.substring(rnum, rnum + 1);
     }
     return randomstring;
-  },
-
-  _web3: function() {
-    var self = this;
-    console.log('web3 started');
   },
 
   whisperpost: function(topic, input) {

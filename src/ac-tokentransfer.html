@@ -18,6 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./ac-sizeview.html">
 <link rel="import" href="./ac-whisperer.html">
 <link rel="import" href="./ac-config.html">
+<link rel="import" href="./ac-web3.html">
 
 
 <dom-module id="ac-tokentransfer">
@@ -282,7 +283,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <ac-helpers id="helpers"></ac-helpers>
     <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
-    <!-- <ac-config web3host="{{web3host}}" ipfs="{{ipfs}}" etherscanroot="{{etherscanroot}}"></ac-config> -->
+    <ac-config web3host="{{web3host}}" ipfs="{{ipfs}}" etherscanroot="{{etherscanroot}}"></ac-config>
+    <ac-web3 host="{{web3host}}" web3="{{web3}}"></ac-web3>
 
     <ac-whisperer
     web3="{{web3}}"
@@ -659,6 +661,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var receivecoins = this.$.receivecoins;
         receivecoins.toggle();
         this.receivecollsclosed=!this.receivecollsclosed;
+        this.$.whisper.openchannel();
       },
 
 
