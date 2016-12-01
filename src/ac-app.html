@@ -9,6 +9,8 @@
 <link rel="import" href="ac-balance.html">
 <link rel="import" href="ac-wallet.html">
 <link rel="import" href="ac-vault.html">
+<link rel="import" href="ac-config.html">
+<link rel="import" href="ac-web3.html">
 <link rel="import" href="ac-profile.html">
 <link rel="import" href="ac-createwallet.html">
 <link rel="import" href="ac-tokentransfer.html">
@@ -45,8 +47,8 @@
     width: 100%;
     box-sizing: border-box;
     padding: 0px 10vw 16px 10vw;
-    height: 84vh;    
-  } 
+    height: 84vh;
+  }
 
   ac-avatar {
     width: 100%;
@@ -127,12 +129,17 @@
         value="{{acinit}}">
     </iron-localstorage>
 
+    <ac-config web3host="{{web3host}}"></ac-config>
+
     <ac-vault
       id="thevault"
       password="{{password}}"
       currentkeystore="{{keystore}}"
-      currentidentity="{{identity}}">
+      currentidentity="{{identity}}"
+      currentaccount="{{account}}">
     </ac-vault>
+
+    <ac-web3 host="{{web3host}}" web3="{{web3}}"></ac-web3>
 
     <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[selected]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
@@ -169,7 +176,7 @@
         </div>
 
         <div class$="tokentrans {{arcalign}}">
-        <ac-tokentransfer></ac-tokentransfer>
+          <ac-tokentransfer account="{{account}}"></ac-tokentransfer>
         </div>
 
         <ac-wallet
@@ -199,7 +206,8 @@
           <!-- The Profile view -->
           <ac-profile
             profiledata="{{identity}}"
-            on-to-home="toHome">
+            on-to-home="toHome"
+            on-identity-update="saveIdentity">
           </ac-profile>
         </div>
 
@@ -256,7 +264,7 @@
   <script>
     Polymer({
       is: 'ac-app',
-      
+
       properties: {
         entryAnimation: {
           type: String,
@@ -391,6 +399,10 @@
         this.entryAnimation = 'slide-from-right-animation';
         this.exitAnimation = 'slide-left-animation';
         page.redirect('/profile');
+      },
+
+      saveIdentity: function() {
+        this.$.vault.saveVault();
       },
 
       animLogger: function(){
