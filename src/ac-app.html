@@ -45,8 +45,8 @@
     width: 100%;
     box-sizing: border-box;
     padding: 0px 10vw 16px 10vw;
-    height: 84vh;    
-  } 
+    height: 84vh;
+  }
 
   ac-avatar {
     width: 100%;
@@ -178,7 +178,8 @@
           <!-- The Profile view -->
           <ac-profile
             profiledata="{{identity}}"
-            on-to-home="toHome">
+            on-to-home="toHome"
+            on-identity-update="saveIdentity">
           </ac-profile>
         </div>
 
@@ -235,7 +236,7 @@
   <script>
     Polymer({
       is: 'ac-app',
-      
+
       properties: {
         entryAnimation: {
           type: String,
@@ -363,6 +364,10 @@
         this.entryAnimation = 'slide-from-right-animation';
         this.exitAnimation = 'slide-left-animation';
         page.redirect('/profile');
+      },
+
+      saveIdentity: function() {
+        this.$.vault.saveVault();
       },
 
       animLogger: function(){

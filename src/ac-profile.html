@@ -171,10 +171,7 @@
         },
         identity: {
           type: Object,
-          value: {
-            avatar: 'blablabla',
-            username: 'bennisan'
-          }
+          notify: true
         }
 
       },
@@ -229,8 +226,14 @@
       }
     },
 
-    savenewUsername: function(){
+    confirm: function() {
       this.identity.username = this.username;
+      this.fire('identityUpdate');
+      var collapser = document.getElementById('collapse');
+      collapser.hide();
+    },
+
+    decline: function() {
       var collapser = document.getElementById('collapse');
       collapser.hide();
     },
