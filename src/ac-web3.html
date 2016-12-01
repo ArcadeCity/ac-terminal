@@ -4,7 +4,7 @@
 <dom-module id="ac-web3">
   <script>
 
-  var acweb3_web3;
+    var acweb3_web3;
 
     Polymer({
       is: 'ac-web3',
@@ -34,7 +34,7 @@
           return;
         }
         if (!acweb3_web3){
-          acweb3_web3 = new Web3();
+          acweb3_web3 = new Web3(new web3.providers.HttpProvider(this.host));
           console.log('ac-web3 -> created Web3');
         }
         this.web3 = acweb3_web3;
