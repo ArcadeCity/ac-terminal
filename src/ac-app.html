@@ -160,8 +160,7 @@
       <div class="hometotal">
 
         <ac-avatar
-          username="{{identity.username}}"
-          artwork="{{identity.avatarurl}}"
+          identity="{{identity}}"
           pubkey="{{account}}"
           mode="big"
           on-tap="toProfile">
@@ -206,7 +205,7 @@
         <div class="hometotal">
           <!-- The Profile view -->
           <ac-profile
-            profiledata="{{identity}}"
+            identity="{{identity}}"
             on-to-home="toHome"
             on-identity-update="saveIdentity">
           </ac-profile>
@@ -412,7 +411,7 @@
       },
 
       saveIdentity: function() {
-        this.$.vault.saveVault();
+        this.$.thevault.saveVault();
       },
 
       animLogger: function(){

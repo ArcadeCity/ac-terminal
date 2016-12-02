@@ -8,6 +8,7 @@
 
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-avatar.html">
+<link rel="import" href="ac-ipfsupload.html">
 <link rel="import" href="ac-shortcode.html">
 
 <dom-module id="ac-profile">
@@ -38,13 +39,13 @@
 
       .whitespace {
         width: 100%;
-        height: 20px;        
+        height: 20px;
       }
 
       .profilepic {
         width: 100%;
         box-sizing: border-box;
-        padding: 6vh 0px 2vh 0px;     
+        padding: 6vh 0px 2vh 0px;
         @apply(--layout-vertical);
         @apply(--layout-center-center);
         /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
@@ -68,21 +69,21 @@
       .profileusername {
         width: 100%;
         box-sizing: border-box;
-        padding: 0vh 0px 2vh 0px;     
+        padding: 0vh 0px 2vh 0px;
         @apply(--layout-vertical);
         @apply(--layout-center-center);
-        border-bottom: 2px dotted rgba(255,255,255,0.05);              
+        border-bottom: 2px dotted rgba(255,255,255,0.05);
       }
 
 
       .profileusername ac-input {
         width: 60%;
         max-width: 260px;
-        overflow: hidden;           
+        overflow: hidden;
       }
 
       .profileusername p {
-        color: white;          
+        color: white;
       }
 
       .scrollcontainer {
@@ -93,17 +94,17 @@
       .confirmbtns {
         width: 100%;
         box-sizing: border-box;
-        padding: 0px;     
+        padding: 0px;
         @apply(--layout-horizontal);
-        @apply(--layout-center-center);        
+        @apply(--layout-center-center);
       }
 
       .confirmbtns ac-button {
-        margin: 2px;     
+        margin: 2px;
       }
 
       .confirmbtns ac-icon {
-        margin-right: 4px;     
+        margin-right: 4px;
       }
 
       .topback {
@@ -111,25 +112,25 @@
         background-color: var(--ac-base);
         box-sizing: border-box;
         padding: 5vh 0px 0px 5vw;
-        opacity: 0.5;      
+        opacity: 0.5;
       }
 
       .shortcode {
         width: 100%;
         @apply(--layout-vertical);
-        @apply(--layout-center-center); 
-        border-bottom: 2px dotted rgba(255,255,255,0.05);              
+        @apply(--layout-center-center);
+        border-bottom: 2px dotted rgba(255,255,255,0.05);
         box-sizing: border-box;
-        padding: 2vh 0px 2vh 0px; 
+        padding: 2vh 0px 2vh 0px;
       }
 
       .pubkey {
         width: 100%;
         @apply(--layout-vertical);
         @apply(--layout-center-center);
-        border-bottom: 2px dotted rgba(255,255,255,0.05);              
+        border-bottom: 2px dotted rgba(255,255,255,0.05);
         box-sizing: border-box;
-        padding: 3vh 0px 3vh 0px; 
+        padding: 3vh 0px 3vh 0px;
       }
 
       .pubkey p {
@@ -140,8 +141,8 @@
         word-break: break-all;
         text-align: center;
         opacity: 0.7;
-        padding-bottom:4px; 
-        border-bottom: 1px dashed var(--ac-blue); 
+        padding-bottom:4px;
+        border-bottom: 1px dashed var(--ac-blue);
       }
 
       .logoutbtn {
@@ -149,11 +150,11 @@
         @apply(--layout-vertical);
         @apply(--layout-center-center);
         box-sizing: border-box;
-        padding: 5vh 0px 3vh 0px;         
+        padding: 5vh 0px 3vh 0px;
       }
       .logoutbtn ac-button {
-        width: 150px; 
-        @apply(--base-shadow);     
+        width: 150px;
+        @apply(--base-shadow);
       }
 
     </style>
@@ -163,16 +164,28 @@
     <ac-icon icon="ac-arrowleft" iconcolor="yellow" on-tap="backtohome" small>back</ac-icon>
     </div>
       <div class="scrollcontainer">
+        <ac-button txtcolor="yellow" bg="btncolor" txtbtn small on-tap="logout">logout</ac-button>
+
+
       <div class="profilepic">
         <div class="profilepicinner">
 
+
         <ac-avatar
           username="{{identity.username}}"
-          artwork="https://pbs.twimg.com/profile_images/2849872800/cbe52909627305c4d0ca07f5ca94edeb_400x400.png"
+          artwork="{{identity.avatarurl}}"
           pubkey="{{account}}"
           mode="imgbigonly">
         </ac-avatar>
-        <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" small>upload new picture</ac-button>
+
+        <ac-ipfsupload class="avatar" hidefileinput hash="{{newavatar}}" url="{{newavatarurl}}" id="ipfsupload">
+          <img src="{{newavatarurl}}">
+        </ac-ipfsupload>
+
+        <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" on-tap="toggleupload" small>upload new picture</ac-button>
+
+
+
         </div>
 
       </div>
@@ -194,7 +207,7 @@
 
         </div>
         <div class="logoutbtn">
-        <ac-button txtbtn txtcolor="blue" bg="btncolor" small>log out</ac-button>
+        <ac-button on-tap="logout" txtbtn txtcolor="blue" bg="btncolor" small>log out</ac-button>
         </div>
 
 <!--         <div class="pubkey">
@@ -224,7 +237,7 @@
         username: {
           type: String,
         },
-    
+
       },
 
       ready: function() {
@@ -260,12 +273,28 @@
       }
     },
 
-    decline: function(){ 
-      console.log("I've declined!");
+    logout: function() {
+      sessionStorage.removeItem('ac-password');
+      window.location = '/';
     },
 
-    confirm: function(){ 
-      console.log("I've confirmed!");
+    _username: function() {
+      //console.log(this.username);
+      if(this.username != this.identity.username) {
+        var collapser = document.getElementById('collapse');
+        collapser.show();
+      }
+      if(this.username == this.identity.username) {
+        var collapser = document.getElementById('collapse');
+        collapser.hide();
+      }
+    },
+
+    confirm: function() {
+      this.set('identity.username', this.username);
+      this.fire('identity-update');
+      var collapser = document.getElementById('collapse');
+      collapser.hide();
     },
 
     savenewUsername: function(){
@@ -274,7 +303,7 @@
       collapser.toggle();
     },
 
-    backtohome: function(){ 
+    backtohome: function(){
       this.fire('to-home');
     }
 
