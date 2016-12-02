@@ -32,6 +32,7 @@
 
       ac-button {
         @apply(--base-shadow-and-inset);
+        width: 100%;
       }
 
       .code {
@@ -50,10 +51,22 @@
       }
 
 
+      .code small {
+        @apply(--montserrat-reg);
+        font-size: 12px;
+        line-height: 16px;
+        color: var(--txtcolorz-code);
+        padding-bottom:2px; 
+        border-bottom: 1px dashed var(--txtcolorz-code);
+      }
+
+
       .codeandbtn {
-        min-height: 56px;
+        /*min-height: 56px;*/
         @apply(--layout-horizontal);
         @apply(--layout-center-center);
+        box-sizing: border-box;
+        padding: 0px 15px 0px 15px;
       }
 
       .codeandbtn p {
@@ -64,7 +77,7 @@
       }
 
       .codeandbtn ac-button {
-        margin-left: 10px;
+        margin-left: 20px;
       }
 
     </style>
@@ -72,9 +85,16 @@
     <template is="dom-if" if="{{!shortcodeshown}}">
 
       <template is="dom-if" if="{{txtlink}}">
-        <div class="code">
-          <p on-tap="toggleCode">shortcode</p>
-        </div>
+        <template is="dom-if" if="{{!small}}">
+          <div class="code" on-tap="toggleCode">
+          <p><content></content></p>
+          </div>
+        </template>
+        <template is="dom-if" if="{{small}}">
+          <div class="code" on-tap="toggleCode">
+          <small><content></content></small>
+          </div>
+        </template>
       </template>
       
       <template is="dom-if" if="{{btn}}">
@@ -131,6 +151,11 @@
           type:Boolean,
           value: false
         },
+
+        small: {
+          type:Boolean,
+          value: false
+        }
       },
 
       // _txtlink: function(){
@@ -164,11 +189,10 @@
         if(this.shortcodeshown){
           setTimeout(function(){
             this.shortcodeshown=!this.shortcodeshown;     
-          }.bind(this), 290);
+          }.bind(this), 280);
         } else {
-          this.shortcodeshown=!this.shortcodeshown;     
-
-        }
+          this.shortcodeshown=!this.shortcodeshown;
+        };
 
       }
 

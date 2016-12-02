@@ -19,6 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./ac-whisperer.html">
 <link rel="import" href="./ac-config.html">
 <link rel="import" href="./ac-web3.html">
+<link rel="import" href="./ac-log.html">
 
 
 <dom-module id="ac-tokentransfer">
@@ -149,6 +150,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         @apply(--base-shadow-and-inset);
       }
 
+      ac-shortcode {
+        width: var(--btn-width);
+      }
+
 
       .initbtns p {
         color: var(--ac-yellow);
@@ -225,7 +230,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div class$="initbtns {{align}}">
             <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="togglesendcoins" class="sender">send ARC</ac-button>
             <template is="dom-if" if="{{receivecollsclosed}}">
-              <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="togglereceivecoins">receive ARC</ac-button>
+              <ac-shortcode bg="btncolor" txtcolor="red" btn>receive ARC</ac-shortcode>
             </template>
           </div>
         </template>
@@ -286,6 +291,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- Hier hebben we dan de key van de partner -->
       <!-- <p>TO: <span>{{partnerpubkey}}</span></p>
       <ac-button text on-tap="transfer">verstuur</locals-button> -->
+      <div class="whitespace"></div>
+      <div class="whitespace"></div>
+
+      <ac-log></ac-log>
     </div>
   </template>
   <script>
