@@ -207,7 +207,7 @@
 
         </div>
         <div class="logoutbtn">
-        <ac-button txtbtn txtcolor="blue" bg="btncolor" small>log out</ac-button>
+        <ac-button on-tap="logout" txtbtn txtcolor="blue" bg="btncolor" small>log out</ac-button>
         </div>
 
 <!--         <div class="pubkey">
@@ -296,7 +296,7 @@
       var collapser = document.getElementById('collapse');
       collapser.hide();
     },
-    
+
     savenewUsername: function(){
       var collapser = document.getElementById('collapse');
       console.log("this is it", collapser);
