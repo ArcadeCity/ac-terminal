@@ -9,6 +9,7 @@
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-avatar.html">
 <link rel="import" href="ac-ipfsupload.html">
+<link rel="import" href="ac-shortcode.html">
 
 <dom-module id="ac-profile">
   <!-- Defines the element's style and local DOM -->
@@ -44,10 +45,10 @@
       .profilepic {
         width: 100%;
         box-sizing: border-box;
-        padding: 10vh 0px 3vh 0px;
+        padding: 6vh 0px 2vh 0px;
         @apply(--layout-vertical);
         @apply(--layout-center-center);
-        border-bottom: 2px dotted rgba(255,255,255,0.05);
+        /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
 
       }
 
@@ -68,7 +69,7 @@
       .profileusername {
         width: 100%;
         box-sizing: border-box;
-        padding: 3vh 0px 3vh 0px;
+        padding: 0vh 0px 2vh 0px;
         @apply(--layout-vertical);
         @apply(--layout-center-center);
         border-bottom: 2px dotted rgba(255,255,255,0.05);
@@ -76,8 +77,8 @@
 
 
       .profileusername ac-input {
-        width: 80%;
-        max-width: 600px;
+        width: 60%;
+        max-width: 260px;
         overflow: hidden;
       }
 
@@ -113,6 +114,49 @@
         padding: 5vh 0px 0px 5vw;
         opacity: 0.5;
       }
+
+      .shortcode {
+        width: 100%;
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+        border-bottom: 2px dotted rgba(255,255,255,0.05);
+        box-sizing: border-box;
+        padding: 2vh 0px 2vh 0px;
+      }
+
+      .pubkey {
+        width: 100%;
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+        border-bottom: 2px dotted rgba(255,255,255,0.05);
+        box-sizing: border-box;
+        padding: 3vh 0px 3vh 0px;
+      }
+
+      .pubkey p {
+        display: inline-block;
+        font-size: 12px;
+        line-height: 14px;
+        color: var(--ac-blue);
+        word-break: break-all;
+        text-align: center;
+        opacity: 0.7;
+        padding-bottom:4px;
+        border-bottom: 1px dashed var(--ac-blue);
+      }
+
+      .logoutbtn {
+        width: 100%;
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+        box-sizing: border-box;
+        padding: 5vh 0px 3vh 0px;
+      }
+      .logoutbtn ac-button {
+        width: 150px;
+        @apply(--base-shadow);
+      }
+
     </style>
 
     <div class="total">
@@ -146,18 +190,30 @@
 
       </div>
       <div class="profileusername">
-        <ac-input color="yellow" label="username" type="input" bind-value="{{username}}" center inputvalue="{{identity.username}}"></ac-input>
-
+        <ac-input color="white" label="username" type="input" bind-value="{{username}}" center inputvalue="MrArcade"></ac-input>
         <iron-collapse id="collapse">
-          <div class="confirmbtns">
-            <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="decline" small>decline</ac-icon>
-            <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="confirm" small>confirm</ac-button>
-          </div>
+        <div class="confirmbtns">
+          <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="decline" small>decline</ac-icon>
+          <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="confirm" small>confirm</ac-button>
+        </div>
         </iron-collapse>
-
         <div class="whitespace"></div>
 
       </div>
+
+        <div class="shortcode">
+
+          <ac-shortcode bg="btncolor" txtcolor="white" small>shortcode</ac-shortcode>
+
+        </div>
+        <div class="logoutbtn">
+        <ac-button txtbtn txtcolor="blue" bg="btncolor" small>log out</ac-button>
+        </div>
+
+<!--         <div class="pubkey">
+          <p>pubkey<br>0x22f0a1eC3744f4c27a1e891ccsf96D2E86156e998</p>
+        </div> -->
+
       </div>
     </div>
 
@@ -171,6 +227,7 @@
       on-iron-localstorage-load="loadprofile">
     </iron-localstorage>
 
+
   </template>
 
   <script>
@@ -179,12 +236,7 @@
       properties: {
         username: {
           type: String,
-          observer: '_username'
         },
-        identity: {
-          type: Object,
-          notify: true
-        }
 
       },
 
@@ -202,15 +254,18 @@
     _sizeview: function(){
       switch(this.sizeview) {
           case 'phone':
-                this.customStyle['--avatar-size'] = '90px';
+              this.align = 'verticcenter';
+              this.customStyle['--avatar-size'] = '90px';
               this.updateStyles();
               break;
           case 'desktop':
-                this.customStyle['--avatar-size'] = '130px';
+              this.align = 'verticstart';
+              this.customStyle['--avatar-size'] = '130px';
               this.updateStyles();
               break;
           case 'xlarge':
-                this.customStyle['--avatar-size'] = '130px';
+              this.align = 'verticstart';
+              this.customStyle['--avatar-size'] = '130px';
               this.updateStyles();
               break;
           default:
@@ -240,15 +295,11 @@
       this.fire('identity-update');
       var collapser = document.getElementById('collapse');
       collapser.hide();
-    },
 
-    decline: function() {
+    savenewUsername: function(){
       var collapser = document.getElementById('collapse');
-      collapser.hide();
-    },
-
-    toggleupload: function() {
-
+      console.log("this is it", collapser);
+      collapser.toggle();
     },
 
     backtohome: function(){

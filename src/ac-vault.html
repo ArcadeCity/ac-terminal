@@ -29,18 +29,20 @@
           type: Object,
           notify: true,
         },
+        // the exposed lightwallet.keystore object
         currentkeystore: {
           type: Object,
           notify: true,
         },
+        // the ethereum account assiciated with the current identity
         currentaccount: {
           type: String,
           notify: true,
         },
+        // an object containing a set of fields with identity data.
         currentidentity: {
           type: Object,
-          notify: true,
-          //observer: '_identity'
+          notify: true
         }
       },
 

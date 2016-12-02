@@ -1,0 +1,56 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="./ac-config.html">
+<link rel="import" href="./ac-web3.html">
+
+<dom-module id="ac-transactionlog">
+  <template>
+    <ac-config web3host="{{web3host}}"></ac-config>
+    <ac-web3 host="{{web3host}}" web3="{{web3}}"></ac-web3>
+  </template>
+  <script>
+    Polymer({
+      is: 'ac-transactionlog',
+      properties: {
+        address: {
+          type: String,
+          observer: '_address',
+        },
+        logitems: {
+          type: Array,
+          notify:true
+        },
+      },
+      observers: [
+        'fillInitial(address, web3)'
+      ],
+
+      attached: function(){
+        console.log('ac-transactionlog -> attached');
+      },
+
+      _address: function(){
+        console.log('ac-transactionlog for address = ',this.address);
+        this.fillinitial();
+      },
+
+      fillinitial: function() {
+        
+        var startBlock = this.web3.eth.blockNumber - Math.floor(60 * 60 * 24 / 14);
+
+        var filter = this.web3.eth.filter({
+          fromBlock: startBlock,
+          address: this.address
+        }).get(function(err, res) {
+          //            filter.stopWatching();
+          filter = null;
+        });
+      },
+
+      // add a txhash to this log
+      logtx: function(txhash){
+
+      }
+
+    });
+  </script>
+</dom-module>

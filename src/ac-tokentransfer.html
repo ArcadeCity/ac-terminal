@@ -19,13 +19,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./ac-whisperer.html">
 <link rel="import" href="./ac-config.html">
 <link rel="import" href="./ac-web3.html">
+<link rel="import" href="./ac-log.html">
 
 
 <dom-module id="ac-tokentransfer">
   <template>
     <style>
       :host {
-        display: block;
+        display: inline-block;
         box-sizing: border-box;
         background-color: transparent;;
         --balance-h1: 40px;
@@ -34,7 +35,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --code-h2: 32px;
         --code-lineheight: 36px;
         --code-small: 10px;
-        /*width: inherit;*/
+        --btn-width: 200px;
+        width: 100%;
 
       }
 
@@ -65,38 +67,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       .total {
-        /*width: inherit;*/
-        @apply(--layout-vertical);
-/*        border-top: 1px solid rgba(255,255,255,0.1);
-        padding-top: 3vh;*/
-      }
+        width: 100%;
 
-      .totalpart {
-        /*width: inherit;*/
-        box-sizing: border-box;
         @apply(--layout-vertical);
-        @apply(--layout-center-center);
-
       }
 
       .sendcoiners {
-        width: 80%;
-        max-width: 600px;
+        width: 100%;
+        max-width: 500px;
         box-sizing: border-box;
         @apply(--layout-vertical);
         @apply(--layout-center-center);
       }
 
-
-      .topbar {
-        width: 100%;
-        background-color: transparent;
-        height: var(--topbar-height);
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        box-sizing: border-box;
-        padding: 10px 20px 10px 20px;
-        }
 
       .flex {
         @apply(--layout-horizontal);
@@ -104,30 +87,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
 
-
-
-      .tussenschot {
-        width: 100%;
-        border: 0;
-        margin: 0px;
-        color: var(--ac-grey3);
-        background-color: var(--ac-grey2);
-        height: 1px;
-      }
-
-      .inbutton {
-        width: 100%;
-        @apply(--layout-horizontal);
-        @apply(--layout-end);
-      }
-
-     .coinbtn {
-      margin-left: 5px;
-     }
-
      #sendcoins {
       width: 100%;
-      max-width: 500px;
+      
       box-sizing: border-box;
      }
 
@@ -141,7 +103,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
      .whitespace {
-      height: 2vh;
+      width: 100%;
+      height: 20px;
      }
 
      .code {
@@ -162,7 +125,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       width: 100%;
       max-width: 500px;
       box-sizing: border-box;
-/*      padding: 10px 0px 10px 0px;*/
       @apply(--layout-vertical);
       @apply(--layout-center-center);
      }
@@ -176,82 +138,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       margin: var(--coin-margins);
      }
 
-     .temp {
-      margin-top: 6vh;
-      color: var(--ac-grey4);
-     }
-
-     .refresher {
-        transition: all 1s linear;
-     }
-
-
-     .spinner {
-      -webkit-animation: rotate 0.5s linear infinite;
-      -moz-animation: rotate 0.5s linear infinite;
-      animation: rotate 0.5s linear infinite;
-     }
-
-
-     .spinonce {
-      -webkit-animation: rotate 0.5s linear infinite;
-      -moz-animation: rotate 0.5s linear infinite;
-      animation: rotate 0.5s linear infinite;
-
-     }
-
-      @-webkit-keyframes rotate {
-          from {-webkit-transform: rotate(0deg);}
-          to {-webkit-transform: rotate(180deg);}
-      }
-
-      @-moz-keyframes rotate {
-          from {-moz-transform: rotate(0deg);}
-          to {-moz-transform: rotate(180deg);}
-      }
-
-      @keyframes rotate {
-          from {transform: rotate(0deg);}
-          to {transform: rotate(180deg);}
-      }
-
-
-      .avatar {
-        width:70px;
-        height: 70px;
-        border-radius: 50%;
-        overflow: hidden;
-        background-color: transparent;
-
-      }
-
-      .avatar img {
-        width: 100%;
-        height: 100%;
-        border: none;
-      }
-
-/*      .btns {
-        width: 100%;
-        margin-top: 15px;
-        @apply(--layout-horizontal);
-        @apply(--layout-center-center);
-      }
-
-      .btns ac-button {
-        margin: 5px;
-      }
-*/
+    
       .initbtns {
-        /*width: inherit;*/
-        @apply(--layout-vertical);
-        @apply(--layout-center-center);
+/*        @apply(--layout-vertical);
+        @apply(--layout-center-center);*/
 
       }
 
       .initbtns ac-button {
-        width: 200px;
+        width: var(--btn-width);
         @apply(--base-shadow-and-inset);
+      }
+
+      ac-shortcode {
+        width: var(--btn-width);
       }
 
 
@@ -274,10 +174,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .sender {
-          margin-bottom: 15px;
+          margin: var(--margin-btns);
         }
 
+      .verticcenter {
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+      }
 
+      .verticstart {
+        @apply(--layout-vertical);
+        @apply(--layout-start);
+        @apply(--layout-center-justified);
+      }
+      .horizontcenter {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+      .horizontend {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+        @apply(--layout-end);
+      }
+
+      .horizontcenterwrap {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-center-center);
+      }
+      .horizontstartwrap {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-start-justified);
+      }
 
     </style>
 
@@ -295,18 +224,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     id="whisper"></ac-whisperer>
 
     <div class="total">
-      <div class="totalpart">
         <template is="dom-if" if="{{sendcollsclosed}}">
-        <div class="initbtns">
-          <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="togglesendcoins" class="sender">send ARC</ac-button>
-          <template is="dom-if" if="{{receivecollsclosed}}">
-            <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="togglereceivecoins">receive ARC</ac-button>
-            <!--  <p on-tap="togglereceivecoins">shortcode</p>  -->
-          </template>
-            <!-- <ac-button txtbtn txtcolor="red" bg="base" on-tap="togglereceivecoins">shortcode</ac-button> -->
-            <!-- <ac-button txtbtn txtcolor="base" bg="red" on-tap="togglereceivecoins"><div class="inbutton">receive</div></ac-button> -->
-        <div class="whitespace"></div>
 
+
+          <div class$="initbtns {{align}}">
+            <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="togglesendcoins" class="sender">send ARC</ac-button>
+            <template is="dom-if" if="{{receivecollsclosed}}">
+              <ac-shortcode bg="btncolor" txtcolor="red" btn>receive ARC</ac-shortcode>
+            </template>
           </div>
         </template>
         <div class="sendcoiners">
@@ -345,11 +270,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </iron-collapse>
         </div>
 
-        <div class="whitespace"></div>
-        <div class="whitespace"></div>
-
-      </div>
-      <div class="totalpart">
         <template is="dom-repeat" items="{{history}}">
           <div class="avatar" id="avatar">
             <img src="{{item.avatar}}">
@@ -357,7 +277,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <p><span>{{item.receiver}}</span> &Delta;<span>{{item.amount}}</span></p>
           <!-- <p class="temp">&Delta;<span>{{item.amount}}</span><span>{{item.receiver}}</span></p> -->
         </template>
-      </div>
 
 
 <!--     <div>
@@ -372,6 +291,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- Hier hebben we dan de key van de partner -->
       <!-- <p>TO: <span>{{partnerpubkey}}</span></p>
       <ac-button text on-tap="transfer">verstuur</locals-button> -->
+      <div class="whitespace"></div>
+      <div class="whitespace"></div>
+
+      <ac-log></ac-log>
     </div>
   </template>
   <script>
@@ -446,6 +369,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         ethbalance: {
           type: Number
+        },
+
+        align: {
+          type: String,
         },
 
       },
@@ -601,43 +528,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this.fire('to-home');
     },
 
-    _sizeview: function(){
-      switch(this.sizeview) {
-          case 'phone':
-              this.customStyle['--balance-h1'] = '40px';
-              this.customStyle['--balance-lineheight'] = '52px';
-              this.customStyle['--code-h2'] = '32px';
-              this.customStyle['--code-lineheight'] = '36px';
-              this.customStyle['--code-small'] = '10px';
-              this.customStyle['--coin-margins'] = '0px 0px 7px 6px';
-                this.customStyle['--topbar-height'] = '100px';
-              this.updateStyles();
-              break;
-          case 'desktop':
-              this.customStyle['--balance-h1'] = '60px';
-              this.customStyle['--balance-lineheight'] = '78px';
-              this.customStyle['--code-h2'] = '44px';
-              this.customStyle['--code-lineheight'] = '50px';
-              this.customStyle['--code-small'] = '12px';
-              this.customStyle['--coin-margins'] = '0px 0px 10px 6px';
-                this.customStyle['--topbar-height'] = '100px';
-              this.updateStyles();
-              break;
-          case 'xlarge':
-              this.customStyle['--balance-h1'] = '120px';
-              this.customStyle['--balance-lineheight'] = '152px';
-              this.customStyle['--code-h2'] = '98px';
-              this.customStyle['--code-lineheight'] = '104px';
-              this.customStyle['--code-small'] = '24px';
-              this.customStyle['--coin-margins'] = '0px 0px 20px 6px';
-                this.customStyle['--topbar-height'] = '100px';
-              this.updateStyles();
-              break;
-          default:
-          console.log("!!! ** Niks");
-      }
-    },
-
 
     _is: function(a, b) {
       if (b === undefined){
@@ -667,8 +557,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _sendcoinstate: function(){
         // console.log('********************* !!!! SENCOINSTATE', this.sendcoinstate);
-      }
+      },
 
+
+    _sizeview: function(){
+      switch(this.sizeview) {
+          case 'phone':
+              this.customStyle['--btn-width'] = '200px';
+              this.customStyle['--margin-btns'] = '0px 0px 5px 0px';
+              this.align = 'verticcenter';
+              this.updateStyles();
+              break;
+          case 'desktop':
+              this.customStyle['--btn-width'] = '150px';
+              this.customStyle['--margin-btns'] = '0px 5px 0px 5px';
+              this.align = 'horizontstartwrap';
+              this.updateStyles();
+              break;
+          case 'xlarge':
+              this.customStyle['--btn-width'] = '150px';
+              this.customStyle['--margin-btns'] = '0px 5px 0px 5px';
+              this.align = 'horizontstartwrap';
+              this.updateStyles();
+              break;
+          default:
+          console.log("!!! ** Niks");
+      }
+    },
 
 
 
