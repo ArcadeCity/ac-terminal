@@ -38,19 +38,27 @@ Polymer({
       type: Object,
       observer: '_web3'
     },
+
+    listeninterval: {
+      type: Number,
+      observer: '_listeninterval',
+      notify: true,  
+      value: 0    
+    },
+
     // the current topic we're listening to
     topic: {
       type: Number,
       observer: '_topic',
-      value: null,
-      notify: true
+      notify: true,
+      value: 0
     },
     // progress is a value between 0 and 100 denoting how much time until next topic will be generated
     // 0 = period start ; 100 = period is over
-    progress: {
-      type: Number,
-      notify: true
-    },
+    // progress: {
+    //   type: Number,
+    //   notify: true
+    // },
 
     // How many decimals should the topic have ( min 2 )
     decimals: {
@@ -58,10 +66,10 @@ Polymer({
       value: 5
     },
 
-    identity: {
-      type: String,
-      notify: true
-    },
+    // identity: {
+    //   type: String,
+    //   notify: true
+    // },
 
   },
 
@@ -75,28 +83,27 @@ Polymer({
     // This is the point where you should make modifications to the DOM (when
     // necessary), or kick off any processes the element wants to perform.
 
-    this.mode = 'view';
-    this.timerval = 0;
-    this.holding = false;
+//    this.mode = 'view';
+//    this.timerval = 0;
+//    this.holding = false;
 
     this.localchannels = {};
     this.remotechannels = {};
 
-    setInterval(this.timer.bind(this), 1000);
+    //setInterval(this.timer.bind(this), 1000);
 
-    window.addEventListener('web3-ready', function(e) {
-      console.log('whisperer knows web3 there?');
-      //window.web3 = window.web3;
-      if(e) {
-        this.web3 = e.detail.web3;
-      }
+    // window.addEventListener('web3-ready', function(e) {
+    //   console.log('whisperer knows web3 there?');
+    //   //window.web3 = window.web3;
+    //   if(e) {
+    //     this.web3 = e.detail.web3;
+    //   }
 
-    }.bind(this));
+    // }.bind(this));
 
   },
 
-
-
+  // creates a random pincode with decimals numbers
   _getpincode: function(decimals) {
 
     if (decimals < 2) {
@@ -113,30 +120,58 @@ Polymer({
     return randomstring;
   },
 
-  // Triggering this function holds on to the current value for 5 minutes.
-  hold: function() {
-    if (!this.holding) {
-      this.holding = true;
-      this.timerval -= 5 * 60;
+  // // Triggering this function holds on to the current value for 5 minutes.
+  // hold: function() {
+  //   if (!this.holding) {
+  //     this.holding = true;
+  //     this.timerval -= 5 * 60;
+  //   }
+  // },
+
+  _listeninterval: function(newval,oldval){
+    console.log('ac-whisperer -> listeninterval value changed from',oldval,'to',newval);
+    
+    if (oldval == 0 && newval > 0){
+      // activate request
+      this.listenintervalInitialValue = newval;
+      this.listenintervalTimerInterval = setInterval(this.listenintervalTimer.bind(this), 1000)
+      this.topic = this._getpincode(this.decimals);
+    }
+    if (newval == 0){
+      // stop request
+      this.stoplisteninterval();
+      this._stopTopicFilter();
+      this.topic=0;
     }
   },
 
-  timer: function() {
-    if (this.topic == null) {
-      this.topic = this._getpincode(this.decimals);
+  stoplisteninterval: function(){
+    if (this.listenintervalTimerInterval){
+      clearInterval(this.listenintervalTimerInterval);
+      delete this.listenintervalTimerInterval;
     }
-    this.timerval++;
+  },
 
-    if (this.timerval < 0) {
+  listenintervalTimer: function() {
+    // if (this.topic == null) {
+    //   this.topic = this._getpincode(this.decimals);
+    // }
+    // this.timerval++;
+    if (this.listeninterval > 0){
+      this.listeninterval--;
+    }
+
+    if (this.listeninterval == 0) {
       this.progress = 0;
+      this.stoplisteninterval();
     } else {
-      this.progress = Math.floor(this.timerval / 60 * 100);
+      this.progress = Math.floor(this.listeninterval / this.listenintervalInitialValue * 100);
     }
 
-    if (this.timerval >= 5 * 60) {
-      this.topic = this._getpincode(this.decimals);
-      this.timerval = 0;
-    }
+    // if (this.timerval >= 5 * 60) {
+    //   this.topic = this._getpincode(this.decimals);
+    //   this.timerval = 0;
+    // }
   },
 
   openchannel: function() {
@@ -179,12 +214,13 @@ Polymer({
   },
 
   detached: function() {
-    this.stopfilter();
+    this._stopTopicFilter();
   },
 
-  stopfilter: function() {
+  // stops the topic filter immediately
+  _stopTopicFilter: function() {
     if (this.filter) {
-      console.log('ac-whisperer: stop watching current channel')
+      console.log('ac-whisperer: stop watching channel',this.topic);
       this.filter.stopWatching();
     }
   },
@@ -203,12 +239,19 @@ Polymer({
     console.log('whisperer web3 started');
   },
 
-  _topic: function() {
+  _topic: function(newval,oldval) {
     var self = this;
+    if (!newval){
+      return;
+    }
+
+    if (!this.web3){
+      throw new Error('web3 not set while requesting whisper listener');
+    }
 
     if (self.web3 && this.topic) {
 
-      this.stopfilter();
+      this._stopTopicFilter();
 
       var topic = this.topic.toString();
       this.filter = self.web3.shh.filter({

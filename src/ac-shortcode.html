@@ -82,7 +82,7 @@
 
     </style>
 
-    <template is="dom-if" if="{{!shortcodeshown}}">
+  <!--   <template is="dom-if" if="{{_is(topic,0)}}">
 
       <template is="dom-if" if="{{txtlink}}">
         <template is="dom-if" if="{{!small}}">
@@ -95,21 +95,20 @@
           <small><content></content></small>
           </div>
         </template>
-      </template>
+      </template> -->
       
-      <template is="dom-if" if="{{btn}}">
-        <ac-button on-tap="toggleCode" txtbtn txtcolor$="{{txtcolor}}" bg$="{{bg}}"><content></content></ac-button>
-      </template>
+      <!-- <template is="dom-if" if="{{topic}}"> -->
+      <!--   <ac-button on-tap="toggleCode" txtbtn txtcolor$="{{txtcolor}}" bg$="{{bg}}"><content></content></ac-button>
+      </template> -->
+<!-- 
+    </template> -->
 
-    </template>
-
-      <iron-collapse id="collapsecode">
+      <!-- <iron-collapse id="collapsecode"> -->
       <div class="codeandbtn">
-        <p>76890</p>
-        <ac-button small on-tap="toggleCode" txtcolor$="{{txtcolor}}" bg$="{{bg}}" icon="ac-decline"></ac-button>
+        <p>{{topic}}</p>
+        <ac-button small on-tap="cancel" icon="ac-decline"></ac-button>
       </div>
-      </iron-collapse>
-
+      <!-- </iron-collapse> -->
 
   </template>
 
@@ -119,43 +118,47 @@
       is: 'ac-shortcode',
 
       properties: {
-        prop1: {
-          type: String,
-          value: 'ac-shortcode',
+        // prop1: {
+        //   type: String,
+        //   value: 'ac-shortcode',
+        // },
+
+        topic: {
+          type: Number
         },
 
-        txtlink: {
-          type:Boolean,
-          value: true,
-          observer: '_type'
-        },
+        // txtlink: {
+        //   type:Boolean,
+        //   value: true,
+        //   observer: '_type'
+        // },
 
-        btn: {
-          type: Boolean,
-          value: false,
-          observer: '_type'
-        },
+        // btn: {
+        //   type: Boolean,
+        //   value: false,
+        //   observer: '_type'
+        // },
 
-        bg: {
-          type: String,
-          value: 'btncolor',
-          observer: '_type'
-        },
+        // bg: {
+        //   type: String,
+        //   value: 'btncolor',
+        //   observer: '_type'
+        // },
 
-        txtcolor: {
-          type: String,
-          observer: '_txtcolor'
-        },
+        // txtcolor: {
+        //   type: String,
+        //   observer: '_txtcolor'
+        // },
 
-        shortcodeshown: {
-          type:Boolean,
-          value: false
-        },
+        // shortcodeshown: {
+        //   type:Boolean,
+        //   value: false
+        // },
 
-        small: {
-          type:Boolean,
-          value: false
-        }
+        // small: {
+        //   type:Boolean,
+        //   value: false
+        // }
       },
 
       // _txtlink: function(){
@@ -164,37 +167,41 @@
       //   }
       // },
 
-      _txtcolor: function(){
-          var txtcolorz = 'var(--ac-'+ this.txtcolor + ')';
-          this.customStyle['--txtcolorz-code'] = txtcolorz;
-          this.updateStyles();
-        },
+      // _txtcolor: function(){
+      //     var txtcolorz = 'var(--ac-'+ this.txtcolor + ')';
+      //     this.customStyle['--txtcolorz-code'] = txtcolorz;
+      //     this.updateStyles();
+      //   },
 
 
-      _type: function(){
-        console.log("button?",this.btn, 'Of txtlink?', this.txtlink);
-        if (this.btn){
-        this.txtlink = false;
-        } else {
-        this.txtlink = true;
-        }
-      },
+      // _type: function(){
+      //   // console.log("button?",this.btn, 'Of txtlink?', this.txtlink);
+      //   // if (this.btn){
+      //   // this.txtlink = false;
+      //   // } else {
+      //   // this.txtlink = true;
+      //   // }
+      // },
 
-      toggleCode: function(){
-        var collapser = document.getElementById('collapsecode');
-        collapser.toggle();
-
-        console.log(this.shortcodeshown);
-
-        if(this.shortcodeshown){
-          setTimeout(function(){
-            this.shortcodeshown=!this.shortcodeshown;     
-          }.bind(this), 280);
-        } else {
-          this.shortcodeshown=!this.shortcodeshown;
-        };
-
+      cancel: function(){
+        this.fire('cancel');
       }
+
+      // toggleCode: function(){
+      //   var collapser = document.getElementById('collapsecode');
+      //   collapser.toggle();
+
+      //   console.log(this.shortcodeshown);
+
+      //   if(this.shortcodeshown){
+      //     setTimeout(function(){
+      //       this.shortcodeshown=!this.shortcodeshown;     
+      //     }.bind(this), 280);
+      //   } else {
+      //     this.shortcodeshown=!this.shortcodeshown;
+      //   };
+
+      // }
 
     });
   </script>

@@ -219,6 +219,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     web3="{{web3}}"
     topic="{{topic}}"
     progress="{{progress}}"
+    listeninterval="{{listeninterval}}"
     decimals="5"
     on-message-received="handlewhispermessage"
     id="whisper"></ac-whisperer>
@@ -229,8 +230,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <div class$="initbtns {{align}}">
             <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="togglesendcoins" class="sender">send ARC</ac-button>
-            <template is="dom-if" if="{{receivecollsclosed}}">
-              <ac-shortcode bg="btncolor" txtcolor="red" btn>receive ARC</ac-shortcode>
+            <template is="dom-if" if="{{_is(listeninterval,0)}}">
+              <!--  -->
+            <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="activatereceivecoins" class="sender">receive ARC</ac-button>
+            </template>
+            <template is="dom-if" if="{{topic}}">
+              <ac-shortcode on-cancel="deactivatereceivecoins" bg="btncolor" txtcolor="red" topic="{{topic}}" progress="{{progress}}" btn></ac-shortcode>
             </template>
           </div>
         </template>
@@ -266,8 +271,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <!-- <small>Temporary code</small> -->
             <h2>{{topic}}</h2>
           </div>
-          <ac-button icon="ac-decline" on-tap="togglereceivecoins" small class="confirmbtn" bg="base" txtcolor="yellow"></ac-button>
-        </iron-collapse>
+<!--           <ac-button icon="ac-decline" on-tap="togglereceivecoins" small class="confirmbtn" bg="base" txtcolor="yellow"></ac-button>
+ -->        </iron-collapse>
         </div>
 
         <template is="dom-repeat" items="{{history}}">
@@ -392,6 +397,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         this.sendcoinstate = 'first';
         this.password = sessionStorage.getItem('ac-password');
+      },
+
+      activatereceivecoins: function(){
+        this.listeninterval = 5;
+      },
+
+      deactivatereceivecoins: function(){
+        this.listeninterval = 0;
       },
 
       attached: function(){
@@ -548,10 +561,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // this.whisper = this.$.whisper;
         // this.topic = this.whisper.topic;
         // console.log("******** topic in wallet: ****",this.topic)
-        var receivecoins = this.$.receivecoins;
-        receivecoins.toggle();
-        this.receivecollsclosed=!this.receivecollsclosed;
-        this.$.whisper.openchannel();
+        //var receivecoins = this.$.receivecoins;
+        //receivecoins.toggle();
+        //this.receivecollsclosed=!this.receivecollsclosed;
+        //this.$.whisper.openchannel();
       },
 
 
