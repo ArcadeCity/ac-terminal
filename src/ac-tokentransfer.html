@@ -233,7 +233,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class$="initbtns {{align}}">
           <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="togglesendcoins" class="sender">send ARC</ac-button>
 
-          <ac-shortcode on-cancel="deactivatereceivecoins" bg="btncolor" txtcolor="red" topic="{{topic}}" progress="{{progress}}" on-showshortcode="activatereceivecoins" btn>receive ARC</ac-shortcode>
+          <ac-shortcode on-cancel="deactivatereceivecoins" bg="btncolor" txtcolor="red" topic="{{topic}}" progress="{{progress}}" on-showshortcode="activatereceivecoins" btn>shortcode</ac-shortcode>
 
         </div>
       </template>
@@ -417,7 +417,7 @@ TO:
       },
 
       activatereceivecoins: function(){
-        this.listeninterval = 5;
+        this.listeninterval = 10;
       },
 
       deactivatereceivecoins: function(){
