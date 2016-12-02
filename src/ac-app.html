@@ -305,6 +305,8 @@
 
       attached: function() {
         // Setup some basic routing
+        var self = this;
+
         page('/',function(){
           if (this.$.thevault.hasVault()) {
             page.redirect('/password');
@@ -352,7 +354,7 @@
         }.bind(this));
 
         page('/home',function(){
-          if (!this.$.thevault.keystore) {
+          if (!self.$.thevault.keystore) {
             page.redirect('/');
           } else {
             this.selected = 'home';
