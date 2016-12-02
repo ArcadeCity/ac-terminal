@@ -29,6 +29,8 @@
     --ac-balance-width:100%;
     --ac-balance-height:30vh;
     --tokentrans-width:100%;
+    --tokentrans-top:3vh;
+
   }
 
   .white {
@@ -74,6 +76,7 @@
 
   .tokentrans {
     width: var(--tokentrans-width);
+    margin-top: var(--tokentrans-top);
   }
 
   .verticcenter {
@@ -408,18 +411,22 @@
             this.customStyle['--ac-balance-height'] = '30vh';
             this.customStyle['--ac-balance-width'] = '100%';
             this.customStyle['--tokentrans-width'] = '100%';
+            this.customStyle['--tokentrans-top'] = '0vh';
             this.updateStyles();
             break;
           case 'desktop':
             this.arcalign = 'verticstart';
             this.customStyle['--ac-balance-height'] = '20vh';
             this.customStyle['--ac-balance-width'] = '100%';
+            this.customStyle['--tokentrans-top'] = '3vh';
             this.updateStyles();
             break;
           case 'xlarge':
             this.arcalign = 'verticstart';
             this.customStyle['--ac-balance-height'] = '20vh';
             this.customStyle['--ac-balance-width'] = '100%';
+            this.customStyle['--tokentrans-top'] = '4vh';
+
             this.updateStyles();
             break;
           default:

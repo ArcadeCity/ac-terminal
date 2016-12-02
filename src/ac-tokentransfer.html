@@ -163,10 +163,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .confirmbtns {
-          @apply(--layout-horizontal);
-          @apply(--layout-center-center);
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-end-justified);
         margin-top: 15px;
-        }
+      }
+
+      .confirmbtnsmobile {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+        margin-top: 15px;
+      }
 
         .confirmbtn {
           margin: 0px 2px 0px 2px;
@@ -207,6 +214,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         @apply(--layout-start-justified);
       }
 
+      .sendinput {
+        width: 100%;
+        overflow: hidden;
+      }
+
     </style>
 
     <ac-helpers id="helpers"></ac-helpers>
@@ -241,19 +253,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <iron-collapse id="sendcoins">
           <template is="dom-if" if="{{_is(sendcoinstate,'first')}}">
+          
+          <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
+            <ac-input color="red" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
+            <ac-input color="red" class="sendinput" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
+            <div class="whitespace"></div>
+            <div class="confirmbtns">
+              <ac-button icon="ac-decline" on-tap="togglesendcoins" small class="confirmbtn" bg="base" txtcolor="red"></ac-button>
+              <ac-button on-tap="toWaiting" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
+            </div>
+          </template>
 
-            <ac-input color="yellow" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
-            <ac-input color="yellow" class="sendinput" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
-
-            <!--           <div class="btns">
-            <ac-button small icon="declinenew" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
-            <ac-button small icon="ac-v" confirmsmall on-tap="toWaiting" class="closebtn"></ac-button>
-          </div>
-          -->
-          <div class="confirmbtns">
-            <ac-button icon="ac-decline" on-tap="togglesendcoins" small class="confirmbtn" bg="base" txtcolor="yellow"></ac-button>
-            <ac-button on-tap="toWaiting" bg="yellow" txtcolor="big" icon="ac-v"></ac-button>
-          </div>
+          <template is="dom-if" if="{{_is(sizeview,'phone')}}">
+            <ac-input center color="red" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
+            <ac-input center color="red" class="sendinput" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
+            <div class="whitespace"></div>
+            <div class="confirmbtnsmobile">
+              <ac-button icon="ac-decline" on-tap="togglesendcoins" small class="confirmbtn" bg="base" txtcolor="red"></ac-button>
+              <ac-button on-tap="toWaiting" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
+            </div>
+          </template>
 
         </template>
 
