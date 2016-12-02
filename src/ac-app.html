@@ -311,7 +311,7 @@
           } else {
             page.redirect('/newuser');
           }
-        });
+        }.bind(this));
 
         this.entryAnimation = 'slide-from-right-animation';
         this.exitAnimation = 'slide-left-animation';
@@ -325,11 +325,11 @@
           Polymer.Base.importHref(
             '/src/ac-newuser.html',function(){
               this.selected = 'newuser';
-            },function(){
+            }.bind(this),function(){
               console.log('Something failed!');
-            }, true
+            }.bind(this), true
           );
-        });
+        }.bind(this));
 
         page('/password',function(){
 
@@ -345,11 +345,11 @@
           Polymer.Base.importHref(
             '/src/ac-password.html',function(){
               this.selected = 'password';
-            },function(){
+            }.bind(this),function(){
               console.log('Something failed!');
-            }, true
+            }.bind(this), true
           );
-        });
+        }.bind(this));
 
         page('/home',function(){
           if (!this.$.thevault.keystore) {
@@ -357,19 +357,19 @@
           } else {
             this.selected = 'home';
           }
-        });
+        }.bind(this));
 
         page('/wallet',function(){
           this.selected = 'wallet';
-        });
+        }.bind(this));
 
         page('/profile',function(){
           this.selected = 'profile';
-        });
+        }.bind(this));
 
         page('/stage',function(){
           this.selected = 'stage';
-        });
+        }.bind(this));
 
         page({
           hashbang: true
