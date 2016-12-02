@@ -5,9 +5,8 @@
     <link rel="manifest" href="/manifest.json">
     <script src="/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 
-
-    <link rel="import" href="/bower_components/iron-localstorage/iron-localstorage.html">
-    <link rel="import" href="src/ac-spinner.html">
+    
+    <link rel="import" href="/src/ac-app.html">
     <style>
       body {
         margin: 0px;
@@ -23,16 +22,12 @@
           display: none;
       }
     </style>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.1/leaflet.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.2.2/web-animations-next-lite.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.2.2/web-animations.min.js"></script>
+    
   </head>
 
   <body unresolved="" class="fullbleed layout vertical">
-    <template is="dom-bind" id="stage">
-      <iron-localstorage id="localstorage" name="ac-init" on-iron-localstorage-load-empty="generate" on-iron-localstorage-load="homestate">
-      </iron-localstorage>
-    </template>
+    
+    <ac-app></ac-app>    
   
   <script src="/src/scripts/app.js"></script>
 

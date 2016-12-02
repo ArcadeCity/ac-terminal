@@ -1,8 +1,8 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
-<script src="../../bower_components/page/page.js"></script>
-<link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
-<link rel="import" href="../../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
+<script src="../bower_components/page/page.js"></script>
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../bower_components/ac-button/ac-button.html">
 
 <link rel="import" href="ac-transactionlog.html">
 <link rel="import" href="ac-sizeview.html">
@@ -282,24 +282,21 @@
 
         sizeview: {
           type: String,
-          observer: '_sizeview'          
+          observer: '_sizeview'
         },
         arcalign: {
           type: String,
         },
-        },
+      },
 
       createnewuser: function(e) {
-
         this.$.thevault.createVault(e.detail.password, function() {
           page.redirect('/home');
         });
-
-
       },
 
-      passwordreceived: function(e){
-        if (!this.$.thevault.hasVault()){
+      passwordreceived: function(e) {
+        if (!this.$.thevault.hasVault()) {
           return page.redirect('/');
         }
         this.$.thevault.loadVault(e.detail.password);
@@ -307,12 +304,11 @@
       },
 
       attached: function() {
-
         // Setup some basic routing
-        page('/', () => {
-          if (this.$.thevault.hasVault()){
+        page('/',function(){
+          if (this.$.thevault.hasVault()) {
             page.redirect('/password');
-          }else{
+          } else {
             page.redirect('/newuser');
           }
         });
@@ -320,25 +316,25 @@
         this.entryAnimation = 'slide-from-right-animation';
         this.exitAnimation = 'slide-left-animation';
 
-        page('/newuser', () => {
+        page('/newuser',function(){
           if (Polymer.isInstance(this.$.newuser)) {
             this.selected = 'newuser';
             return;
           }
 
           Polymer.Base.importHref(
-            '/src/ac-newuser.html', () => {
+            '/src/ac-newuser.html',function(){
               this.selected = 'newuser';
-            }, () => {
+            },function(){
               console.log('Something failed!');
             }, true
           );
         });
 
-        page('/password', () => {
+        page('/password',function(){
 
-          if (!this.$.thevault.hasVault()){
-           return page.redirect('/');
+          if (!this.$.thevault.hasVault()) {
+            return page.redirect('/');
           }
 
           if (Polymer.isInstance(this.$.password)) {
@@ -347,44 +343,31 @@
           }
 
           Polymer.Base.importHref(
-            '/src/ac-password.html', () => {
+            '/src/ac-password.html',function(){
               this.selected = 'password';
-            }, () => {
+            },function(){
               console.log('Something failed!');
             }, true
           );
         });
 
-        page('/home', () => {
-          // if (Polymer.isInstance(this.$.activity)) {
-            if (!this.$.thevault.keystore){
-              page.redirect('/');
-            }else{
-              this.selected = 'home';
-            }
-            // return;
-          // }
-
-          // Polymer.Base.importHref(
-          //   '/src/ac-home.html', () => {
-          //     this.selected = 'home';
-          //   }, () => {
-          //     console.log('Something failed!');
-          //   }, true
-          // );
+        page('/home',function(){
+          if (!this.$.thevault.keystore) {
+            page.redirect('/');
+          } else {
+            this.selected = 'home';
+          }
         });
 
-        page('/wallet', () => {
+        page('/wallet',function(){
           this.selected = 'wallet';
         });
 
-        page('/profile', () => {
+        page('/profile',function(){
           this.selected = 'profile';
-        // this.entryAnimation = 'slide-from-left-animation';
-        // this.exitAnimation = 'slide-right-animation';
         });
-        
-        page('/stage', () => {
+
+        page('/stage',function(){
           this.selected = 'stage';
         });
 
@@ -400,8 +383,6 @@
 
       toHome: function() {
         page.redirect('/home');
-        // this.entryAnimation = 'slide-from-right-animation';
-        // this.exitAnimation = 'slide-left-animation';
       },
 
       toProfile: function() {
@@ -414,35 +395,35 @@
         this.$.thevault.saveVault();
       },
 
-      animLogger: function(){
-      console.log('NU DAN, entry==',this.entryAnimation,' exit==',this.exitAnimation);
-    },
+      animLogger: function() {
+        console.log('NU DAN, entry==', this.entryAnimation, ' exit==', this.exitAnimation);
+      },
 
-    _sizeview: function(){
-      switch(this.sizeview) {
+      _sizeview: function() {
+        switch (this.sizeview) {
           case 'phone':
-              this.arcalign = 'verticcenter';
-              this.customStyle['--ac-balance-height'] = '30vh';
-              this.customStyle['--ac-balance-width'] = '100%';
-              this.customStyle['--tokentrans-width'] = '100%';
-              this.updateStyles();
-              break;
+            this.arcalign = 'verticcenter';
+            this.customStyle['--ac-balance-height'] = '30vh';
+            this.customStyle['--ac-balance-width'] = '100%';
+            this.customStyle['--tokentrans-width'] = '100%';
+            this.updateStyles();
+            break;
           case 'desktop':
-              this.arcalign = 'verticstart';
-              this.customStyle['--ac-balance-height'] = '20vh';
-              this.customStyle['--ac-balance-width'] = '100%';
-              this.updateStyles();
-              break;
+            this.arcalign = 'verticstart';
+            this.customStyle['--ac-balance-height'] = '20vh';
+            this.customStyle['--ac-balance-width'] = '100%';
+            this.updateStyles();
+            break;
           case 'xlarge':
-              this.arcalign = 'verticstart';
-              this.customStyle['--ac-balance-height'] = '20vh';
-              this.customStyle['--ac-balance-width'] = '100%';
-              this.updateStyles();
-              break;
+            this.arcalign = 'verticstart';
+            this.customStyle['--ac-balance-height'] = '20vh';
+            this.customStyle['--ac-balance-width'] = '100%';
+            this.updateStyles();
+            break;
           default:
-          console.log("!!! ** Niks");
-      }
-    },
+            console.log("!!! ** Niks");
+        }
+      },
 
     });
   </script>
