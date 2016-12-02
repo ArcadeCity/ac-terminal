@@ -305,7 +305,7 @@
 
       attached: function() {
         // Setup some basic routing
-        page('/', () => {
+        page('/',function(){
           if (this.$.thevault.hasVault()) {
             page.redirect('/password');
           } else {
@@ -316,22 +316,22 @@
         this.entryAnimation = 'slide-from-right-animation';
         this.exitAnimation = 'slide-left-animation';
 
-        page('/newuser', () => {
+        page('/newuser',function(){
           if (Polymer.isInstance(this.$.newuser)) {
             this.selected = 'newuser';
             return;
           }
 
           Polymer.Base.importHref(
-            '/src/ac-newuser.html', () => {
+            '/src/ac-newuser.html',function(){
               this.selected = 'newuser';
-            }, () => {
+            },function(){
               console.log('Something failed!');
             }, true
           );
         });
 
-        page('/password', () => {
+        page('/password',function(){
 
           if (!this.$.thevault.hasVault()) {
             return page.redirect('/');
@@ -343,15 +343,15 @@
           }
 
           Polymer.Base.importHref(
-            '/src/ac-password.html', () => {
+            '/src/ac-password.html',function(){
               this.selected = 'password';
-            }, () => {
+            },function(){
               console.log('Something failed!');
             }, true
           );
         });
 
-        page('/home', () => {
+        page('/home',function(){
           if (!this.$.thevault.keystore) {
             page.redirect('/');
           } else {
@@ -359,15 +359,15 @@
           }
         });
 
-        page('/wallet', () => {
+        page('/wallet',function(){
           this.selected = 'wallet';
         });
 
-        page('/profile', () => {
+        page('/profile',function(){
           this.selected = 'profile';
         });
 
-        page('/stage', () => {
+        page('/stage',function(){
           this.selected = 'stage';
         });
 
