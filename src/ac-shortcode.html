@@ -82,37 +82,53 @@
 
     </style>
 
-  <!--   <template is="dom-if" if="{{_is(topic,0)}}">
+    <!--   <template is="dom-if" if="{{_is(topic,0)}}">
 
-      <template is="dom-if" if="{{txtlink}}">
-        <template is="dom-if" if="{{!small}}">
-          <div class="code" on-tap="toggleCode">
-          <p><content></content></p>
-          </div>
-        </template>
-        <template is="dom-if" if="{{small}}">
-          <div class="code" on-tap="toggleCode">
-          <small><content></content></small>
-          </div>
-        </template>
-      </template> -->
-      
-      <!-- <template is="dom-if" if="{{topic}}"> -->
-      <!--   <ac-button on-tap="toggleCode" txtbtn txtcolor$="{{txtcolor}}" bg$="{{bg}}"><content></content></ac-button>
-      </template> -->
+    <template is="dom-if" if="{{txtlink}}">
+      <template is="dom-if" if="{{!small}}">
+        <div class="code" on-tap="toggleCode">
+          <p>
+            <content></content>
+          </p>
+        </div>
+      </template>
+      <template is="dom-if" if="{{small}}">
+        <div class="code" on-tap="toggleCode">
+          <small>
+            <content></content>
+          </small>
+        </div>
+      </template>
+    </template>
+    -->
+    <!-- <template is="dom-if" if="{{topic}}">
+    -->
+    <!--   <ac-button on-tap="toggleCode" txtbtn txtcolor$="{{txtcolor}}" bg$="{{bg}}">
+    <content></content>
+  </ac-button>
+</template>
+-->
 <!-- 
-    </template> -->
+    </template>
+-->
+<template is="dom-if" if="{{_is(topic,0)}}">
+  <ac-button txtbtn on-tap="fireshowshortcode" txtcolor="red" bg="btncolor" class="sender">
+    <content></content>
+  </ac-button>
+</template>
 
-      <!-- <iron-collapse id="collapsecode"> -->
-      <div class="codeandbtn">
-        <p>{{topic}}</p>
-        <ac-button small on-tap="cancel" icon="ac-decline"></ac-button>
-      </div>
-      <!-- </iron-collapse> -->
+<template is="dom-if" if="{{topic}}">
 
-  </template>
+  <!-- <iron-collapse id="collapsecode">
+  -->
+  <div class="codeandbtn">
+    <p>{{topic}}</p>
+    <ac-button small on-tap="cancel" icon="ac-decline"></ac-button>
+  </div>
+</template>
+</template>
 
-  <script>
+<script>
     Polymer({
 
       is: 'ac-shortcode',
@@ -124,6 +140,10 @@
         // },
 
         topic: {
+          type: Number
+        },
+
+        progress: {
           type: Number
         },
 
@@ -185,7 +205,19 @@
 
       cancel: function(){
         this.fire('cancel');
-      }
+      },
+
+      fireshowshortcode: function(){
+        this.fire('showshortcode');
+      },
+
+      _is: function(a, b) {
+        if (b === undefined){
+          b = true;
+        }
+        //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
+        return a === b;
+      },      
 
       // toggleCode: function(){
       //   var collapser = document.getElementById('collapsecode');

@@ -232,12 +232,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <template is="dom-if" if="{{sendcollsclosed}}">
         <div class$="initbtns {{align}}">
           <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="togglesendcoins" class="sender">send ARC</ac-button>
-          <template is="dom-if" if="{{_is(listeninterval,0)}}">
-            <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="activatereceivecoins" class="sender">receive ARC</ac-button>
-          </template>
-          <template is="dom-if" if="{{topic}}">
-            <ac-shortcode on-cancel="deactivatereceivecoins" bg="btncolor" txtcolor="red" topic="{{topic}}" progress="{{progress}}" btn></ac-shortcode>
-          </template>
+
+          <ac-shortcode on-cancel="deactivatereceivecoins" bg="btncolor" txtcolor="red" topic="{{topic}}" progress="{{progress}}" on-showshortcode="activatereceivecoins" btn>receive ARC</ac-shortcode>
+
         </div>
       </template>
       <div class="sendcoiners">
