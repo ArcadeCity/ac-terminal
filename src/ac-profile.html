@@ -168,21 +168,24 @@
       <div class="profilepic">
         <div class="profilepicinner">
 
+          <ac-avatar
+            id="currentavatar"
+            username="{{identity.username}}"
+            artwork="{{currentavatar}}"
+            pubkey="{{account}}"
+            mode="imgbigonly">
+          </ac-avatar>
 
-        <ac-avatar
-          username="{{identity.username}}"
-          artwork="{{identity.avatarurl}}"
-          pubkey="{{account}}"
-          mode="imgbigonly">
-        </ac-avatar>
+          <ac-ipfsupload
+            class="avatar"
+            hidefileinput
+            on-ipfs-hash-received="setcurrentavatar"
+            hash="{{newavatar}}"
+            url="{{newavatarurl}}"
+            id="ipfsupload">
+          </ac-ipfsupload>
 
-        <ac-ipfsupload class="avatar" hidefileinput hash="{{newavatar}}" url="{{newavatarurl}}" id="ipfsupload">
-          <img src="{{newavatarurl}}">
-        </ac-ipfsupload>
-
-        <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" on-tap="toggleupload" small>upload new picture</ac-button>
-
-
+          <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" on-tap="toggleupload" small>upload new picture</ac-button>
 
         </div>
 
@@ -232,8 +235,9 @@
     Polymer({
       is: 'ac-profile',
       properties: {
-        username: {
+        identity: {
           type: String,
+          observer: '_identity'
         },
 
       },
@@ -247,6 +251,14 @@
         }
         //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
         return a === b;
+      },
+
+      _identity: function() {
+        this.currentavatar = this.identity.avatarurl;
+      },
+
+      setcurrentavatar: function() {
+        this.currentavatar = this.newavatarurl;
       },
 
     _sizeview: function(){
@@ -303,6 +315,10 @@
 
     backtohome: function(){
       this.fire('to-home');
+    },
+
+    toggleupload: function() {
+      this.$.ipfsupload.click();
     }
 
     });
