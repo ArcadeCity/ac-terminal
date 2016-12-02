@@ -1,7 +1,7 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/ac-style/ac-style.html">
-<link rel="import" href="../bower_components/ac-button/ac-button.html">
-<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../../bower_components/ac-icon/ac-icon.html">
 <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
 
 <dom-module id="ac-shortcode">
@@ -82,35 +82,7 @@
 
     </style>
 
-    <!--   <template is="dom-if" if="{{_is(topic,0)}}">
 
-    <template is="dom-if" if="{{txtlink}}">
-      <template is="dom-if" if="{{!small}}">
-        <div class="code" on-tap="toggleCode">
-          <p>
-            <content></content>
-          </p>
-        </div>
-      </template>
-      <template is="dom-if" if="{{small}}">
-        <div class="code" on-tap="toggleCode">
-          <small>
-            <content></content>
-          </small>
-        </div>
-      </template>
-    </template>
-    -->
-    <!-- <template is="dom-if" if="{{topic}}">
-    -->
-    <!--   <ac-button on-tap="toggleCode" txtbtn txtcolor$="{{txtcolor}}" bg$="{{bg}}">
-    <content></content>
-  </ac-button>
-</template>
--->
-<!-- 
-    </template>
--->
   <template is="dom-if" if="{{_is(topic,0)}}">
 
     <template is="dom-if" if="{{!txtlink}}">
@@ -139,6 +111,9 @@
     </template>
 
   </template>
+
+
+
 
   <template is="dom-if" if="{{topic}}">
     <div class="codeandbtn">
