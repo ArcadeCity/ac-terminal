@@ -8,6 +8,7 @@
 
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-avatar.html">
+<link rel="import" href="ac-ipfsupload.html">
 
 <dom-module id="ac-profile">
   <!-- Defines the element's style and local DOM -->
@@ -119,17 +120,28 @@
     <ac-icon icon="ac-arrowleft" iconcolor="yellow" on-tap="backtohome" small>back</ac-icon>
     </div>
       <div class="scrollcontainer">
+        <ac-button txtcolor="yellow" bg="btncolor" txtbtn small on-tap="logout">logout</ac-button>
+
+
       <div class="profilepic">
         <div class="profilepicinner">
 
+
         <ac-avatar
           username="{{identity.username}}"
-          artwork="https://pbs.twimg.com/profile_images/2849872800/cbe52909627305c4d0ca07f5ca94edeb_400x400.png"
+          artwork="{{identity.avatarurl}}"
           pubkey="{{account}}"
           mode="imgbigonly">
-
         </ac-avatar>
-        <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" small>upload new picture</ac-button>
+
+        <ac-ipfsupload class="avatar" hidefileinput hash="{{newavatar}}" url="{{newavatarurl}}" id="ipfsupload">
+          <img src="{{newavatarurl}}">
+        </ac-ipfsupload>
+
+        <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" on-tap="toggleupload" small>upload new picture</ac-button>
+
+
+
         </div>
 
       </div>
@@ -206,12 +218,9 @@
       }
     },
 
-    decline: function(){
-      //console.log("I've declined!");
-    },
-
-    confirm: function(){
-      //console.log("I've confirmed!");
+    logout: function() {
+      sessionStorage.removeItem('ac-password');
+      window.location = '/';
     },
 
     _username: function() {
@@ -227,8 +236,8 @@
     },
 
     confirm: function() {
-      this.identity.username = this.username;
-      this.fire('identityUpdate');
+      this.set('identity.username', this.username);
+      this.fire('identity-update');
       var collapser = document.getElementById('collapse');
       collapser.hide();
     },
@@ -236,6 +245,10 @@
     decline: function() {
       var collapser = document.getElementById('collapse');
       collapser.hide();
+    },
+
+    toggleupload: function() {
+
     },
 
     backtohome: function(){
