@@ -28,7 +28,7 @@
 
       small {
         @apply(--ac-font-small);
-      } 
+      }
 
       ac-button {
         @apply(--base-shadow-and-inset);
@@ -46,7 +46,7 @@
         font-size: 16px;
         line-height: 20px;
         color: var(--txtcolorz-code);
-        padding-bottom:4px; 
+        padding-bottom:4px;
         border-bottom: 1px dashed var(--txtcolorz-code);
       }
 
@@ -56,7 +56,7 @@
         font-size: 12px;
         line-height: 16px;
         color: var(--txtcolorz-code);
-        padding-bottom:2px; 
+        padding-bottom:2px;
         border-bottom: 1px dashed var(--txtcolorz-code);
       }
 
@@ -92,7 +92,7 @@
     </template>
 
     <template is="dom-if" if="{{txtlink}}">
-    
+
       <template is="dom-if" if="{{!small}}">
         <div class="code" on-tap="fireshowshortcode">
           <p>
@@ -178,6 +178,10 @@
         }
       },
 
+      listeners: {
+        'tap': 'toggleVisibility'
+      },
+
       // _txtlink: function(){
       //   if (this.txtlink){
       //   this.btn = false;
@@ -185,11 +189,10 @@
       // },
 
       _txtcolor: function(){
-          var txtcolorz = 'var(--ac-'+ this.txtcolor + ')';
-          this.customStyle['--txtcolorz-code'] = txtcolorz;
-          this.updateStyles();
-        },
-
+        var txtcolorz = 'var(--ac-'+ this.txtcolor + ')';
+        this.customStyle['--txtcolorz-code'] = txtcolorz;
+        this.updateStyles();
+      },
 
       _type: function(){
         console.log("button?",this.btn, 'Of txtlink?', this.txtlink);
@@ -214,7 +217,12 @@
         }
         //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
         return a === b;
-      },      
+      },
+
+      toggleVisibility: function() {
+        var collapser = document.getElementById('collapsecode');
+        collapser.toggle();
+      }
 
       // toggleCode: function(){
       //   var collapser = document.getElementById('collapsecode');
@@ -224,7 +232,7 @@
 
       //   if(this.shortcodeshown){
       //     setTimeout(function(){
-      //       this.shortcodeshown=!this.shortcodeshown;     
+      //       this.shortcodeshown=!this.shortcodeshown;
       //     }.bind(this), 280);
       //   } else {
       //     this.shortcodeshown=!this.shortcodeshown;
