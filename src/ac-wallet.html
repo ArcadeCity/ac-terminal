@@ -58,6 +58,10 @@
 
       attached: function() {
         console.log('ac-wallet attached');
+
+        var MyContract = this.web3.eth.contract(this.token.abi);
+        this.myContractInstance = MyContract.at(this.tokencontractaddress);
+
       },
 
       _keystore: function(){
@@ -83,11 +87,10 @@
 
       updateBalance: function(e) {
 
-        var MyContract = this.web3.eth.contract(this.token.abi);
-        var myContractInstance = MyContract.at(this.tokencontractaddress);
 
         this.ethbalance = this.web3.eth.getBalance(this.account).toNumber();
-        this.arcbalance = MyContract.at(this.tokencontractaddress).balanceOf(this.account).toNumber();
+        this.arcbalance = this.myContractInstance.balanceOf(this.account).toNumber();
+        
         console.log('ETH balance is', this.accountbalance);
         console.log('ARC balance is', this.arcbalance);
 
