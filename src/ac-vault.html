@@ -1,25 +1,52 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<!-- <link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html"> -->
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="./ac-helpers.html">
+<link rel="import" href="./ac-password.html">
+
 <script src="scripts/lightwallet.min.js"></script>
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+
 <dom-module id="ac-vault">
 
   <template>
     <ac-helpers id="helpers"></ac-helpers>
+    <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
 
-  <!--   <iron-localstorage
+    <neon-animated-pages attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
+
+      <neon-animatable data-page="pastepk">
+        PASTE PK
+        <!-- <ac-createwallet on-to-home="toHome"></ac-createwallet> -->
+      </neon-animatable>
+
+      <neon-animatable data-page="new">
+        <ac-password double on-password-received="createvault"></ac-password>
+
+        <ac-createwallet on-to-home="toHome"></ac-createwallet>
+      </neon-animatable>
+
+      <neon-animatable data-page="unlock">
+        <ac-password id="newuser" on-password-received="passwordreceived"></ac-password>
+      </neon-animatable>
+
+    </neon-animated-pages>
+
+    <!--   <iron-localstorage
       id="localstorage"
       name="ac-vault"
-      value="{{acvault}}">
-    </iron-localstorage> -->
-  </template>
+      value="{{acvault}}"></iron-localstorage>
+  -->
+</template>
 
-  <script>
+<script>
     Polymer({
 
       is: 'ac-vault',
 
       properties: {
+        route: {
+          type: Object
+        },
         password: {
           type: String,
           observer: '_password'
@@ -56,6 +83,17 @@
 
       _currentidentity: function(){
         console.log('ac-vault ->','currentidentity updated',this.currentidentity);
+      },
+
+
+      passwordreceived: function(e) {
+        if (!this.hasVault()) {
+          //return page.redirect('/');
+          console.log("no vault!");
+        }
+        this.loadVault(e.detail.password);
+        console.log("vault loaded!");
+        //page.redirect('/home');
       },
 
       loadVault: function(password){
@@ -166,17 +204,6 @@
             }
             self.pwDerivedKey = pwDerivedKey;
             cb(null,pwDerivedKey);
-            //if (err) throw err;
-            // if (self.pastedpk) {
-            //   //debugger;
-            //   self.self.keystore.importPrivateKey(self.pastedpk,pwDerivedKey)
-            // } else {
-            //self.keystore.generateNewAddress(pwDerivedKey, 1);
-            // }
-
-            //var private = self.ks.exportPrivateKey(self.account, pwDerivedKey);
-            ///self.private = private;
-
           });
       },
 
@@ -187,9 +214,7 @@
         var self = this;
         this._getpwDerivedKey(function(err,pwDerivedKey ) {
           self.keystore.generateNewAddress(pwDerivedKey, amount || 1);
-//          var a = self.keystore.getAddresses();
           cb();
-//          debugger;
         });
       },
 

@@ -34,8 +34,8 @@
         return address;
       },
 
-      getjson: function(contracturl, cb) {
-        this.getfile.call(contracturl, true, cb);
+      getjson: function(fileurl, cb) {
+        this.getfile.call(fileurl, true, cb);
       },
 
       unixtime: function() {
@@ -43,22 +43,22 @@
       },
 
       // loads and caches files loaded from URLS
-      getfile: function(contracturl, asJSON, cb) {
+      getfile: function(fileurl, asJSON, cb) {
         // if asJSON is not given, asJSON is assumed to be true
         if (!cb) {
           cb = asJSON;
           asJSON = true;
         }
-        if (!contracturl) {
-          cb('no contracturl supplied');
+        if (!fileurl) {
+          cb('no fileurl supplied');
         }
-        var key = contracturl.split(/[\\/]/).pop();
+        var key = fileurl.split(/[\\/]/).pop();
         if (this.filecache[key]) {
           return cb(null, this.filecache[key]);
         }
-        var contracturl = app.resolveUrl(contracturl);
+        var fileurl = app.resolveUrl(fileurl);
         var self = this;
-        app.importHref(contracturl, function(e) {
+        app.importHref(fileurl, function(e) {
           var result = e.target.import.body.innerText;
           if (asJSON) {
             try {

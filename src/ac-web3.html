@@ -1,7 +1,9 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <script src="../bower_components/web3/dist/web3.min.js"></script>
+<link rel="import" href="./ac-config.html">
 
 <dom-module id="ac-web3">
+  <ac-config web3host="{{host}}"></ac-config>
   <script>
 
     var acweb3_web3;
@@ -13,18 +15,18 @@
           type: Object,
           notify: true
         },
-        host: {
-          type: String,
-          observer: '_host'
-        }
       },
+
+      observers: [
+        '_host(host)'
+      ],
 
       _host: function(){
         this.initweb3();        
       },
 
-      attached: function(){
-        console.log('ac-web3 -> attached');
+      ready: function(){
+        console.log('ac-web3 -> ready');
         this.initweb3();
       },
 
@@ -38,6 +40,7 @@
           console.log('ac-web3 -> created Web3');
         }
         this.web3 = acweb3_web3;
+        this.fire('web3-ready');
       }
     });
   </script>

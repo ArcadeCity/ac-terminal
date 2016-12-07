@@ -6,19 +6,12 @@
 <link rel="import" href="./ac-config.html">
 <link rel="import" href="./ac-tokentransfer.html">
 <link rel="import" href="./ac-balance.html">
+<link rel="import" href="./ac-web3.html">
 
 <dom-module id="ac-wallet">
 
   <template>
-    <ac-config tokencontractaddress="{{tokencontractaddress}}"></ac-config>
-    <style>
-      :host {
-        display: block;
-        margin: 0px;
-        padding: 0px;
-      }
-    </style>
-
+    <ac-web3 web3="{{web3}}" on-web3-ready="_setprovider"></ac-web3>
     <ac-helpers id="helpers"></ac-helpers>
 
   </template>
@@ -43,11 +36,6 @@
           notify: true,
           value: 10
         },
-
-        host: {
-          type: String,
-        },
-
         token : {
           type: Object,
           value:
@@ -58,31 +46,72 @@
 
       attached: function() {
         console.log('ac-wallet attached');
-
-        var MyContract = this.web3.eth.contract(this.token.abi);
-        this.myContractInstance = MyContract.at(this.tokencontractaddress);
-
       },
 
       _keystore: function(){
+        this._setprovider();
+      },
 
-        debugger;
+      _setprovider: function(){
 
-        var web3Provider = new HookedWeb3Provider({
+        if (!this.web3 || !this.keystore){
+          return;
+        }
+
+        this.web3Provider = new HookedWeb3Provider({
           host: this.host,
           transaction_signer: this.keystore
         });
 
-        this.web3 = new Web3();
-        this.web3.setProvider(web3Provider);
+        this._setprovider();
 
         this.account = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
+
+        this.web3.setProvider(this.web3Provider);
+
+        var MyContract = this.web3.eth.contract(this.token.abi);
+        this.myContractInstance = MyContract.at(this.tokencontractaddress);
+
 
       },
 
 
-      sendTokens: function(to,amount){
-        throw new Error('not implemented');
+      sendTokens: function(to,amount,cb){
+      
+        var self = this;
+
+        this.$.helpers.getjson('./contracts/ARCToken.json', function(e) {
+          this.contractjson = JSON.parse(e.target.import.body.innerText);
+             self.web3.eth.getGasPrice(function(err, result){
+            var gasPrice = result.toNumber(10);
+          console.log('gasprice: ', gasPrice);
+
+          var MyContract = self.web3.eth.contract(self.contractjson.abi);
+          var myContractInstance = MyContract.at(self.contractjson.address);
+            console.log('doing transfer of ',amount,' to: ', to, 'from: ', window.account);
+            myContractInstance.transfer.sendTransaction(to, amount, {
+              from: self.$.helpers.fixaddress(window.account),
+              gasPrice: gasPrice,
+              gasLimit: 3000000,
+              gas: 2000000
+            }, function(err, result){
+              console.log(err, result);
+              var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(window.account));
+                self.arcbalance = coinbalance;
+                if (cb){
+                  cb(err,result);
+                }
+            });
+
+          });
+        });
+
+        this.clearInputs();
+        var sendcoins = self.$.sendcoins;
+        sendcoins.toggle();
+        this.collsclosed=!this.collsclosed;
+        this.sendcoinstate = 'first';
+      
       },
 
       updateBalance: function(e) {

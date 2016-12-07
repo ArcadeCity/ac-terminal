@@ -36,7 +36,7 @@
       fillinitial: function() {
         
         var startBlock = this.web3.eth.blockNumber - Math.floor(60 * 60 * 24 / 14);
-debugger;
+
         var filter = this.web3.eth.filter({
           fromBlock: startBlock,
           address: this.address
@@ -48,7 +48,10 @@ debugger;
 
       // add a txhash to this log
       logtx: function(txhash){
-
+        // TODO : add listener for pending txhashes
+        this.push('logitems',{
+          txhash: txhash
+        });
       }
 
     });
