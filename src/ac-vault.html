@@ -160,7 +160,6 @@
       },
 
       createvault: function(e){
-        debugger;
         this.createKeystore(e.detail.password,function(){
            this.fire('unlocked');
         }.bind(this));
