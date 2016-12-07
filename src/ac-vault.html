@@ -20,13 +20,13 @@
       </neon-animatable>
 
       <neon-animatable data-page="new">
-        <ac-password double on-password-received="createvault"></ac-password>
+        <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
 
         <ac-createwallet on-to-home="toHome"></ac-createwallet>
       </neon-animatable>
 
       <neon-animatable data-page="unlock">
-        <ac-password id="newuser" on-password-received="passwordreceived"></ac-password>
+        <ac-password id="newuser" sessionname="vaultpassword" on-password-received="unlockvault"></ac-password>
       </neon-animatable>
 
     </neon-animated-pages>
@@ -75,6 +75,12 @@
 
       attached: function(){
         console.log('ac-vault attached');
+        if (!this.hasVault()) {
+          return this.fire('novault');
+        };
+        if (!this.password){
+          return this.fire('locked');          
+        }
       },
 
       _password: function(){
@@ -86,13 +92,14 @@
       },
 
 
-      passwordreceived: function(e) {
+      unlockvault: function(e) {
         if (!this.hasVault()) {
           //return page.redirect('/');
-          console.log("no vault!");
+          console.log("there is no vault!");
         }
         this.loadVault(e.detail.password);
         console.log("vault loaded!");
+        this.fire('unlocked');
         //page.redirect('/home');
       },
 
@@ -152,7 +159,14 @@
         return (vault);
       },
 
-      createVault: function(_password, fn) {
+      createvault: function(e){
+        debugger;
+        this.createKeystore(e.detail.password,function(){
+           this.fire('unlocked');
+        }.bind(this));
+      },
+
+      createKeystore: function(_password, fn) {
         if (!_password) {
           throw new Error('no password set for creating Vault');
         }

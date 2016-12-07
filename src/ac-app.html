@@ -162,17 +162,21 @@
       route="{{pageTail}}"
       currentkeystore="{{keystore}}"
       currentidentity="{{identity}}"
-      currentaccount="{{account}}"></ac-vault>
+      currentaccount="{{account}}"
+      on-unlocked="vaultUnlocked"
+      on-locked="vaultLocked"
+      on-novault="noVault"
+      ></ac-vault>
 
   </neon-animatable>
 
-  <neon-animatable data-page="init">
+ <!--  <neon-animatable data-page="init">
     <ac-createwallet on-to-home="toHome"></ac-createwallet>
   </neon-animatable>
 
   <neon-animatable data-page="newuser">
     <ac-newuser id="newuser" on-newuser-created="createnewuser"></ac-newuser>
-  </neon-animatable>
+  </neon-animatable> -->
 
   <neon-animatable data-page="home">
     <div class="hometotal">
@@ -261,23 +265,24 @@
         },
         arcalign: {
           type: String,
-        },
+        }
       },
       
       observers: [
           '_onRoutePathChanged(route.path)'
         ],
+
       _onRoutePathChanged: function(path) {
-          // If we do not have an initial URL, we redirect to /search
-          if (!path) {
-            this.set('route.path', '/hallo/');
-          }
+          // if (!path) {
+          //   this.set('route.path', '/vault/unlock');
+          // }
         },
-      createnewuser: function(e) {
-        this.$.thevault.createVault(e.detail.password, function() {
-          page.redirect('/home');
-        });
-      },
+
+      // createnewuser: function(e) {
+      //   this.$.thevault.createVault(e.detail.password, function() {
+      //     page.redirect('/home');
+      //   });
+      // },
 
       // passwordreceived: function(e) {
       //   if (!this.$.thevault.hasVault()) {
@@ -286,6 +291,18 @@
       //   this.$.thevault.loadVault(e.detail.password);
       //   page.redirect('/home');
       // },
+
+      vaultUnlocked: function(){
+        this.set('route.path', '/home');
+      },
+
+      vaultLocked: function(){
+        this.set('route.path', '/vault/unlock');
+      },
+
+      noVault: function(){
+        this.set('route.path', '/vault/new');
+      },
 
       attached: function() {
         // Setup some basic routing
@@ -369,17 +386,17 @@
       },
 
       toWallet: function() {
-        page.redirect('/wallet');
+        this.set('route.path', '/wallet');
       },
 
       toHome: function() {
-        page.redirect('/home');
+        this.set('route.path', '/home');
       },
 
       toProfile: function() {
         this.entryAnimation = 'slide-from-right-animation';
         this.exitAnimation = 'slide-left-animation';
-        page.redirect('/profile');
+        this.set('route.path', '/profile');
       },
 
       saveIdentity: function() {
