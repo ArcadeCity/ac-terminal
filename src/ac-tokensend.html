@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./ac-log.html">
 <link rel="import" href="./ac-wallet.html">
 
-<dom-module id="ac-tokentransfer">
+<dom-module id="ac-tokensend">
   <template>
     <style>
       :host {
@@ -344,12 +344,12 @@ TO:
     'use strict';
 
     Polymer({
-      is: 'ac-tokentransfer',
+      is: 'ac-tokensend',
 
       properties: {
         foo: {
           type: String,
-          value: 'ac-tokentransfer',
+          value: 'ac-tokensend',
           notify: true
         },
 
@@ -446,7 +446,7 @@ TO:
 
       attached: function(){
 //        var self=this;
-        console.log('ac-tokentransfer attached');
+        console.log('ac-tokensend attached');
         console.log('my account',this.account);
       },
 
@@ -518,7 +518,7 @@ TO:
 
       _getARCbalance: function() {
         if(!this.web3) return;
-        //console.log('ac-tokentransfer ', Date.now());
+        //console.log('ac-tokensend ', Date.now());
         this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
 
         var self = this;

@@ -2,11 +2,42 @@
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="./ac-helpers.html">
 <link rel="import" href="./ac-password.html">
+<link rel="import" href="../bower_components/ac-input/ac-input.html">
 
 <script src="scripts/lightwallet.min.js"></script>
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 
 <dom-module id="ac-vault">
+
+ <style>
+      :host {
+        display: block;
+      }
+
+      .pascanvas {
+      /*background-color: var(--ac-yellow);*/
+
+      @apply(--locals-canvas);
+      @apply(--base-structure);
+
+      height: 100vh;
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
+     }
+     .enterpass {
+     width: 80%;
+     max-width: 500px;
+     @apply(--layout-vertical);
+     @apply(--layout-center-center);
+    }
+
+    .whitespace {
+      height: 20px;
+    }
+    
+    </style>
+
+   
 
   <template>
     <ac-helpers id="helpers"></ac-helpers>
@@ -14,7 +45,23 @@
 
     <neon-animated-pages attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
-      <neon-animatable data-page="pastepk">
+      <neon-animatable data-page="importpk">
+        <div class="pascanvas">
+          <h1>Enter your privatekey</h1>
+        <div class="enterpass">
+          <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="enter your private key" type="password" bind-value="{{privatekey}}" center></ac-input>
+          <ac-button class="loginbtn" icon="ac-arrowright" on-tap="pkreceived" bg="base" txtcolor="yellow"></ac-button>
+        </div>
+        </div>
+      </neon-animatable>
+
+      <neon-animatable data-page="importpkmakewallet">
+          <h1>Enter a password to protect the vault that will hold this key</h1>
+        <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
+      </neon-animatable>
+
+
+      <neon-animatable data-page="importfile">
         PASTE PK
         <!-- <ac-createwallet on-to-home="toHome"></ac-createwallet> -->
       </neon-animatable>
@@ -31,11 +78,6 @@
 
     </neon-animated-pages>
 
-    <!--   <iron-localstorage
-      id="localstorage"
-      name="ac-vault"
-      value="{{acvault}}"></iron-localstorage>
-  -->
 </template>
 
 <script>
@@ -73,14 +115,47 @@
         }
       },
 
+    observers: [
+          '_onRoutePathChanged(data.page)'
+        ],
+
+      _onRoutePathChanged: function(page) {
+
+        switch (page) {
+          case 'importpk': if (this.hasVault()) {
+              console.log('You already have a vault');
+            } 
+          break;
+          default: if (!this.hasVault()) {
+              return this.fire('novault');
+            };
+          if (!this.password) {
+            return this.fire('locked');
+          }
+          break;
+
+        }
+      },
+
+      pkreceived: function(){
+        this.set('route.path', '/importpkmakewallet');          
+      },
+
+      createvaultfrompk: function(e) {
+        debugger;
+        this.createKeystore(e.detail.password,0, function() {
+          this.password = e.detail.password;
+          this._getpwDerivedKey(function(err, pwDerivedKey) {
+            this.keystore.importPrivateKey(this.privatekey, pwDerivedKey);
+            this.saveVault();
+            this.loadVault();
+            this.fire('unlocked');
+          }.bind(this));
+        }.bind(this));
+      },
+
       attached: function(){
         console.log('ac-vault attached');
-        if (!this.hasVault()) {
-          return this.fire('novault');
-        };
-        if (!this.password){
-          return this.fire('locked');          
-        }
       },
 
       _password: function(){
@@ -112,6 +187,7 @@
             throw new Error('vault is not defined.');
           }
           switch (this.vault.version){
+
             case 1:
               this.password = password;
               this.keystore = lightwallet.keystore.deserialize(this.vault.keystore);
@@ -119,6 +195,7 @@
               this.currentidentity = this.vault.identity;
               console.log('ac-vault -> Vault opened. Account=',this.currentaccount);
               break;
+
             default:
               throw new Error('Vault version unknown',this.vault.version);
               break;
@@ -160,12 +237,12 @@
       },
 
       createvault: function(e){
-        this.createKeystore(e.detail.password,function(){
+        this.createKeystore(e.detail.password,1,function(){
            this.fire('unlocked');
         }.bind(this));
       },
 
-      createKeystore: function(_password, fn) {
+      createKeystore: function(_password, amountofaccounts, fn) {
         if (!_password) {
           throw new Error('no password set for creating Vault');
         }
@@ -180,6 +257,23 @@
             throw new Error(err);
           }
           self.keystore = ks;
+
+          if (amountofaccounts==0){
+            self.currentidentity = {
+              version: 1,
+              username: 'MrArc',
+              avatarhash: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
+            };
+
+            self.saveVault();
+            self.loadVault();
+
+            if (fn) {
+              fn();
+            }
+            return;            
+          }
+
           self.generateNewAddress(1,function() {
             //self._currentAccount();
 
@@ -195,12 +289,8 @@
             if (fn) {
               fn();
             }
-
           });
-
-
         });
-
       },
 
       _getpwDerivedKey: function(cb){
