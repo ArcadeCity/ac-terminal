@@ -67,9 +67,15 @@
       </neon-animatable>
 
       <neon-animatable data-page="new">
-        <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
+<ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="tocreatenew" txtbtn>Create a new vault</ac-button>      
+<ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toimportfile" txtbtn>Import a wallet file</ac-button>      
+<ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toimportpk" txtbtn>Enter a private key</ac-button>      
+      </neon-animatable>
 
-        <ac-createwallet on-to-home="toHome"></ac-createwallet>
+
+      <neon-animatable data-page="createnew">
+        <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
+        <!-- <ac-createwallet on-to-home="toHome"></ac-createwallet> -->
       </neon-animatable>
 
       <neon-animatable data-page="unlock">
@@ -118,6 +124,16 @@
     observers: [
           '_onRoutePathChanged(data.page)'
         ],
+
+        tocreatenew: function(){
+          this.set('route.path', '/createnew');   
+        },
+        toimportfile: function(){
+          this.set('route.path', '/importfile');   
+        },
+        toimportpk: function(){
+          this.set('route.path', '/importpk');   
+        },
 
       _onRoutePathChanged: function(page) {
 
