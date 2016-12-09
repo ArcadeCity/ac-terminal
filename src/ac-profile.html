@@ -379,14 +379,14 @@ Polymer({
 
   setcurrentavatar: function() {
     var self = this;
-    this.croppie.result({type: 'base64'}).then(function(base64) {
+    this.croppie.result({type: 'base64',format:'jpeg', quality:0.9}).then(function(base64) {
 
       // set the avatar to the dataURL.
       this.currentavatar = base64;
       this.datastate = 'view';
 
       // now convert and save to IPFS in the background.
-      var base64data = base64.replace(/^data:image\/(png|jpg);base64,/, '');
+      var base64data = base64.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
       var imgbuffer = this.$.ipfs.ipfs.Buffer(base64data, 'base64');
 
       this.$.ipfs.add(imgbuffer, function(err, result) {
