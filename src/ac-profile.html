@@ -366,16 +366,20 @@ Polymer({
 
   setcurrentavatar: function() {
     this.vanilla.result('rawcanvas').then(function(blob) {
-      debugger;
-      //debugger;
-      //var byteArray = Base64.decode(blob);
+      var ctx = blob.getContext('2d');
+      var pixel = ctx.getImageData(0, 0, 100, 100);
+      var data = pixel.data;
+      data.name = 'avatar.png';
+      data.mimetype = 'image/png';
+      var bufferdata = this.$.ipfs.ipfs.Buffer(data);
 
-      //console.log(byteArray);
-    //     // do something with cropped blob
-
-    //   this.$.ipfs.add(byteArray, function(err, result) {
-    //     console.log(err, result);
-    //   }.bind(this));
+      this.$.ipfs.add(bufferdata, function(err, result) {
+        console.log(err, result[0].hash);
+        var hashurl = this.$.ipfs.geturl(result[0].hash);
+        this.currentavatar = hashurl;
+        console.log(hashurl);
+        this.datastate = 'view';
+      }.bind(this));
     }.bind(this));
   },
 
