@@ -9,7 +9,7 @@
 
 <dom-module id="ac-vault">
 
- <style>
+  <style>
       :host {
         display: block;
       }
@@ -37,56 +37,54 @@
     
     </style>
 
-   
-
   <template>
     <ac-helpers id="helpers"></ac-helpers>
     <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
 
     <neon-animated-pages attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
-
+      <!-- first stage in importing PK -->
       <neon-animatable data-page="importpk">
         <div class="pascanvas">
           <h1>Enter your privatekey</h1>
-        <div class="enterpass">
-          <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="enter your private key" type="password" bind-value="{{privatekey}}" center></ac-input>
-          <ac-button class="loginbtn" icon="ac-arrowright" on-tap="pkreceived" bg="base" txtcolor="yellow"></ac-button>
-        </div>
+          <div class="enterpass">
+            <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="enter your private key" type="password" bind-value="{{privatekey}}" center></ac-input>
+            <ac-button class="loginbtn" icon="ac-arrowright" on-tap="pkreceived" bg="base" txtcolor="yellow"></ac-button>
+          </div>
         </div>
       </neon-animatable>
 
+      <!-- second stage in importing PK -->
       <neon-animatable data-page="importpkmakewallet">
-          <h1>Enter a password to protect the vault that will hold this key</h1>
+        <h1>
+          Enter a password to protect the vault that will hold this key
+        </h1>
         <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
       </neon-animatable>
 
-
+      <!-- import a keyfile -->
       <neon-animatable data-page="importfile">
-        <!-- <input type="file"  class="hidden" id="uploaditem"  on-change="readSingleFile">
-        <template is="dom-if" if="{{_is(walletfilename,'')}}">
-
+        <input type="file"  class="hidden" id="uploaditem"  on-change="readSingleFile">
         <ac-button on-tap="uploadclick" txtbtn txtcolor="base" bg="yellow">Choose your wallet-file</ac-button>
- -->
       </neon-animatable>
-
+<!-- 
       <neon-animatable data-page="new">
-<ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="tocreatenew" txtbtn>Create a new vault</ac-button>      
-<ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toimportfile" txtbtn>Import a wallet file</ac-button>      
-<ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toimportpk" txtbtn>Enter a private key</ac-button>      
-      </neon-animatable>
-
+        <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="tocreatenew" txtbtn>Create a new vault</ac-button>
+        <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toimportfile" txtbtn>Import a wallet file</ac-button>
+        <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toimportpk" txtbtn>Enter a private key</ac-button>
+      </neon-animatable> -->
 
       <neon-animatable data-page="createnew">
-       <p class="yellow centertxt">Choose a password and repeat</p>
+        <p class="yellow centertxt">Choose a password and repeat</p>
         <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
-        <!-- <ac-createwallet on-to-home="toHome"></ac-createwallet> -->
-      </neon-animatable>
+        <!-- <ac-createwallet on-to-home="toHome"></ac-createwallet>
+      -->
+    </neon-animatable>
 
-      <neon-animatable data-page="unlock">
-        <ac-password id="newuser" sessionname="vaultpassword" on-password-received="unlockvault"></ac-password>
-      </neon-animatable>
+    <neon-animatable data-page="unlock">
+      <ac-password id="newuser" sessionname="vaultpassword" on-password-received="unlockvault"></ac-password>
+    </neon-animatable>
 
-    </neon-animated-pages>
+  </neon-animated-pages>
 
 </template>
 
@@ -127,15 +125,15 @@
           '_onRoutePathChanged(data.page)'
         ],
 
-        tocreatenew: function(){
-          this.set('route.path', '/createnew');   
-        },
-        toimportfile: function(){
-          this.set('route.path', '/importfile');   
-        },
-        toimportpk: function(){
-          this.set('route.path', '/importpk');   
-        },
+        // tocreatenew: function(){
+        //   this.set('route.path', '/createnew');   
+        // },
+        // toimportfile: function(){
+        //   this.set('route.path', '/importfile');   
+        // },
+        // toimportpk: function(){
+        //   this.set('route.path', '/importpk');   
+        // },
 
       _onRoutePathChanged: function(page) {
 
@@ -159,6 +157,28 @@
 
         }
       },
+
+      uploadclick: function() {
+        document.querySelector('#uploaditem').click();
+      },
+      
+      readSingleFile: function(e) {
+        //debugger;
+        var self = this;
+        var file = e.target.files[0];
+        if (!file) {
+          return;
+        }
+        this.walletfilename = file.name;
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var contents = e.target.result;
+          self.readwallet = contents;
+          //self.importWallet(contents);
+        };
+        reader.readAsText(file);
+      },
+
       pkreceived: function(){
         this.set('route.path', '/importpkmakewallet');          
       },

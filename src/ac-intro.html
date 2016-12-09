@@ -155,47 +155,13 @@
           <p class="red">Do you have an ARC-Wallet json-file?</p>
           <div class="whitespace"></div>
           <div class="whitespace"></div>
-
           <div class="yesnobtns vertic">
             <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="touploadjson" txtbtn>Yes</ac-button>
             <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toprivatekey" txtbtn>No</ac-button>
           </div>
         </div>
       </neon-animatable>
-
-    <!--   <neon-animatable state="uploadjson">
-        <div class="total vertic">
-        <div class="inner">
-          <div class="centervlak flex vertic">
-            <p class="yellow">Upload your ARC-wallet and unlock</p>
-            <div class="whitespace"></div>
-            <div class="whitespace"></div>
-            <div class="whitespace"></div>
-            <ac-button small bg="yellow" txtcolor="base" on-tap="createwallet" txtbtn>Choose file</ac-button>
-            <div class="whitespace"></div>
-            <ac-input id="p1" color="yellow" label="Password of ARC-wallet" bind-value="{{password}}" type="password" center autofocus></ac-input>
-          </div>
-          <ac-button icon="ac-v" on-tap="createwallet" disabled$="{{uploadcheck}}" bg="btncolor" txtcolor="yellow">Continue</ac-button>
-        </div>
-        </div>
-      </neon-animatable>
- -->
-   <!--    <neon-animatable state="impprivkey">
-
-        <div class="total vertic">
-        <div class="inner">
-          <div class="centervlak flex vertic">
-            <p class="yellow">Enter the private key of the wallet containing your ARC-tokens</p>
-            <div class="whitespace"></div>
-            <div class="whitespace"></div>
-            <div class="whitespace"></div>
-            <ac-input color="yellow" label="Private key of ARC-wallet" bind-value="{{privatekey}}" center autofocus></ac-input>
-          </div>
-          <ac-button icon="ac-v" on-tap="finish" disabled$="{{keycheck}}" bg="btncolor" txtcolor="yellow">Finish</ac-button>
-        </div>
-        </div>
-
-    </neon-animated-pages> -->
+    </neon-animated-pages> 
   </template>
 
   <script>
@@ -225,11 +191,7 @@
       },
 
       tocreatewallet: function() {
-        // create new wallet and go home
-//        console.log('go home');
-        //this.fire('toHome');
         this.fire('newvault');
-
       },
 
 
