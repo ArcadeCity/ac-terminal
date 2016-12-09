@@ -278,30 +278,16 @@
           type: String,
         }
       },
-      
+
       observers: [
-          '_onRoutePathChanged(route.path)'
-        ],
+        '_onRoutePathChanged(route.path)'
+      ],
 
       _onRoutePathChanged: function(path) {
-          if (!path) {
-            this.transitionto('/vault/unlock');
-          }
-        },
-
-      // createnewuser: function(e) {
-      //   this.$.thevault.createVault(e.detail.password, function() {
-      //     page.redirect('/home');
-      //   });
-      // },
-
-      // passwordreceived: function(e) {
-      //   if (!this.$.thevault.hasVault()) {
-      //     return page.redirect('/');
-      //   }
-      //   this.$.thevault.loadVault(e.detail.password);
-      //   page.redirect('/home');
-      // },
+        if (!path) {
+          this.transitionto('/vault/unlock');
+        }
+      },
 
       vaultUnlocked: function(){
         this.transitionto('/home');

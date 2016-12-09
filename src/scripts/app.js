@@ -11,11 +11,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 (function(document) {
   'use strict';
 
-	var app;
-
-
-
-  console.log(window.location.pathname);
+	// var app;
+  // console.log(window.location.pathname);
 
   //window.location = '/';
 
