@@ -166,6 +166,9 @@
   .avataredit {
     height: 300px;
   }
+  .hidden {
+    display:none;
+  }
 
   neon-animated-pages {
     height: 100vh;
@@ -186,7 +189,7 @@
 
         <h1 on-tap="toggleupload">VIEW </h1>
 
-        <div class="profilepic">
+        <div class="profilepic" on-tap="uploadfile">
           <div class="profilepicinner">
 
             <ac-avatar
@@ -206,9 +209,12 @@
             url="{{newavatarurl}}"
             id="ipfsupload">
           </ac-ipfsupload> -->
-          <input type="file" id="fileupload" />
+<!--            id="fileupload" />
+ -->
 
-          <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" on-tap="toggleupload" small>upload new picture</ac-button>
+           <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>          
+
+      <!--     <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" on-tap="toggleupload" small>upload new picture</ac-button> -->
 
 
         </div>
@@ -260,7 +266,7 @@
             id="ipfsupload">
           </ac-ipfsupload> -->
 
-          <div id="vanilla-demo">
+          <div id="croppie">
           </div>
           <ac-button on-tap="setcurrentavatar" txtbtn txtcolor="blue" bg="btncolor" small>save</ac-button>
 
@@ -305,28 +311,39 @@ Polymer({
 
   ready: function() {
     this.datastate = 'view';
-    this.$.fileupload.addEventListener('change', function(e) {
-      //console.log(e);
+    // this.$.fileupload.addEventListener('change', function(e) {
+    //   //console.log(e);
+    //   var input = e.target;
+    //   if (input.files && input.files[0]) {
+    //       var reader = new FileReader();
+
+    //       reader.onload = function (e) {
+    //           this.toCropper(e.target.result);
+
+    //       }.bind(this);
+    //       reader.readAsDataURL(input.files[0]);
+    //   }
+    // }.bind(this));
+  },
+
+  uploadfile: function() {
+   
+      document.querySelector('#avatarupload').click();
+    
+  },
+
+  avatarChange: function(e){
+    //console.log(e);
       var input = e.target;
       if (input.files && input.files[0]) {
           var reader = new FileReader();
 
           reader.onload = function (e) {
-              // $('#blah')
-              //     .attr('src', e.target.result)
-              //     .width(150)
-              //     .height(200);
-              //console.log(e.target.result);
-              //return e.target.result;
-              ///var x = document.querySelector('ac-profile');
-              //x.setcurrentavatar('hello');
-              //debugger;
               this.toCropper(e.target.result);
 
           }.bind(this);
           reader.readAsDataURL(input.files[0]);
       }
-    }.bind(this));
   },
 
   _is: function(a, b) {
@@ -347,36 +364,39 @@ Polymer({
     //console.log(e.detail);
     this.datastate = 'edit';
     this.currentavatar = image;
-    var el = document.getElementById('vanilla-demo');
-    this.vanilla = new Croppie(el, {
+    // var el = this.$.croppie
+    this.croppie = new Croppie(this.$.croppie, {
         viewport: { width: 100, height: 100 },
         boundary: { width: 300, height: 300 },
         showZoomer: false
         //enableOrientation: true
     });
-    this.vanilla.bind({
+    this.croppie.bind({
         url: image,
         orientation: 4
     });
-    // vanilla.result('blob').then(function(blob) {
-    //     // do something with cropped blob
-    //     console.log(Date.now(), 'Result: ', blob);
-    // });
   },
 
   setcurrentavatar: function() {
-    this.vanilla.result({type: 'base64'}).then(function(base64) {
+    var self = this;
+    this.croppie.result({type: 'base64'}).then(function(base64) {
 
-      base64 = base64.replace(/^data:image\/(png|jpg);base64,/, '');
-      var imgbuffer = this.$.ipfs.ipfs.Buffer(base64, 'base64');
+      // set the avatar to the dataURL.
+      this.currentavatar = base64;
+      this.datastate = 'view';
+
+      // now convert and save to IPFS in the background.
+      var base64data = base64.replace(/^data:image\/(png|jpg);base64,/, '');
+      var imgbuffer = this.$.ipfs.ipfs.Buffer(base64data, 'base64');
 
       this.$.ipfs.add(imgbuffer, function(err, result) {
         console.log(err, result[0].hash);
         var hashurl = this.$.ipfs.geturl(result[0].hash);
-        this.currentavatar = hashurl;
-        console.log(hashurl);
-        this.datastate = 'view';
       }.bind(this));
+
+      // remove cropper
+      self.croppie.destroy();
+
     }.bind(this));
 
   },
