@@ -10,7 +10,12 @@
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-avatar.html">
 <link rel="import" href="ac-ipfsupload.html">
+<link rel="import" href="ac-ipfs.html">
 <link rel="import" href="ac-shortcode.html">
+
+<link rel="stylesheet" href="../bower_components/Croppie/croppie.css" />
+<script src="../bower_components/Croppie/croppie.js"></script>
+
 
 <dom-module id="ac-profile">
   <!-- Defines the element's style and local DOM -->
@@ -50,7 +55,6 @@
     @apply(--layout-vertical);
     @apply(--layout-center-center);
     /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
-
   }
 
   .profilepicinner {
@@ -169,6 +173,8 @@
 
   </style>
 
+  <ac-ipfs id="ipfs"></ac-ipfs>
+
   <div class="total">
     <div class="topback">
       <ac-icon icon="ac-arrowleft" iconcolor="yellow" on-tap="backtohome" small>back</ac-icon>
@@ -191,7 +197,19 @@
             mode="imgbigonly">
           </ac-avatar>
 
+            <!-- <ac-ipfsupload
+            class="avatar"
+            hidefileinput
+            on-ipfs-hash-received=""
+            on-file-changed=""
+            hash="{{newavatar}}"
+            url="{{newavatarurl}}"
+            id="ipfsupload">
+          </ac-ipfsupload> -->
+          <input type="file" id="fileupload" />
+
           <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" on-tap="toggleupload" small>upload new picture</ac-button>
+
 
         </div>
 
@@ -222,8 +240,16 @@
 
       <neon-animatable data-state="edit">
 
-        <!-- <div class="profilepic">
+        <div class="profilepic">
           <div class="profilepicinner">
+
+            <!-- <ac-avatar
+            id="currentavatar"
+            username="{{identity.username}}"
+            artwork="{{currentavatar}}"
+            pubkey="{{account}}"
+            mode="imgbigonly">
+          </ac-avatar>
 
             <ac-ipfsupload
             class="avatar"
@@ -234,8 +260,16 @@
             id="ipfsupload">
           </ac-ipfsupload> -->
 
+          <div id="vanilla-demo">
+          </div>
+          <ac-button on-tap="setcurrentavatar" txtbtn txtcolor="blue" bg="btncolor" small>save</ac-button>
+
+
+
+
           <h1>EDIT</h1>
-        <!-- </div> -->
+        </div>
+      </div>
 
     <!--         <div class="pubkey">
     <p>pubkey<br>0x22f0a1eC3744f4c27a1e891ccsf96D2E86156e998</p>
@@ -271,6 +305,28 @@ Polymer({
 
   ready: function() {
     this.datastate = 'view';
+    this.$.fileupload.addEventListener('change', function(e) {
+      //console.log(e);
+      var input = e.target;
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+              // $('#blah')
+              //     .attr('src', e.target.result)
+              //     .width(150)
+              //     .height(200);
+              //console.log(e.target.result);
+              //return e.target.result;
+              ///var x = document.querySelector('ac-profile');
+              //x.setcurrentavatar('hello');
+              //debugger;
+              this.toCropper(e.target.result);
+
+          }.bind(this);
+          reader.readAsDataURL(input.files[0]);
+      }
+    }.bind(this));
   },
 
   _is: function(a, b) {
@@ -285,8 +341,42 @@ Polymer({
     this.currentavatar = this.identity.avatarurl;
   },
 
+  toCropper: function(image) {
+    //console.log(image);
+
+    //console.log(e.detail);
+    this.datastate = 'edit';
+    this.currentavatar = image;
+    var el = document.getElementById('vanilla-demo');
+    this.vanilla = new Croppie(el, {
+        viewport: { width: 100, height: 100 },
+        boundary: { width: 300, height: 300 },
+        showZoomer: false
+        //enableOrientation: true
+    });
+    this.vanilla.bind({
+        url: image,
+        orientation: 4
+    });
+    // vanilla.result('blob').then(function(blob) {
+    //     // do something with cropped blob
+    //     console.log(Date.now(), 'Result: ', blob);
+    // });
+  },
+
   setcurrentavatar: function() {
-    this.currentavatar = this.newavatarurl;
+    this.vanilla.result('rawcanvas').then(function(blob) {
+      debugger;
+      //debugger;
+      //var byteArray = Base64.decode(blob);
+
+      //console.log(byteArray);
+    //     // do something with cropped blob
+
+    //   this.$.ipfs.add(byteArray, function(err, result) {
+    //     console.log(err, result);
+    //   }.bind(this));
+    }.bind(this));
   },
 
   _sizeview: function(){
@@ -347,10 +437,10 @@ Polymer({
   },
 
   toggleupload: function() {
-    //this.$.ipfsupload.click();
-    this.datastate = 'edit';
+    this.$.ipfsupload.click();
   }
 
 });
 </script>
+
 </dom-module>
