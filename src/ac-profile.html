@@ -212,7 +212,7 @@
 <!--            id="fileupload" />
  -->
 
-           <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>          
+           <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>
 
       <!--     <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" on-tap="toggleupload" small>upload new picture</ac-button> -->
 
@@ -304,7 +304,8 @@ Polymer({
   properties: {
     identity: {
       type: String,
-      observer: '_identity'
+      observer: '_identity',
+      notify: true
     },
 
   },
@@ -327,9 +328,9 @@ Polymer({
   },
 
   uploadfile: function() {
-   
+
       document.querySelector('#avatarupload').click();
-    
+
   },
 
   avatarChange: function(e){
@@ -392,7 +393,10 @@ Polymer({
       this.$.ipfs.add(imgbuffer, function(err, result) {
         console.log(err, result[0].hash);
         var hashurl = this.$.ipfs.geturl(result[0].hash);
+        self.identity.avatarurl = hashurl;
+        self.fire('identityUpdate');
       }.bind(this));
+
 
       // remove cropper
       self.croppie.destroy();
