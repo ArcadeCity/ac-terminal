@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 
 <link rel="import" href="../bower_components/ac-style/ac-style.html">
 <link rel="import" href="../bower_components/ac-button/ac-button.html">
@@ -14,161 +15,175 @@
 <dom-module id="ac-profile">
   <!-- Defines the element's style and local DOM -->
   <template>
-    <style>
-      :host {
-        display: block;
-        width: 100%;
-        height: 100%;
-      }
+  <style>
+  :host {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
 
-      h1 {
-        @apply(--ac-font-h1);
-      }
+  h1 {
+    @apply(--ac-font-h1);
+  }
 
-      p {
-        @apply(--ac-font-body1);
-      }
+  p {
+    @apply(--ac-font-body1);
+  }
 
-      .total {
-        display: block;
-        width: 100%;
-        height: 100%;
-        background-color: var(--ac-base);
-        /*overflow-y: scroll;*/
-      }
+  .total {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: var(--ac-base);
+    /*overflow-y: scroll;*/
+  }
 
-      .whitespace {
-        width: 100%;
-        height: 20px;
-      }
+  .whitespace {
+    width: 100%;
+    height: 20px;
+  }
 
-      .profilepic {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 6vh 0px 2vh 0px;
-        @apply(--layout-vertical);
-        @apply(--layout-center-center);
-        /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
+  .profilepic {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6vh 0px 2vh 0px;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
 
-      }
+  }
 
-      .profilepicinner {
-        @apply(--layout-vertical);
-        @apply(--layout-center-justified);
-        @apply(--layout-end);
-      }
+  .profilepicinner {
+    @apply(--layout-vertical);
+    @apply(--layout-center-justified);
+    @apply(--layout-end);
+  }
 
-      .profilepicinner ac-button {
-        margin-top: -20px;
-      }
+  .profilepicinner ac-button {
+    margin-top: -20px;
+  }
 
-      .uploadbtn {
+  .uploadbtn {
 
-      }
+  }
 
-      .profileusername {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 0vh 0px 2vh 0px;
-        @apply(--layout-vertical);
-        @apply(--layout-center-center);
-        border-bottom: 2px dotted rgba(255,255,255,0.05);
-      }
+  .profileusername {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0vh 0px 2vh 0px;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    border-bottom: 2px dotted rgba(255,255,255,0.05);
+  }
 
 
-      .profileusername ac-input {
-        width: 60%;
-        max-width: 260px;
-        overflow: hidden;
-      }
+  .profileusername ac-input {
+    width: 60%;
+    max-width: 260px;
+    overflow: hidden;
+  }
 
-      .profileusername p {
-        color: white;
-      }
+  .profileusername p {
+    color: white;
+  }
 
-      .scrollcontainer {
-        width: 100%;
-        background-color: var(--ac-base);
-      }
+  .scrollcontainer {
+    width: 100%;
+    background-color: var(--ac-base);
+  }
 
-      .confirmbtns {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 0px;
-        @apply(--layout-horizontal);
-        @apply(--layout-center-center);
-      }
+  .confirmbtns {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px;
+    @apply(--layout-horizontal);
+    @apply(--layout-center-center);
+  }
 
-      .confirmbtns ac-button {
-        margin: 2px;
-      }
+  .confirmbtns ac-button {
+    margin: 2px;
+  }
 
-      .confirmbtns ac-icon {
-        margin-right: 4px;
-      }
+  .confirmbtns ac-icon {
+    margin-right: 4px;
+  }
 
-      .topback {
-        width: 100%;
-        background-color: var(--ac-base);
-        box-sizing: border-box;
-        padding: 5vh 0px 0px 5vw;
-        opacity: 0.5;
-      }
+  .topback {
+    width: 100%;
+    background-color: var(--ac-base);
+    box-sizing: border-box;
+    padding: 5vh 0px 0px 5vw;
+    opacity: 0.5;
+  }
 
-      .shortcode {
-        width: 100%;
-        @apply(--layout-vertical);
-        @apply(--layout-center-center);
-        border-bottom: 2px dotted rgba(255,255,255,0.05);
-        box-sizing: border-box;
-        padding: 2vh 0px 2vh 0px;
-      }
+  .shortcode {
+    width: 100%;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    border-bottom: 2px dotted rgba(255,255,255,0.05);
+    box-sizing: border-box;
+    padding: 2vh 0px 2vh 0px;
+  }
 
-      .pubkey {
-        width: 100%;
-        @apply(--layout-vertical);
-        @apply(--layout-center-center);
-        border-bottom: 2px dotted rgba(255,255,255,0.05);
-        box-sizing: border-box;
-        padding: 3vh 0px 3vh 0px;
-      }
+  .pubkey {
+    width: 100%;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    border-bottom: 2px dotted rgba(255,255,255,0.05);
+    box-sizing: border-box;
+    padding: 3vh 0px 3vh 0px;
+  }
 
-      .pubkey p {
-        display: inline-block;
-        font-size: 12px;
-        line-height: 14px;
-        color: var(--ac-blue);
-        word-break: break-all;
-        text-align: center;
-        opacity: 0.7;
-        padding-bottom:4px;
-        border-bottom: 1px dashed var(--ac-blue);
-      }
+  .pubkey p {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 14px;
+    color: var(--ac-blue);
+    word-break: break-all;
+    text-align: center;
+    opacity: 0.7;
+    padding-bottom:4px;
+    border-bottom: 1px dashed var(--ac-blue);
+  }
 
-      .logoutbtn {
-        width: 100%;
-        @apply(--layout-vertical);
-        @apply(--layout-center-center);
-        box-sizing: border-box;
-        padding: 5vh 0px 3vh 0px;
-      }
-      .logoutbtn ac-button {
-        width: 150px;
-        @apply(--base-shadow);
-      }
+  .logoutbtn {
+    width: 100%;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    box-sizing: border-box;
+    padding: 5vh 0px 3vh 0px;
+  }
 
-    </style>
+  .logoutbtn ac-button {
+    width: 150px;
+    @apply(--base-shadow);
+  }
 
-    <div class="total">
+  .avataredit {
+    height: 300px;
+  }
+
+  neon-animated-pages {
+    height: 100vh;
+  }
+
+  </style>
+
+  <div class="total">
     <div class="topback">
-    <ac-icon icon="ac-arrowleft" iconcolor="yellow" on-tap="backtohome" small>back</ac-icon>
+      <ac-icon icon="ac-arrowleft" iconcolor="yellow" on-tap="backtohome" small>back</ac-icon>
     </div>
-      <div class="scrollcontainer">
 
-      <div class="profilepic">
-        <div class="profilepicinner">
+    <neon-animated-pages class="avataredit" selected="{{datastate}}" attr-for-selected="data-state">
 
-          <ac-avatar
+      <neon-animatable data-state="view">
+
+        <h1 on-tap="toggleupload">VIEW </h1>
+
+        <div class="profilepic">
+          <div class="profilepicinner">
+
+            <ac-avatar
             id="currentavatar"
             username="{{identity.username}}"
             artwork="{{currentavatar}}"
@@ -176,151 +191,166 @@
             mode="imgbigonly">
           </ac-avatar>
 
-          <ac-ipfsupload
-            class="avatar"
-            hidefileinput
-            on-ipfs-hash-received="setcurrentavatar"
-            hash="{{newavatar}}"
-            url="{{newavatarurl}}"
-            id="ipfsupload">
-          </ac-ipfsupload>
-
           <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" on-tap="toggleupload" small>upload new picture</ac-button>
 
         </div>
 
-      </div>
-      <div class="profileusername">
-        <ac-input color="white" label="username" type="input" bind-value="{{username}}" center inputvalue="MrArcade"></ac-input>
-        <iron-collapse id="collapse">
-        <div class="confirmbtns">
-          <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="decline" small>decline</ac-icon>
-          <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="confirm" small>confirm</ac-button>
-        </div>
-        </iron-collapse>
-        <div class="whitespace"></div>
+        <div class="profileusername">
+          <ac-input color="white" label="username" type="input" bind-value="{{username}}" center inputvalue="MrArcade"></ac-input>
+          <iron-collapse id="collapse">
+            <div class="confirmbtns">
+              <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="decline" small>decline</ac-icon>
+              <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="confirm" small>confirm</ac-button>
+            </div>
+          </iron-collapse>
+          <div class="whitespace"></div>
 
-      </div>
+        </div>
 
         <div class="shortcode">
 
           <ac-shortcode bg="btncolor" txtcolor="white" small>shortcode</ac-shortcode>
 
         </div>
+
         <div class="logoutbtn">
-        <ac-button on-tap="logout" txtbtn txtcolor="blue" bg="btncolor" small>log out</ac-button>
+          <ac-button on-tap="logout" txtbtn txtcolor="blue" bg="btncolor" small>log out</ac-button>
         </div>
-
-<!--         <div class="pubkey">
-          <p>pubkey<br>0x22f0a1eC3744f4c27a1e891ccsf96D2E86156e998</p>
-        </div> -->
-
       </div>
-    </div>
+
+      </neon-animatable>
+
+      <neon-animatable data-state="edit">
+
+        <!-- <div class="profilepic">
+          <div class="profilepicinner">
+
+            <ac-ipfsupload
+            class="avatar"
+            hidefileinput
+            on-ipfs-hash-received="setcurrentavatar"
+            hash="{{newavatar}}"
+            url="{{newavatarurl}}"
+            id="ipfsupload">
+          </ac-ipfsupload> -->
+
+          <h1>EDIT</h1>
+        <!-- </div> -->
+
+    <!--         <div class="pubkey">
+    <p>pubkey<br>0x22f0a1eC3744f4c27a1e891ccsf96D2E86156e998</p>
+  </div> -->
+
+      </neon-animatable>
+
+</neon-animated-pages>
+</div>
+
+</template>
+
+<iron-localstorage
+name="ac-profile"
+value="{{userdata}}"
+on-iron-localstorage-load-empty="initprofile"
+on-iron-localstorage-load="loadprofile">
+</iron-localstorage>
 
 
-    </template>
+</template>
 
-    <iron-localstorage
-      name="ac-profile"
-      value="{{userdata}}"
-      on-iron-localstorage-load-empty="initprofile"
-      on-iron-localstorage-load="loadprofile">
-    </iron-localstorage>
-
-
-  </template>
-
-  <script>
-    Polymer({
-      is: 'ac-profile',
-      properties: {
-        identity: {
-          type: String,
-          observer: '_identity'
-        },
-
-      },
-
-      ready: function() {
-      },
-
-      _is: function(a, b) {
-        if (b === undefined){
-          b = true;
-        }
-        //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
-        return a === b;
-      },
-
-      _identity: function() {
-        this.currentavatar = this.identity.avatarurl;
-      },
-
-      setcurrentavatar: function() {
-        this.currentavatar = this.newavatarurl;
-      },
-
-    _sizeview: function(){
-      switch(this.sizeview) {
-          case 'phone':
-              this.align = 'verticcenter';
-              this.customStyle['--avatar-size'] = '90px';
-              this.updateStyles();
-              break;
-          case 'desktop':
-              this.align = 'verticstart';
-              this.customStyle['--avatar-size'] = '130px';
-              this.updateStyles();
-              break;
-          case 'xlarge':
-              this.align = 'verticstart';
-              this.customStyle['--avatar-size'] = '130px';
-              this.updateStyles();
-              break;
-          default:
-          console.log("!!! ** Niks");
-      }
+<script>
+Polymer({
+  is: 'ac-profile',
+  properties: {
+    identity: {
+      type: String,
+      observer: '_identity'
     },
 
-    logout: function() {
-      sessionStorage.removeItem('ac-password');
-      window.location = '/';
-    },
+  },
 
-    _username: function() {
-      //console.log(this.username);
-      if(this.username != this.identity.username) {
-        var collapser = document.getElementById('collapse');
-        collapser.show();
-      }
-      if(this.username == this.identity.username) {
-        var collapser = document.getElementById('collapse');
-        collapser.hide();
-      }
-    },
+  ready: function() {
+    this.datastate = 'view';
+  },
 
-    confirm: function() {
-      this.set('identity.username', this.username);
-      this.fire('identity-update');
+  _is: function(a, b) {
+    if (b === undefined){
+      b = true;
+    }
+    //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
+    return a === b;
+  },
+
+  _identity: function() {
+    this.currentavatar = this.identity.avatarurl;
+  },
+
+  setcurrentavatar: function() {
+    this.currentavatar = this.newavatarurl;
+  },
+
+  _sizeview: function(){
+    switch(this.sizeview) {
+      case 'phone':
+      this.align = 'verticcenter';
+      this.customStyle['--avatar-size'] = '90px';
+      this.updateStyles();
+      break;
+      case 'desktop':
+      this.align = 'verticstart';
+      this.customStyle['--avatar-size'] = '130px';
+      this.updateStyles();
+      break;
+      case 'xlarge':
+      this.align = 'verticstart';
+      this.customStyle['--avatar-size'] = '130px';
+      this.updateStyles();
+      break;
+      default:
+      console.log("!!! ** Niks");
+    }
+  },
+
+  logout: function() {
+    sessionStorage.removeItem('ac-password');
+    window.location = '/';
+  },
+
+  _username: function() {
+    //console.log(this.username);
+    if(this.username != this.identity.username) {
+      var collapser = document.getElementById('collapse');
+      collapser.show();
+    }
+    if(this.username == this.identity.username) {
       var collapser = document.getElementById('collapse');
       collapser.hide();
-    },
-
-    savenewUsername: function(){
-      var collapser = document.getElementById('collapse');
-      console.log("this is it", collapser);
-      collapser.toggle();
-    },
-
-    backtohome: function(){
-      this.fire('to-home');
-    },
-
-    toggleupload: function() {
-      this.$.ipfsupload.click();
     }
+  },
 
-    });
-  </script>
+  confirm: function() {
+    this.set('identity.username', this.username);
+    this.fire('identity-update');
+    var collapser = document.getElementById('collapse');
+    collapser.hide();
+  },
+
+  savenewUsername: function(){
+    var collapser = document.getElementById('collapse');
+    console.log("this is it", collapser);
+    collapser.toggle();
+  },
+
+  backtohome: function(){
+    this.datastate = 'view';
+    this.fire('to-home');
+  },
+
+  toggleupload: function() {
+    //this.$.ipfsupload.click();
+    this.datastate = 'edit';
+  }
+
+});
+</script>
 </dom-module>
