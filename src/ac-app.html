@@ -22,6 +22,7 @@
 <!-- <link rel="import" href="ac-password.html">
 -->
 <link rel="import" href="ac-wallet.html">
+<link rel="import" href="ac-intro.html">
 
 <dom-module id="ac-app">
   <template>
@@ -156,10 +157,20 @@
 
   <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
+  <neon-animatable data-page="intro">
+    <ac-intro
+      on-newvault="createNewVault"
+      on-importfile="toimportfile"
+      on-importpk="toimportpk"
+      >        
+    </ac-intro>
+  </neon-animatable>
+
+
     <neon-animatable data-page="vault">
     <ac-vault
       id="thevault"
-      route="{{pageTail}}"
+      route="[[pageTail]]"
       currentkeystore="{{keystore}}"
       currentidentity="{{identity}}"
       currentaccount="{{account}}"
@@ -273,9 +284,9 @@
         ],
 
       _onRoutePathChanged: function(path) {
-          // if (!path) {
-          //   this.set('route.path', '/vault/unlock');
-          // }
+          if (!path) {
+            this.transitionto('/vault/unlock');
+          }
         },
 
       // createnewuser: function(e) {
@@ -293,15 +304,32 @@
       // },
 
       vaultUnlocked: function(){
-        this.set('route.path', '/home');
+        this.transitionto('/home');
       },
 
       vaultLocked: function(){
-        this.set('route.path', '/vault/unlock');
+        this.transitionto('/vault/unlock');
       },
 
       noVault: function(){
-        this.set('route.path', '/vault/new');
+        this.transitionto('/intro');
+      },
+
+      createNewVault: function(){
+        this.transitionto('/vault/createnew');        
+      },
+
+      toimportpk: function(){
+        this.transitionto('/vault/importpk');        
+      },
+
+      toimportfile: function(){
+        this.transitionto('/vault/importfile');        
+      },
+
+      transitionto: function(target){
+        console.log('ac-app -> transitionTo',target);
+        this.set('route.path',target);
       },
 
       attached: function() {
@@ -386,17 +414,17 @@
       },
 
       toWallet: function() {
-        this.set('route.path', '/wallet');
+        this.transitionto('/wallet');
       },
 
       toHome: function() {
-        this.set('route.path', '/home');
+        this.transitionto('/home');
       },
 
       toProfile: function() {
         this.entryAnimation = 'slide-from-right-animation';
         this.exitAnimation = 'slide-left-animation';
-        this.set('route.path', '/profile');
+        this.transitionto('/profile');
       },
 
       saveIdentity: function() {

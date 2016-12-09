@@ -3,7 +3,7 @@
 <link rel="import" href="../bower_components/ac-button/ac-button.html">
 <link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
 
-<dom-module id="ac-createwallet">
+<dom-module id="ac-intro">
   <template>
     <style>
  :host {
@@ -163,7 +163,7 @@
         </div>
       </neon-animatable>
 
-      <neon-animatable state="uploadjson">
+    <!--   <neon-animatable state="uploadjson">
         <div class="total vertic">
         <div class="inner">
           <div class="centervlak flex vertic">
@@ -179,8 +179,8 @@
         </div>
         </div>
       </neon-animatable>
-
-      <neon-animatable state="impprivkey">
+ -->
+   <!--    <neon-animatable state="impprivkey">
 
         <div class="total vertic">
         <div class="inner">
@@ -195,31 +195,18 @@
         </div>
         </div>
 
-    </neon-animated-pages>
+    </neon-animated-pages> -->
   </template>
 
   <script>
     Polymer({
 
-      is: 'ac-createwallet',
+      is: 'ac-intro',
 
       properties: {
-        prop1: {
-          type: String,
-          value: 'ac-createwallet',
-        },
         state: {
           type: String,
           value: 'first'
-        },
-        uploadcheck: {
-          type: Boolean,
-          value: true
-        },
-
-        keycheck: {
-          type: Boolean,
-          value: true
         },
       },
 
@@ -230,22 +217,18 @@
       },
 
       toprivatekey: function() {
-        this.state = 'impprivkey';
-      },
-
-      topassword: function() {
-        this.state = 'password';
+        this.fire('importpk');
       },
 
       touploadjson: function() {
-        this.state = 'uploadjson';
+        this.fire('importfile');
       },
 
       tocreatewallet: function() {
         // create new wallet and go home
-        console.log('go home');
+//        console.log('go home');
         //this.fire('toHome');
-        page.redirect('/home');
+        this.fire('newvault');
 
       },
 
