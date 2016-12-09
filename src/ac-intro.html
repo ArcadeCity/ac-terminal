@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 <link rel="import" href="../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
 <link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
 
 <dom-module id="ac-intro">
@@ -135,8 +136,51 @@
     box-sizing: border-box;
     /*background-color: red;*/
   }
+
+  .logo_canvas {
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+  }
+
+  .logo {
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+  }
+
+  .logo p {
+    @apply(--montserrat-bold);
+    color: var(--ac-white);
+  }
+
+  .logo_whitespace {
+    width: 100%;
+    height: 30vh;
+  }
+
+    .logo_canvas ac-button {
+      width: 40vw;
+      max-width: 400px;
+      padding: 24px;
+      @apply(--base-shadow-and-inset);
+      font-size: 20px;
+    }
+
     </style>
     <neon-animated-pages id="createwalletpgs" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
+
+      <neon-animatable state="intro">
+
+        <div class="total vertic logo_canvas">
+          <div class="logo">
+            <ac-icon icon="ac-brandlogo-color" big></ac-icon>
+            <p>arcade.city</p>
+          </div>
+
+          <div class="logo_whitespace"></div>
+            <ac-button on-tap="totokenquestion" txtbtn bg="btncolor" txtcolor="red">start new</ac-button>
+        </div>
+
+      </neon-animatable>
 
       <neon-animatable state="first">
         <div class="total vertic">
@@ -206,11 +250,15 @@
       properties: {
         state: {
           type: String,
-          value: 'first'
+          value: 'intro'
         },
       },
 
       ready: function() {},
+
+      totokenquestion: function() {
+        this.state = 'first';
+      },
 
       toimportwallet: function() {
         this.state = 'importwallet';
