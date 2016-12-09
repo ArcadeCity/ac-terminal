@@ -365,17 +365,12 @@ Polymer({
   },
 
   setcurrentavatar: function() {
-    this.vanilla.result('rawcanvas').then(function(blob) {
-      var ctx = blob.getContext('2d');
-      var pixel = ctx.getImageData(0, 0, 100, 100);
-      var data = pixel.data;
+    this.vanilla.result({type: 'base64'}).then(function(base64) {
 
-      var url = blob.toDataURL();
-      //console.log(url);
+      base64 = base64.replace(/^data:image\/(png|jpg);base64,/, '');
+      var imgbuffer = this.$.ipfs.ipfs.Buffer(base64, 'base64');
 
-      var bufferdata = this.$.ipfs.ipfs.Buffer(data);
-
-      this.$.ipfs.add(bufferdata, function(err, result) {
+      this.$.ipfs.add(imgbuffer, function(err, result) {
         console.log(err, result[0].hash);
         var hashurl = this.$.ipfs.geturl(result[0].hash);
         this.currentavatar = hashurl;
