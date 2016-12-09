@@ -369,8 +369,10 @@ Polymer({
       var ctx = blob.getContext('2d');
       var pixel = ctx.getImageData(0, 0, 100, 100);
       var data = pixel.data;
-      data.name = 'avatar.png';
-      data.mimetype = 'image/png';
+
+      var url = blob.toDataURL();
+      //console.log(url);
+
       var bufferdata = this.$.ipfs.ipfs.Buffer(data);
 
       this.$.ipfs.add(bufferdata, function(err, result) {
@@ -381,6 +383,7 @@ Polymer({
         this.datastate = 'view';
       }.bind(this));
     }.bind(this));
+
   },
 
   _sizeview: function(){
