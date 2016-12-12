@@ -424,7 +424,9 @@
         }.bind(this));
       },
 
-      saveIdentity: function() {
+      saveIdentity: function(e) {
+        debugger;
+        this.identity = e.detail;
         this.$.thevault.saveVault();
       },
 

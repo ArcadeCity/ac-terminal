@@ -254,6 +254,10 @@
       this.datastate = 'view';
     },
 
+    attached: function(){
+      this.init();
+    },
+
     init: function(cb){
       this.username = this.identity.username;
       this.avatarhash = this.identity.avatarhash;
@@ -265,7 +269,7 @@
     },
 
     usernameChange: function() {
-      this.identity.username = this.username;
+      //this.identity.username = this.username;
       this.datachanged = true;
     },
 
@@ -289,7 +293,7 @@
 
     // receive identity from data binder
     _identity: function() {
-      this.currentavatar = this.identity.avatarurl;
+//      this.currentavatar = this.identity.avatarurl;
     },
 
     toCropper: function(image) {
@@ -339,10 +343,14 @@
 
         this.$.ipfs.add(imgbuffer, function(err, result) {
           console.log(err, result[0].hash);
-          var hashurl = this.$.ipfs.geturl(result[0].hash);
-          self.identity.avatarurl = hashurl;
+          //var hashurl = this.$.ipfs.geturl(result[0].hash);
+          self.avatarhash = result[0].hash;
+          self.avatarurl = this.$.ipfs.geturl(result[0].hash);
           self.datachanged = true;
-          self.fire('identity-update',self.identity);
+          self.fire('identity-update',{
+            username: self.username,
+            avatarhash: self.avatarhash
+          });
         }.bind(this));
 
         // remove cropper
@@ -402,7 +410,10 @@
     confirm: function() {
       this.set('identity.username', this.username);
       this.datachanged = false;
-      this.fire('identity-update',this.identity);
+      this.fire('identity-update',{
+        username: this.username,
+        avatarhash: this.avatarhash
+      });
       this.fire('exit');
     },
 
