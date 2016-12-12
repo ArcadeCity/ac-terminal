@@ -1,12 +1,7 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/ac-terminal.html",
-  "fragments": [
-    "src/ac-home.html",
-    "src/ac-avatar.html",
-    "src/ac-balance.html",
-    "src/ac-newuser.html",
-    "src/ac-password.html"
+  "shell": "src/ac-app.html",
+  "fragments": [   
   ],
   "sourceGlobs": [
    "src/**/*",
@@ -16,6 +11,7 @@
   ],
   "includeDependencies": [
     "manifest.json",
-    "bower.json"
+    "bower.json",
+    "bower_components/ac-style/ac-fonts/*.otf"
   ]
 }
