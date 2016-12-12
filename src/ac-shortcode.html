@@ -17,7 +17,6 @@
         color: white;
       }
 
-
       h2 {
         @apply(--ac-font-h2);
       }
@@ -50,7 +49,6 @@
         border-bottom: 1px dashed var(--txtcolorz-code);
       }
 
-
       .code small {
         @apply(--montserrat-reg);
         font-size: 12px;
@@ -59,7 +57,6 @@
         padding-bottom:2px;
         border-bottom: 1px dashed var(--txtcolorz-code);
       }
-
 
       .codeandbtn {
         height: 100%;
@@ -81,7 +78,6 @@
       }
 
     </style>
-
 
   <template is="dom-if" if="{{_is(topic,0)}}">
 
@@ -112,16 +108,12 @@
 
   </template>
 
-
-
-
   <template is="dom-if" if="{{topic}}">
     <div class="codeandbtn">
       <p>{{topic}}</p>
       <ac-button small on-tap="cancel" txtcolor$="{{txtcolor}}" bg$="{{bg}}" icon="ac-decline"></ac-button>
     </div>
   </template>
-
 
 </template>
 
@@ -220,8 +212,8 @@
       },
 
       toggleVisibility: function() {
-        var collapser = document.getElementById('collapsecode');
-        collapser.toggle();
+        // var collapser = document.getElementById('collapsecode');
+        // collapser.toggle();
       }
 
       // toggleCode: function(){
