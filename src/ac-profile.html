@@ -193,7 +193,6 @@
           <div class="profilepic">
             <div class="profilepicinner" on-tap="uploadfile">
 
-
               <ac-avatar
             id="currentavatar"
             identity="{{identity}}"
@@ -399,6 +398,7 @@
           self.identity.avatarurl = hashurl;
           self.datachanged = true;
           self.fire('identity-update',self.identity);
+          self.$.currentavatar.
         }.bind(this));
 
         // remove cropper
@@ -441,6 +441,7 @@
       if (oldVal!==undefined){
         this.datachanged = true;
       }
+
       //console.log(this.username);
       // if (this.username != this.identity.username) {
       //   var collapser = document.getElementById('collapse');
