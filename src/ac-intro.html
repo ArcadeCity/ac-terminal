@@ -4,6 +4,8 @@
 <link rel="import" href="../bower_components/ac-icon/ac-icon.html">
 <link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
 
+<link rel="import" href="ac-sizeview.html">
+
 <dom-module id="ac-intro">
   <template>
     <style>
@@ -58,7 +60,8 @@
     @apply(--ac-font-h1);
     text-align: center;
     white-space: normal;
-    line-height: 48px;
+    font-size: var(--title-big);
+    line-height: var(--title-bigheight);
   }
 
   h2 {
@@ -150,22 +153,43 @@
   .logo p {
     @apply(--montserrat-bold);
     color: var(--ac-white);
+    font-size: var(--title-big);
+    line-height: var(--title-bigheight);
   }
 
   .logo_whitespace {
     width: 100%;
-    height: 30vh;
+    height: 28vh;
   }
 
     .logo_canvas ac-button {
-      width: 40vw;
-      max-width: 400px;
+      width: 70vw;
+      max-width: 360px;
       padding: 24px;
       @apply(--base-shadow-and-inset);
       font-size: 20px;
     }
 
+    .synclink {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 20px 0px 20px 0px;
+
+    }
+    .synclink a {
+      color:var(--ac-red);
+      box-sizing: border-box;
+      padding: 3px 0px 3px 0px;
+      text-decoration: none;
+      border-bottom: 1px dotted var(--ac-red);
+      opacity: 0.35;
+      font-size: 12px;
+      line-height: 14px;
+    }
+
+
     </style>
+    <ac-sizeview sizeview=“{{sizeview}}”></ac-sizeview>
     <neon-animated-pages id="createwalletpgs" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
       <neon-animatable state="intro">
@@ -178,6 +202,7 @@
 
           <div class="logo_whitespace"></div>
             <ac-button on-tap="totokenquestion" txtbtn bg="btncolor" txtcolor="red">start new</ac-button>
+            <div class="synclink"><a on-tap>sync with a device / backup-file</a></div>
         </div>
 
       </neon-animatable>
@@ -205,7 +230,7 @@
           </div>
         </div>
       </neon-animatable>
-    </neon-animated-pages> 
+    </neon-animated-pages>
   </template>
 
   <script>
@@ -218,6 +243,11 @@
           type: String,
           value: 'intro'
         },
+        sizeview: {
+          type: String,
+          observer: '_sizeview'
+        },
+
       },
 
       ready: function() {},
@@ -241,7 +271,35 @@
       tocreatewallet: function() {
         this.fire('newvault');
       },
+      _sizeview: function() {
+        switch (this.sizeview) {
+          case 'phone':
+            this.arcalign = 'verticcenter';
+            this.customStyle['--ac-balance-height'] = '30vh';
+            this.customStyle['--ac-balance-width'] = '100%';
+            this.customStyle['--tokentrans-width'] = '100%';
+            this.customStyle['--tokentrans-top'] = '0vh';
+            this.updateStyles();
+            break;
+          case 'desktop':
+            this.arcalign = 'verticstart';
+            this.customStyle['--ac-balance-height'] = '20vh';
+            this.customStyle['--ac-balance-width'] = '100%';
+            this.customStyle['--tokentrans-top'] = '3vh';
+            this.updateStyles();
+            break;
+          case 'xlarge':
+            this.arcalign = 'verticstart';
+            this.customStyle['--ac-balance-height'] = '20vh';
+            this.customStyle['--ac-balance-width'] = '100%';
+            this.customStyle['--tokentrans-top'] = '4vh';
 
+            this.updateStyles();
+            break;
+          default:
+            console.log("!!! ** Niks");
+        }
+      },
 
 
     });

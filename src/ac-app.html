@@ -40,6 +40,7 @@
 
   }
 
+
   .white {
     color: white;
   }
@@ -131,6 +132,13 @@
     height: 80vw;
   }
 
+  ac-vault {
+    width: 100vw;
+    height: 100vh;
+  }
+
+
+
   </style>
 
     <!-- app-location binds with the URL and produces a route for
@@ -162,7 +170,7 @@
       on-newvault="createNewVault"
       on-importfile="toimportfile"
       on-importpk="toimportpk"
-      >        
+      >
     </ac-intro>
   </neon-animatable>
 
@@ -302,15 +310,15 @@
       },
 
       createNewVault: function(){
-        this.transitionto('/vault/createnew');        
+        this.transitionto('/vault/createnew');
       },
 
       toimportpk: function(){
-        this.transitionto('/vault/importpk');        
+        this.transitionto('/vault/importpk');
       },
 
       toimportfile: function(){
-        this.transitionto('/vault/importfile');        
+        this.transitionto('/vault/importfile');
       },
 
       transitionto: function(target){
@@ -324,7 +332,7 @@
 
 
 
-        
+
 
 
         // page('/',function(){
