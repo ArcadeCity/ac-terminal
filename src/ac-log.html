@@ -4,6 +4,7 @@
 
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-logitem.html">
+<link rel="import" href="ac-transactionlog.html">
 
 <dom-module id="ac-log">
   <template>
@@ -14,25 +15,18 @@
       }
     </style>
     <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+    <ac-web3 web3="{{web3}}"></ac-web3>
 
-<!--
-    /// a msg to the KING: ///
+    <ac-transactionlog logitems="{{logitems}}"></ac-transactionlog>
 
-    This component should:
-    - bind the ac-transactionlog.html to the ac-logitem.html
-    - repeater for the ac-logitem
-
-       ac-logitem properties:
-        - amount (= a String right now, including the '+' and the '-', to show if your balance "gains or looses" tokens)
-        - fromuser
-        - touser
-        - status: 'pending', 'complete' or 'error'
-        - don't be confused: there's a template when it's mobile, and one when it's note.
-
-    Leave all styling out of it, and pass it back to me when done. Thx!
--->
-
-  <ac-logitem></ac-logitem>
+    <template is="dom-repeat" items="[[logitems]]">
+      <ac-logitem
+        amount="[[item.x]]"
+        fromuser="[[item.x]]"
+        touser="[[item.x]]"
+        status="[[item.x]]">
+      </ac-logitem>
+    </template>
 
   </template>
 
@@ -42,7 +36,10 @@
       is: 'ac-log',
 
       properties: {
-
+        pubkey: {
+          type: String,
+          observer: '_pubkey'
+        }
       },
 
       _is: function(a, b) {
@@ -53,7 +50,11 @@
         return a === b;
       },
 
-   
+      _pubkey: function() {
+        // Get the tx's for this pub key and cache it in localstorage.
+        // Save the last block also to localstorage so we know where we need to start listening.
+        // filter.get(filter, callback);
+      },
 
       _sizeview: function(){
 
