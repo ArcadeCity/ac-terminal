@@ -196,10 +196,10 @@
 
               <ac-avatar
             id="currentavatar"
-            username="{{identity.username}}"
-            artwork="{{currentavatar}}"
+            identity="{{identity}}"
             pubkey="{{account}}"
-            mode="imgonly"></ac-avatar>
+            mode="imgonly"
+            ></ac-avatar>
 
               <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>
               <ac-button icon="ac-upload" small bg="btncolor" txtcolor="yellow"></ac-button>
@@ -255,14 +255,55 @@
       datachanged: {
         type: Boolean,
         value: false
-      }
-    },
+      },
 
-    observers: [
-      '_username(username)',
-      '_datachanged(datachanged)'
+            sharedElements: {
+              type: Object,
+              value: function() {
+                return {
+                  'hero': this.$.currentavatar,
+                }
+              }
+            },
 
-    ],
+            animationConfig: {
+              type: Object,
+              value: function() {
+                return {
+                  // 'entry': [{
+                  //   name: 'fade-in-animation',
+                  //   toPage: this
+                  // }, {
+                  //   name: 'hero-animation',
+                  //   id: 'hero',
+                  //   toPage: this,
+                  //   timing: {
+                  //     delay: 150
+                  //   }
+                  // }],
+
+                  // 'exit': [{
+                  //   name: 'fade-out-animation',
+                  //   fromPage: this
+                  // }, {
+                  //   name: 'hero-animation',
+                  //   id: 'hero',
+                  //   fromPage: this,
+                  //   timing: {
+                  //     delay: 150
+                  //   }
+                  // }]
+                }
+              },
+              observer:'_checkAnimconfig'
+            }
+
+          },
+
+
+          behaviors: [
+            Polymer.NeonSharedElementAnimatableBehavior
+          ],
 
     ready: function() {
       this.datastate = 'view';
@@ -397,8 +438,6 @@
     },
 
     _username: function(newVal,oldVal) {
-      debugger;
-
       if (oldVal!==undefined){
         this.datachanged = true;
       }
@@ -432,6 +471,10 @@
 
     _datachanged: function() {
       console.log('joooo');
+    },
+
+    _checkAnimconfig: function() {
+      // console.log('joooo, dit is de Animconfig', this.animationConfig);
     },
 
     // savenewUsername: function() {

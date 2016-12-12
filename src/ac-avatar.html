@@ -32,6 +32,10 @@
         @apply(--layout-horizontal);
         @apply(--layout-start-justified);
       }
+      .avatar {
+        display: inline-block;
+        background: red;
+      }
 
 
       .arc-avatar:hover {
@@ -105,10 +109,10 @@
         <div class$="avatar {{size}}">
           <img src="{{identity.avatarurl}}">
         </div>
-        <div class="username-big">
+        <!-- <div class="username-big">
           <p>{{identity.username}}</p>
           <div class="pub"><p>{{identity.pubkey}}</p></div>
-        </div>
+        </div> -->
       </div>
     </template>
 
@@ -119,7 +123,7 @@
 
     <template is="dom-if" if="{{_is(mode, 'imgonly')}}">
         <div class$="avatar {{size}}">
-          <img src="{{artwork}}">
+          <img src="{{identity.avatarurl}}">
         </div>
     </template>
 
