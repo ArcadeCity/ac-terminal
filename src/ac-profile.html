@@ -260,6 +260,8 @@
 
     observers: [
       '_username(username)',
+      '_datachanged(datachanged)'
+
     ],
 
     ready: function() {
@@ -394,9 +396,12 @@
 //      window.location = '/';
     },
 
-    _username: function() {
-      this.datachanged = true;
+    _username: function(newVal,oldVal) {
+      debugger;
 
+      if (oldVal!==undefined){
+        this.datachanged = true;
+      }
       //console.log(this.username);
       // if (this.username != this.identity.username) {
       //   var collapser = document.getElementById('collapse');
@@ -423,6 +428,10 @@
 
     close: function() {
       this.datachanged = false;
+    },
+
+    _datachanged: function() {
+      console.log('joooo');
     },
 
     // savenewUsername: function() {
