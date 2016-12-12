@@ -224,8 +224,9 @@
     <div class="hometotal">
 
       <ac-profile
-            identity="{{identity}}"
-            on-to-home="toHome"
+            id="profile"
+            identity="[[identity]]"
+            on-exit="toHome"
             on-identity-update="saveIdentity"></ac-profile>
     </div>
 
@@ -410,7 +411,9 @@
       toProfile: function() {
         this.entryAnimation = 'slide-from-right-animation';
         this.exitAnimation = 'slide-left-animation';
-        this.transitionto('/profile');
+        this.$.profile.init(function(){
+          this.transitionto('/profile');
+        }.bind(this));
       },
 
       saveIdentity: function() {

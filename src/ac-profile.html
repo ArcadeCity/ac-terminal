@@ -16,11 +16,10 @@
 <link rel="stylesheet" href="../bower_components/Croppie/croppie.css" />
 <script src="../bower_components/Croppie/croppie.js"></script>
 
-
 <dom-module id="ac-profile">
   <!-- Defines the element's style and local DOM -->
   <template>
-  <style>
+    <style>
   :host {
     display: block;
     width: 100%;
@@ -176,297 +175,252 @@
 
   </style>
 
-  <ac-ipfs id="ipfs"></ac-ipfs>
+    <ac-ipfs id="ipfs"></ac-ipfs>
 
-  <div class="total">
-    <div class="topback">
-      <ac-icon icon="ac-arrowleft" iconcolor="yellow" on-tap="backtohome" small>back</ac-icon>
-    </div>
+    <div class="total">
+      <div class="topback">
+        <ac-icon icon="ac-arrowleft" iconcolor="yellow" on-tap="exit" small>back</ac-icon>
+      </div>
 
-    <neon-animated-pages class="avataredit" selected="{{datastate}}" attr-for-selected="data-state">
+      <neon-animated-pages class="avataredit" selected="{{datastate}}" attr-for-selected="data-state">
 
-      <neon-animatable data-state="view">
+        <neon-animatable data-state="view">
+          <div class="profilepic" on-tap="uploadfile">
+            <div class="profilepicinner">
 
-        <h1 on-tap="toggleupload">VIEW </h1>
-
-        <div class="profilepic" on-tap="uploadfile">
-          <div class="profilepicinner">
-
-            <ac-avatar
+              <ac-avatar
             id="currentavatar"
             username="{{identity.username}}"
             artwork="{{currentavatar}}"
             pubkey="{{account}}"
-            mode="imgbigonly">
-          </ac-avatar>
+            mode="imgbigonly"></ac-avatar>
 
-            <!-- <ac-ipfsupload
-            class="avatar"
-            hidefileinput
-            on-ipfs-hash-received=""
-            on-file-changed=""
-            hash="{{newavatar}}"
-            url="{{newavatarurl}}"
-            id="ipfsupload">
-          </ac-ipfsupload> -->
-<!--            id="fileupload" />
- -->
+              <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>
 
-           <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>
-
-      <!--     <ac-button icon="ac-upload" txtcolor="yellow" bg="btncolor" on-tap="toggleupload" small>upload new picture</ac-button> -->
-
-
-        </div>
-
-        <div class="profileusername">
-          <ac-input color="white" label="username" type="input" bind-value="{{username}}" center inputvalue="MrArcade"></ac-input>
-          <iron-collapse id="collapse">
-            <div class="confirmbtns">
-              <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="decline" small>decline</ac-icon>
-              <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="confirm" small>confirm</ac-button>
             </div>
-          </iron-collapse>
-          <div class="whitespace"></div>
+          </div>
 
+          <div class="profileusername">
+            <ac-input color="white" label="username" type="input" on-change="usernameChange" bind-value="{{username}}" center inputvalue="MrArcade"></ac-input>
+            <iron-collapse id="collapse" opened="{{datachanged}}">
+              <div class="confirmbtns">
+                <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="exit" small>decline</ac-icon>
+                <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="confirm" small>confirm</ac-button>
+              </div>
+            </iron-collapse>
+            <div class="whitespace"></div>
+            <!--  <div class="shortcode">
+            <ac-shortcode bg="btncolor" txtcolor="white" small>shortcode</ac-shortcode>
+          </div>
+          -->
+          <div class="logoutbtn">
+            <ac-button on-tap="logout" txtbtn txtcolor="blue" bg="btncolor" small>log out</ac-button>
+          </div>
         </div>
-
-        <div class="shortcode">
-
-          <ac-shortcode bg="btncolor" txtcolor="white" small>shortcode</ac-shortcode>
-
-        </div>
-
-        <div class="logoutbtn">
-          <ac-button on-tap="logout" txtbtn txtcolor="blue" bg="btncolor" small>log out</ac-button>
-        </div>
-      </div>
-
       </neon-animatable>
 
       <neon-animatable data-state="edit">
-
         <div class="profilepic">
           <div class="profilepicinner">
-
-            <!-- <ac-avatar
-            id="currentavatar"
-            username="{{identity.username}}"
-            artwork="{{currentavatar}}"
-            pubkey="{{account}}"
-            mode="imgbigonly">
-          </ac-avatar>
-
-            <ac-ipfsupload
-            class="avatar"
-            hidefileinput
-            on-ipfs-hash-received="setcurrentavatar"
-            hash="{{newavatar}}"
-            url="{{newavatarurl}}"
-            id="ipfsupload">
-          </ac-ipfsupload> -->
-
-          <div id="croppie">
+            <div id="croppie"></div>
+            <ac-button on-tap="setcurrentavatar_cancel" txtbtn txtcolor="blue" bg="btncolor" small>cancel</ac-button>
+            <ac-button on-tap="setcurrentavatar" txtbtn txtcolor="blue" bg="btncolor" small>save</ac-button>
           </div>
-          <ac-button on-tap="setcurrentavatar" txtbtn txtcolor="blue" bg="btncolor" small>save</ac-button>
-
-
-
-
-          <h1>EDIT</h1>
         </div>
-      </div>
-
-    <!--         <div class="pubkey">
-    <p>pubkey<br>0x22f0a1eC3744f4c27a1e891ccsf96D2E86156e998</p>
-  </div> -->
-
       </neon-animatable>
 
-</neon-animated-pages>
-</div>
-
-</template>
-
-<iron-localstorage
-name="ac-profile"
-value="{{userdata}}"
-on-iron-localstorage-load-empty="initprofile"
-on-iron-localstorage-load="loadprofile">
-</iron-localstorage>
-
+    </neon-animated-pages>
+  </div>
 
 </template>
 
 <script>
-Polymer({
-  is: 'ac-profile',
-  properties: {
-    identity: {
-      type: String,
-      observer: '_identity',
-      notify: true
+  Polymer({
+    is: 'ac-profile',
+    properties: {
+      identity: {
+        type: String,
+        observer: '_identity',
+        notify: true
+      },
+      datachanged: {
+        type: Boolean,
+        value: false
+      }
     },
 
-  },
+    ready: function() {
+      this.datastate = 'view';
+    },
 
-  ready: function() {
-    this.datastate = 'view';
-    // this.$.fileupload.addEventListener('change', function(e) {
-    //   //console.log(e);
-    //   var input = e.target;
-    //   if (input.files && input.files[0]) {
-    //       var reader = new FileReader();
+    init: function(cb){
+      this.username = this.identity.username;
+      this.avatarhash = this.identity.avatarhash;
+      if (cb) cb();
+    },
 
-    //       reader.onload = function (e) {
-    //           this.toCropper(e.target.result);
-
-    //       }.bind(this);
-    //       reader.readAsDataURL(input.files[0]);
-    //   }
-    // }.bind(this));
-  },
-
-  uploadfile: function() {
-
+    uploadfile: function() {
       document.querySelector('#avatarupload').click();
+    },
 
-  },
+    usernameChange: function() {
+      this.identity.username = this.username;
+      this.datachanged = true;
+    },
 
-  avatarChange: function(e){
-    //console.log(e);
+    avatarChange: function(e) {
       var input = e.target;
       if (input.files && input.files[0]) {
-          var reader = new FileReader();
-
-          reader.onload = function (e) {
-              this.toCropper(e.target.result);
-
-          }.bind(this);
-          reader.readAsDataURL(input.files[0]);
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          this.toCropper(e.target.result);
+        }.bind(this);
+        reader.readAsDataURL(input.files[0]);
       }
-  },
+    },
 
-  _is: function(a, b) {
-    if (b === undefined){
-      b = true;
-    }
-    //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
-    return a === b;
-  },
+    _is: function(a, b) {
+      if (b === undefined) {
+        b = true;
+      }
+      return a === b;
+    },
 
-  _identity: function() {
-    this.currentavatar = this.identity.avatarurl;
-  },
+    // receive identity from data binder
+    _identity: function() {
+      this.currentavatar = this.identity.avatarurl;
+    },
 
-  toCropper: function(image) {
-    //console.log(image);
-
-    //console.log(e.detail);
-    this.datastate = 'edit';
-    this.currentavatar = image;
-    // var el = this.$.croppie
-    this.croppie = new Croppie(this.$.croppie, {
-        viewport: { width: 100, height: 100 },
-        boundary: { width: 300, height: 300 },
+    toCropper: function(image) {
+      this.datastate = 'edit';
+      this.currentavatar = image;
+      if (this.croppie && this.croppie.destroy) {
+        this.croppie.destroy();
+      }
+      this.croppie = new Croppie(this.$.croppie, {
+        viewport: {
+          width: 100,
+          height: 100
+        },
+        boundary: {
+          width: 300,
+          height: 300
+        },
         showZoomer: false
-        //enableOrientation: true
-    });
-    this.croppie.bind({
+          //enableOrientation: true
+      });
+      this.croppie.bind({
         url: image,
         orientation: 4
-    });
-  },
+      });
+    },
 
-  setcurrentavatar: function() {
-    var self = this;
-    this.croppie.result({type: 'base64',format:'jpeg', quality:0.9}).then(function(base64) {
-
-      // set the avatar to the dataURL.
-      this.currentavatar = base64;
+    setcurrentavatar_cancel: function() {
       this.datastate = 'view';
+      self.croppie.destroy();
+    },
 
-      // now convert and save to IPFS in the background.
-      var base64data = base64.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
-      var imgbuffer = this.$.ipfs.ipfs.Buffer(base64data, 'base64');
+    setcurrentavatar: function() {
+      var self = this;
+      this.croppie.result({
+        type: 'base64',
+        format: 'jpeg',
+        quality: 0.9
+      }).then(function(base64) {
 
-      this.$.ipfs.add(imgbuffer, function(err, result) {
-        console.log(err, result[0].hash);
-        var hashurl = this.$.ipfs.geturl(result[0].hash);
-        self.identity.avatarurl = hashurl;
-        self.fire('identityUpdate');
+        // set the avatar to the dataURL.
+        this.currentavatar = base64;
+        this.datastate = 'view';
+
+        // now convert and save to IPFS in the background.
+        var base64data = base64.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
+        var imgbuffer = this.$.ipfs.ipfs.Buffer(base64data, 'base64');
+
+        this.$.ipfs.add(imgbuffer, function(err, result) {
+          console.log(err, result[0].hash);
+          var hashurl = this.$.ipfs.geturl(result[0].hash);
+          self.identity.avatarurl = hashurl;
+          self.datachanged = true;
+          self.fire('identity-update',self.identity);
+        }.bind(this));
+
+        // remove cropper
+        self.croppie.destroy();
+        self.datachanged = true;
+
       }.bind(this));
 
+    },
 
-      // remove cropper
-      self.croppie.destroy();
+    _sizeview: function() {
+      switch (this.sizeview) {
+        case 'phone':
+          this.align = 'verticcenter';
+          this.customStyle['--avatar-size'] = '90px';
+          this.updateStyles();
+          break;
+        case 'desktop':
+          this.align = 'verticstart';
+          this.customStyle['--avatar-size'] = '130px';
+          this.updateStyles();
+          break;
+        case 'xlarge':
+          this.align = 'verticstart';
+          this.customStyle['--avatar-size'] = '130px';
+          this.updateStyles();
+          break;
+        default:
+          console.log("!!! ** Niks");
+      }
+    },
 
-    }.bind(this));
+    logout: function() {
+      this.fire('logout');
+//      sessionStorage.removeItem('ac-password');
+//      window.location = '/';
+    },
 
-  },
+    _username: function() {
+      //console.log(this.username);
+      // if (this.username != this.identity.username) {
+      //   var collapser = document.getElementById('collapse');
+      //   collapser.show();
+      // }
+      // if (this.username == this.identity.username) {
+      //   var collapser = document.getElementById('collapse');
+      //   collapser.hide();
+      // }
+    },
 
-  _sizeview: function(){
-    switch(this.sizeview) {
-      case 'phone':
-      this.align = 'verticcenter';
-      this.customStyle['--avatar-size'] = '90px';
-      this.updateStyles();
-      break;
-      case 'desktop':
-      this.align = 'verticstart';
-      this.customStyle['--avatar-size'] = '130px';
-      this.updateStyles();
-      break;
-      case 'xlarge':
-      this.align = 'verticstart';
-      this.customStyle['--avatar-size'] = '130px';
-      this.updateStyles();
-      break;
-      default:
-      console.log("!!! ** Niks");
-    }
-  },
+    exit: function(){      
+      this.datastate = 'view';
+      this.datachanged = false;
+      this.fire('exit');
+    },
 
-  logout: function() {
-    sessionStorage.removeItem('ac-password');
-    window.location = '/';
-  },
+    confirm: function() {
+      this.set('identity.username', this.username);
+      this.datachanged = false;
+      this.fire('identity-update',this.identity);
+      this.fire('exit');
+    },
 
-  _username: function() {
-    //console.log(this.username);
-    if(this.username != this.identity.username) {
-      var collapser = document.getElementById('collapse');
-      collapser.show();
-    }
-    if(this.username == this.identity.username) {
-      var collapser = document.getElementById('collapse');
-      collapser.hide();
-    }
-  },
+    // savenewUsername: function() {
+    //   var collapser = document.getElementById('collapse');
+    //   console.log("this is it", collapser);
+    //   collapser.toggle();
+    // },
 
-  confirm: function() {
-    this.set('identity.username', this.username);
-    this.fire('identity-update');
-    var collapser = document.getElementById('collapse');
-    collapser.hide();
-  },
+    // backtohome: function() {
+    //   this.datastate = 'view';
+    //   this.fire('exit');
+    // },
 
-  savenewUsername: function(){
-    var collapser = document.getElementById('collapse');
-    console.log("this is it", collapser);
-    collapser.toggle();
-  },
+    // toggleupload: function() {
+    //   this.$.ipfsupload.click();
+    // }
 
-  backtohome: function(){
-    this.datastate = 'view';
-    this.fire('to-home');
-  },
-
-  toggleupload: function() {
-    this.$.ipfsupload.click();
-  }
-
-});
+  });
 </script>
 
 </dom-module>
