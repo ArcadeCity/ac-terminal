@@ -79,6 +79,29 @@
       height: 20px;
     }
 
+    .centertxt {
+      text-align: center;
+
+    }
+
+    .importpk {
+      text-align: center;
+      width: 80%;
+      max-width: 500px;
+    }
+
+    .importpk ac-input {
+      width: 100%;
+    }
+
+    .maxwidth {
+      max-width: 80%;
+    }
+
+    .hidden {
+      display: none;
+    }
+
     </style>
 
   <template>
@@ -89,27 +112,34 @@
 
       <!-- first stage in importing PK -->
       <neon-animatable data-page="importpk">
-        <div class="pascanvas">
-          <h1>Enter your privatekey</h1>
-          <div class="enterpass">
+        <div class="pascanvas verticcenter">
+          <div class="importpk">
+          <p class="yellow centertxt">Enter your privatekey</p>
+          <div class="whitespace"></div>
             <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="enter your private key" type="password" bind-value="{{privatekey}}" center></ac-input>
-            <ac-button class="loginbtn" icon="ac-arrowright" on-tap="pkreceived" bg="base" txtcolor="yellow"></ac-button>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+
+            <ac-button class="loginbtn" icon="ac-arrowright" on-tap="pkreceived" bg="btncolor" txtcolor="yellow"></ac-button>
           </div>
         </div>
       </neon-animatable>
 
       <!-- second stage in importing PK -->
       <neon-animatable data-page="importpkmakewallet">
-        <h1>
-          Enter a password to protect the vault that will hold this key
-        </h1>
-        <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
+        <div class="pascanvas verticcenter">
+          <p class="yellow centertxt maxwidth">Enter a password to protect the vault that will hold this key</p>
+          <div class="whitespace"></div>
+          <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
+        </div>
       </neon-animatable>
 
       <!-- import a keyfile -->
       <neon-animatable data-page="importfile">
-        <input type="file"  class="hidden" id="uploaditem"  on-change="readSingleFile">
-        <ac-button on-tap="uploadclick" txtbtn txtcolor="base" bg="yellow">Choose your wallet-file</ac-button>
+        <div class="pascanvas verticcenter">
+          <input type="file"  class="hidden" id="uploaditem"  on-change="readSingleFile">
+          <ac-button on-tap="uploadclick" txtbtn txtcolor="blue" bg="btncolor">Choose your wallet-file</ac-button>
+        </div>
       </neon-animatable>
 <!--
       <neon-animatable data-page="new">
@@ -129,7 +159,9 @@
     </neon-animatable>
 
     <neon-animatable data-page="unlock">
-      <ac-password id="newuser" sessionname="vaultpassword" on-password-received="unlockvault"></ac-password>
+      <div class="pascanvas verticcenter">
+        <ac-password id="newuser" sessionname="vaultpassword" on-password-received="unlockvault"></ac-password>
+      </div>
     </neon-animatable>
 
   </neon-animated-pages>
