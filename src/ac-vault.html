@@ -127,7 +127,7 @@
       <neon-animatable data-page="importpk">
         <div class="pascanvas verticcenter">
           <div class="importpk">
-          <p class="yellow centertxt">Enter your privatekey</p>
+          <p class="yellow centertxt">Enter the private key you'll find on your paper wallet</p>
           <div class="whitespace"></div>
             <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="enter your private key" type="password" bind-value="{{privatekey}}" center></ac-input>
             <div class="whitespace"></div>
@@ -395,7 +395,7 @@
           }
         } catch (e) {
 //          throw new Error('Vault could not be loaded', e);
-            this.vaulterror = "This file could not be loaded, it's not a vault-file.";
+            this.vaulterror = "This file could not be loaded, it's not an ARC-wallet json-file.";
             return false;
         }
       },
