@@ -77,7 +77,7 @@
     padding: 0vh 0px 0px 0px;
     @apply(--layout-vertical);
     @apply(--layout-center-center);
-    border-bottom: 2px dotted rgba(255,255,255,0.05);
+    /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
   }
 
 
@@ -120,13 +120,19 @@
     opacity: 0.5;
   }
 
-  .shortcode {
+  .profilepart {
+    border-bottom: 2px dotted rgba(255,255,255,0.05);
+    box-sizing: border-box;
+    padding: 3vh 0px 3vh 0px;
+  }
+
+
+  .verticcenter {
     width: 100%;
     @apply(--layout-vertical);
     @apply(--layout-center-center);
-    border-bottom: 2px dotted rgba(255,255,255,0.05);
     box-sizing: border-box;
-    padding: 3vh 0px 2vh 0px;
+    padding: 3vh 0px 3vh 0px;
   }
 
   .pubkey {
@@ -150,16 +156,17 @@
     border-bottom: 1px dashed var(--ac-blue);
   }
 
-  .logoutbtn {
-    width: 100%;
-    @apply(--layout-vertical);
-    @apply(--layout-center-center);
+/*  .logout p {
+    color: var(--ac-blue);
+    border-bottom: 1px dotted var(--ac-blue);
     box-sizing: border-box;
-    padding: 3vh 0px 3vh 0px;
-  }
+    padding: 0px 0px 3px 0px;
+    font-size: 14px;
+    @apply(--montserrat-semibold);
 
-  .logoutbtn ac-button {
-    width: 150px;
+  }*/
+
+  .logout ac-button {
     @apply(--base-shadow);
   }
 
@@ -205,7 +212,7 @@
             </div>
           </div>
 
-          <div class="profileusername">
+          <div class="profileusername profilepart">
             <ac-input color="white" label="username" type="input" on-change="usernameChange" bind-value="{{username}}" center inputvalue="MrArcade"></ac-input>
             <iron-collapse id="collapse" opened="{{datachanged}}">
               <div class="whitespace"></div>
@@ -216,16 +223,22 @@
                 <ac-button icon="ac-v" txtcolor="base" bg="yellow" on-tap="confirm" small>confirm</ac-button>
               </div>
             </iron-collapse>
-
-             <div class="shortcode">
-               <ac-shortcode bg="btncolor" txtcolor="white" small>shortcode</ac-shortcode>
-             </div>
-
-          <div class="logoutbtn">
-            <ac-button on-tap="logout" txtbtn txtcolor="blue" bg="btncolor">log out</ac-button>
-            <ac-button on-tap="backupvault" txtbtn txtcolor="blue" bg="btncolor">Create backup</ac-button>
-          </div>
         </div>
+<!-- 
+         <div class="shortcode">
+           <ac-shortcode bg="btncolor" txtcolor="white" small>shortcode</ac-shortcode>
+         </div> -->
+
+          <div class="profilepart verticcenter">
+          <p class="yellow">It's wise to backup your profile</p>
+          <div class="whitespace"></div>
+
+            <ac-button on-tap="backupvault" txtbtn txtcolor="yellow" bg="btncolor">Create backup</ac-button>
+          </div>
+
+          <div class="verticcenter logout" >
+            <ac-button on-tap="logout" txtbtn txtcolor="blue" bg="btncolor" small>log out</ac-button>
+          </div>
       </neon-animatable>
 
       <neon-animatable data-state="edit">
