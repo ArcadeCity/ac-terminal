@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="ac-ipfs.html">
 
 <dom-module id="ac-avatar">
   <template>
@@ -103,11 +104,12 @@
 
     </style>
 
+    <ac-ipfs id="ipfs"></ac-ipfs>
 
     <template is="dom-if" if="{{_is(mode, 'imgandtxt')}}">
       <div class="arc-avatar">
         <div class$="avatar {{size}}">
-          <img src="{{identity.avatarurl}}">
+          <img src="{{ipfsurl(identity.avatarhash)}}">
         </div>
         <!-- <div class="username-big">
           <p>{{identity.username}}</p>
@@ -120,13 +122,13 @@
     <template is="dom-if" if="{{_is(mode, 'txtonly')}}">
       <div class="username-big">
           <p>{{identity.username}}</p>
-          <div class="pub"><p>{{identity.pubkey}}</p></div>
+          <div class="pub"><p>{{pubkey}}</p></div>
         </div>
     </template>
 
     <template is="dom-if" if="{{_is(mode, 'imgonly')}}">
         <div class$="avatar {{size}}">
-          <img src="{{identity.avatarurl}}">
+          <img src="{{ipfsurl(identity.avatarhash)}}">
         </div>
     </template>
 
@@ -150,8 +152,7 @@
           type: Object
         },
         pubkey: {
-          type: String,
-          value: 'ff9980effO'
+          type: String
         }
       },
 
@@ -161,6 +162,15 @@
         }
         //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
         return a === b;
+      },
+
+      // attached: function(){
+      //   console.log(this.identity); 
+      //   debugger;       
+      // },
+
+      ipfsurl: function(hash){
+        return this.$.ipfs.geturl(hash);
       },
 
     });

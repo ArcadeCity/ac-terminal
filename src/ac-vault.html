@@ -66,7 +66,9 @@
     .yellow {
       color: var(--ac-yellow);
     }
-
+    .red {
+      color: var(--ac-red);
+    }
     ac-password {
     width: 80%;
     max-width: 500px;
@@ -98,6 +100,19 @@
 
     .hidden {
       display: none;
+    }
+
+    .error {
+      text-align: center;
+      width: 80%;
+      max-width: 500px;
+      box-sizing: border-box;
+      padding: 20px;
+
+    }
+
+    .oops {
+      @apply(--montserrat-bold);
     }
 
     </style>
@@ -135,12 +150,16 @@
       <!-- import a keyfile -->
       <neon-animatable data-page="importfile">
         <div class="pascanvas verticcenter">
+        <template is="dom-if" if="{{vaulterror}}">
+          <div class="error red"><p><span class="oops">Oops!</span><br>{{vaulterror}}<p>
+        <div class="whitespace"></div>
+          </div>
+        </template>
           <input type="file"  class="hidden" id="uploaditem"  on-change="readSingleFile">
           <ac-button on-tap="uploadclick" txtbtn txtcolor="blue" bg="btncolor">Choose your wallet-file</ac-button>
+
         </div>
-        <template is="dom-if" if="{{vaulterror}}">
-          <div class="error">Error : {{vaulterror}}</div>
-        </template>
+
       </neon-animatable>
 
       <neon-animatable data-page="backup">
@@ -231,6 +250,7 @@
           case 'importpkmakewallet':
           case 'importfile':
           case 'createnew':
+          case 'unlock':
             if (this.hasVault()) {
               console.log('You already have a vault');
             }
@@ -263,9 +283,11 @@
         reader.onload = function(e) {
           var contents = e.target.result;
           //self.readwallet = contents;
-          self._parseVault(contents);
+          if (self._parseVault(contents)){
+            self.saveVault();
+            return self.fire('locked');
+          }
           // so we've read the vault file. It's locked.
-          return self.fire('locked');
 
         };
         reader.readAsText(file);
@@ -363,7 +385,8 @@
               this.keystore = lightwallet.keystore.deserialize(vaultdata.keystore);
               this.currentaccount = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
               this.currentidentity = vaultdata.identity;
-              console.log('ac-vault -> Vault opened. Account=', this.currentaccount);
+              console.log('ac-vault -> Vault loaded. Account=', this.currentaccount);
+              return true;
               break;
 
             default:
@@ -371,8 +394,9 @@
               break;
           }
         } catch (e) {
-          //          throw new Error('Vault could not be loaded', e);
-          this.vaulterror = 'Vault file could not be loaded';
+//          throw new Error('Vault could not be loaded', e);
+            this.vaulterror = "This file could not be loaded, it's not a vault-file.";
+            return false;
         }
       },
 
@@ -461,7 +485,7 @@
         return({
           version: 1,
           username: 'MrArc',
-          avatarhash: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
+          avatarhash: 'Qmf9u5L5cZiYY3DNWeWkG5ybyu7H1UPZnXxoDroy4HyeMs'
         });
       },
 
