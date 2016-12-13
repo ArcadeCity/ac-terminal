@@ -224,9 +224,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <ac-helpers id="helpers"></ac-helpers>
     <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
     <ac-config
+      id="config"
       web3host="{{web3host}}"
       ipfs="{{ipfs}}"
-      etherscanroot="{{etherscanroot}}"></ac-config>
+      etherscanroot="{{etherscanroot}}"
+      tokencontractaddress="{{tokencontractaddress}}"
+      ></ac-config>
       
     <ac-web3
       host="{{web3host}}"
@@ -526,7 +529,7 @@ TO:
         this.importHref(this.contracturl, function(e) {
           var contractjson = JSON.parse(e.target.import.body.innerText);
           var tokenContract = self.web3.eth.contract(contractjson.abi);
-          var tokenContractInstance = tokenContract.at(contractjson.address);
+          var tokenContractInstance = tokenContract.at(self.$.config.tokencontractaddress);
           var account = self.$.helpers.fixaddress(self.account);
           self.arcbalance = tokenContractInstance.balanceOf(account) / 1e18;
           self.balanceloaded = true;
@@ -548,7 +551,7 @@ TO:
           console.log('gasprice: ', gasPrice);
 
           var MyContract = self.web3.eth.contract(self.contractjson.abi);
-          var myContractInstance = MyContract.at(self.contractjson.address);
+          var myContractInstance = MyContract.at(self.$.config.tokencontractaddress);
             console.log('doing transfer of ',amount,' LC to: ', pubkey, 'from: ', self.account);
             myContractInstance.transfer.sendTransaction(pubkey, amount, {
               from: self.$.helpers.fixaddress(self.account),
