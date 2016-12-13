@@ -250,6 +250,7 @@
           case 'importpkmakewallet':
           case 'importfile':
           case 'createnew':
+          case 'unlock':
             if (this.hasVault()) {
               console.log('You already have a vault');
             }
@@ -282,7 +283,12 @@
         reader.onload = function(e) {
           var contents = e.target.result;
           //self.readwallet = contents;
-          self._parseVault(contents);
+          if (self._parseVault(contents)){
+            self.saveVault();
+            return self.fire('locked');
+          }
+          // so we've read the vault file. It's locked.
+
         };
         reader.readAsText(file);
       },
@@ -341,10 +347,15 @@
       _convertWalletToVault: function(content){
         var self = this;
 
-        self.keystore = JSON.parse(JSON.parse(content));
-        self._creatBlankIdentity();
-        self.saveVault();
-        self.loadVault();
+        var keystore = JSON.parse(content);
+        var identity = self._creatBlankIdentity();        //self.saveVault();
+        return ({
+          type: 'ac-vault',
+          version: 1,
+          keystore: keystore,
+          identity: identity
+        });
+
 
       },
 
@@ -355,36 +366,37 @@
         try {
           // if the vaultdata is a string - it's probably an old wallet file
           if (typeof vaultdata === 'string') {
-            return this._convertWalletToVault(vaultdata);
-          } else {
+            vaultdata = this._convertWalletToVault(vaultdata);
+          }
 
-            if (!vaultdata) {
-              throw new Error('ac-vault: loadVault: vault is not defined.');
-            }
-            if (!this.password) {
-              throw new Error('ac-vault: loadVault: no password set.');
-            }
-            if (!vaultdata.type === 'ac-vault') {
-              throw new Error('ac-vault: loadVault: JSON format not recognized.');
-            }
+          if (!vaultdata) {
+            throw new Error('ac-vault: loadVault: vault is not defined.');
+          }
+          // if (!this.password) {
+          //   throw new Error('ac-vault: loadVault: no password set.');
+          // }
+          if (!vaultdata.type === 'ac-vault') {
+            throw new Error('ac-vault: loadVault: JSON format not recognized.');
+          }
 
-            switch (vaultdata.version) {
+          switch (vaultdata.version) {
 
-              case 1:
-                this.keystore = lightwallet.keystore.deserialize(vaultdata.keystore);
-                this.currentaccount = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
-                this.currentidentity = vaultdata.identity;
-                console.log('ac-vault -> Vault opened. Account=', this.currentaccount);
-                break;
+            case 1:
+              this.keystore = lightwallet.keystore.deserialize(vaultdata.keystore);
+              this.currentaccount = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
+              this.currentidentity = vaultdata.identity;
+              console.log('ac-vault -> Vault loaded. Account=', this.currentaccount);
+              return true;
+              break;
 
-              default:
-                throw new Error('Vault version unknown', vaultdata.version);
-                break;
-            }
+            default:
+              throw new Error('Vault version unknown', vaultdata.version);
+              break;
           }
         } catch (e) {
 //          throw new Error('Vault could not be loaded', e);
             this.vaulterror = "This file could not be loaded, it's not a vault-file.";
+            return false;
         }
       },
 
@@ -441,7 +453,7 @@
 
           if (amountofaccounts==0){
 
-            self._creatBlankIdentity();
+            self.currentidentity = self._creatBlankIdentity();
             self.saveVault();
             self.loadVault();
 
@@ -453,7 +465,7 @@
           }else{
             self.generateNewAddress(1,function() {
              
-              self._creatBlankIdentity();
+              self.currentidentity = self._creatBlankIdentity();
 
               self.saveVault();
               self.loadVault();
@@ -470,12 +482,11 @@
       },
 
       _creatBlankIdentity: function() {
-        var self = this;
-        self.currentidentity = {
+        return({
           version: 1,
           username: 'MrArc',
-          avatarhash: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
-        };
+          avatarhash: 'Qmf9u5L5cZiYY3DNWeWkG5ybyu7H1UPZnXxoDroy4HyeMs'
+        });
       },
 
       _getpwDerivedKey: function(cb){
