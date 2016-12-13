@@ -250,7 +250,6 @@
           case 'importpkmakewallet':
           case 'importfile':
           case 'createnew':
-          case 'unlock':
             if (this.hasVault()) {
               console.log('You already have a vault');
             }
@@ -383,6 +382,7 @@
 
             case 1:
               this.keystore = lightwallet.keystore.deserialize(vaultdata.keystore);
+              this.currentkeystore = this.keystore;
               this.currentaccount = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
               this.currentidentity = vaultdata.identity;
               console.log('ac-vault -> Vault loaded. Account=', this.currentaccount);

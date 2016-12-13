@@ -11,9 +11,9 @@
 <dom-module id="ac-wallet">
 
   <template>
+    <ac-config web3host="{{host}}" tokencontractaddress="{{tokencontractaddress}}"></ac-config>  
     <ac-web3 id="web3" web3="{{web3}}" on-web3-ready="_setprovider"></ac-web3>
     <ac-helpers id="helpers"></ac-helpers>
-
   </template>
 
   <script>
@@ -29,12 +29,12 @@
         ethbalance: {
           type: Number,
           notify: true,
-          value: 1
+          value: 0
         },
         arcbalance: {
           type: Number,
           notify: true,
-          value: 10
+          value: 0
         },
         pubkey: {
           type: String
@@ -50,6 +50,7 @@
       attached: function() {
         console.log('ac-wallet attached');
         this.$.web3.initweb3();
+        this.updateBalance();
       },
 
       _keystore: function(){
@@ -66,7 +67,7 @@
           transaction_signer: this.keystore
         });
 
-        this._setprovider();
+        //this._setprovider();
 
         this.account = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
 
@@ -75,7 +76,7 @@
         var MyContract = this.web3.eth.contract(this.token.abi);
         this.myContractInstance = MyContract.at(this.tokencontractaddress);
 
-
+        //this.updateBalance();
       },
 
 
@@ -118,13 +119,16 @@
       },
 
       updateBalance: function(e) {
+        if (this.pubkey) {
 
+          this.ethbalance = this.web3.eth.getBalance(this.$.helpers.fixaddress(this.pubkey)).toNumber();
+          this.arcbalance = this.myContractInstance.balanceOf(this.$.helpers.fixaddress(this.pubkey)).toNumber();
 
-        this.ethbalance = this.web3.eth.getBalance(this.$.helpers.fixaddress(this.pubkey)).toNumber();
-        this.arcbalance = this.myContractInstance.balanceOf(this.$.helpers.fixaddress(this.pubkey)).toNumber();
-        
-        console.log('ETH balance is', this.accountbalance);
-        console.log('ARC balance is', this.arcbalance);
+          console.log('ETH balance is', this.ethbalance);
+          console.log('ARC balance is', this.arcbalance);
+        } else {
+          throw new Error('no pubkey when requesting Balance');
+        }
 
       },
 
