@@ -7,7 +7,8 @@ A new Arcadian opens the app (terminal.arcade.city) and can create his own walle
 
 ## New session on device with my wallet
 A user that already has a wallet installed on his device, can open the app and unlock it by entering his password.
-Terminal 
+
+## Terminal
 The new user enters the terminal view, with empty avatar, empty username, empty balance, reference currency and an overview of all games provided in Arcade City (to start with ridesharing).
 
 ## Profile
