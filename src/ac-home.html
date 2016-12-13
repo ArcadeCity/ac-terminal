@@ -119,7 +119,7 @@
 
     </div>
   </div>
-    <div class="homecontent">
+    <div class="homecontent" id="homecontent">
       <div class$="arcbalance {{arcalign}}">
         <ac-balance
         refcur="EUR"
@@ -182,25 +182,33 @@
           return {
             'entry': [{
               name: 'fade-in-animation',
-              toPage: this
+              node:this.$.homecontent,
+              toPage: this,
+              timing: {
+                      duration: 750
+              }
             }, {
               name: 'hero-animation',
               id: 'hero',
               toPage: this,
               timing: {
-                delay: 150
+                delay: 75
               }
             }],
 
             'exit': [{
               name: 'fade-out-animation',
-              fromPage: this
+              node:this.$.homecontent,
+              fromPage: this,
+              timing: {
+                      duration: 750
+              }
             }, {
               name: 'hero-animation',
               id: 'hero',
               fromPage: this,
               timing: {
-                delay: 150
+                delay: 75
               }
             }]
           }

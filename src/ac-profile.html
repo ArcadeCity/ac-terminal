@@ -71,6 +71,15 @@
 
   }
 
+  .profilecontent {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0vh 0px 0px 0px;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
+  }
+
   .profileusername {
     width: 100%;
     box-sizing: border-box;
@@ -185,6 +194,10 @@
     color: var(--ac-yellow);
   }
 
+  #uploadbtn {
+    z-index: 9;
+  }
+
   </style>
 
     <ac-ipfs id="ipfs"></ac-ipfs>
@@ -208,10 +221,11 @@
             ></ac-avatar>
 
               <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>
-              <ac-button icon="ac-upload" small bg="btncolor" txtcolor="yellow"></ac-button>
+              <ac-button icon="ac-upload" small bg="btncolor" txtcolor="yellow" id="uploadbtn"></ac-button>
             </div>
           </div>
 
+          <div class="profilecontent" id="profilecontent">
           <div class="profileusername profilepart">
             <ac-input color="white" label="username" type="input" on-change="usernameChange" bind-value="{{username}}" center inputvalue="MrArcade"></ac-input>
             <iron-collapse id="collapse" opened="{{datachanged}}">
@@ -238,6 +252,7 @@
 
           <div class="verticcenter logout" >
             <ac-button on-tap="logout" txtbtn txtcolor="blue" bg="btncolor" small>log out</ac-button>
+          </div>
           </div>
       </neon-animatable>
 
@@ -285,25 +300,47 @@
                 return {
                   'entry': [{
                     name: 'fade-in-animation',
-                    toPage: this
+                    node:this.$.profilecontent,
+                    toPage: this,
+                    timing: {
+                      duration: 750
+                    }
+                  },{
+                    name: 'fade-in-animation',
+                    node:this.$.uploadbtn,
+                    toPage: this,
+                    timing: {
+                      duration: 750
+                    }
                   }, {
                     name: 'hero-animation',
                     id: 'hero',
                     toPage: this,
                     timing: {
-                      delay: 150
+                      delay: 250
                     }
                   }],
 
                   'exit': [{
                     name: 'fade-out-animation',
-                    fromPage: this
+                    node:this.$.profilecontent,
+                    fromPage: this,
+                    timing: {
+                      duration: 750
+                    }
+                  },{
+                    name: 'fade-out-animation',
+                    node:this.$.uploadbtn,
+                    toPage: this,
+                    timing: {
+                      duration: 750
+                    }
                   }, {
                     name: 'hero-animation',
                     id: 'hero',
                     fromPage: this,
                     timing: {
-                      delay: 150
+                      delay: 250
                     }
                   }]
                 }
