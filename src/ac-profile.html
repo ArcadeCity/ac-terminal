@@ -59,11 +59,12 @@
   .profilepicinner {
     @apply(--layout-vertical);
     @apply(--layout-center-justified);
-    @apply(--layout-end);
+    @apply(--layout-end
   }
 
   .profilepicinner ac-button {
     margin-top: -20px;
+    @apply(--base-structure-and-inset);
   }
 
   .uploadbtn {
@@ -73,7 +74,7 @@
   .profileusername {
     width: 100%;
     box-sizing: border-box;
-    padding: 0vh 0px 2vh 0px;
+    padding: 0vh 0px 0px 0px;
     @apply(--layout-vertical);
     @apply(--layout-center-center);
     border-bottom: 2px dotted rgba(255,255,255,0.05);
@@ -125,7 +126,7 @@
     @apply(--layout-center-center);
     border-bottom: 2px dotted rgba(255,255,255,0.05);
     box-sizing: border-box;
-    padding: 2vh 0px 2vh 0px;
+    padding: 3vh 0px 2vh 0px;
   }
 
   .pubkey {
@@ -154,7 +155,7 @@
     @apply(--layout-vertical);
     @apply(--layout-center-center);
     box-sizing: border-box;
-    padding: 5vh 0px 3vh 0px;
+    padding: 3vh 0px 3vh 0px;
   }
 
   .logoutbtn ac-button {
@@ -173,6 +174,10 @@
     height: 100vh;
   }
 
+  .yellow {
+    color: var(--ac-yellow);
+  }
+
   </style>
 
     <ac-ipfs id="ipfs"></ac-ipfs>
@@ -185,37 +190,39 @@
       <neon-animated-pages class="avataredit" selected="{{datastate}}" attr-for-selected="data-state">
 
         <neon-animatable data-state="view">
-          <div class="profilepic" on-tap="uploadfile">
-            <div class="profilepicinner">
-
+          <div class="profilepic">
+            <div class="profilepicinner" on-tap="uploadfile">
 
               <ac-avatar
             id="currentavatar"
-            username="{{identity.username}}"
-            artwork="{{currentavatar}}"
+            identity="{{identity}}"
             pubkey="{{account}}"
-            mode="imgbigonly"></ac-avatar>
+            mode="imgonly"
+            ></ac-avatar>
 
               <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>
-
+              <ac-button icon="ac-upload" small bg="btncolor" txtcolor="yellow"></ac-button>
             </div>
           </div>
 
           <div class="profileusername">
             <ac-input color="white" label="username" type="input" on-change="usernameChange" bind-value="{{username}}" center inputvalue="MrArcade"></ac-input>
             <iron-collapse id="collapse" opened="{{datachanged}}">
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+
               <div class="confirmbtns">
-                <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="exit" small>decline</ac-icon>
-                <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="confirm" small>confirm</ac-button>
+                <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="close" small>decline</ac-icon>
+                <ac-button icon="ac-v" txtcolor="base" bg="yellow" on-tap="confirm" small>confirm</ac-button>
               </div>
             </iron-collapse>
-            <div class="whitespace"></div>
-            <!--  <div class="shortcode">
-            <ac-shortcode bg="btncolor" txtcolor="white" small>shortcode</ac-shortcode>
-          </div>
-          -->
+
+             <div class="shortcode">
+               <ac-shortcode bg="btncolor" txtcolor="white" small>shortcode</ac-shortcode>
+             </div>
+
           <div class="logoutbtn">
-            <ac-button on-tap="logout" txtbtn txtcolor="blue" bg="btncolor" small>log out</ac-button>
+            <ac-button on-tap="logout" txtbtn txtcolor="blue" bg="btncolor">log out</ac-button>
           </div>
         </div>
       </neon-animatable>
@@ -247,8 +254,55 @@
       datachanged: {
         type: Boolean,
         value: false
-      }
-    },
+      },
+
+            sharedElements: {
+              type: Object,
+              value: function() {
+                return {
+                  'hero': this.$.currentavatar,
+                }
+              }
+            },
+
+            animationConfig: {
+              type: Object,
+              value: function() {
+                return {
+                  // 'entry': [{
+                  //   name: 'fade-in-animation',
+                  //   toPage: this
+                  // }, {
+                  //   name: 'hero-animation',
+                  //   id: 'hero',
+                  //   toPage: this,
+                  //   timing: {
+                  //     delay: 150
+                  //   }
+                  // }],
+
+                  // 'exit': [{
+                  //   name: 'fade-out-animation',
+                  //   fromPage: this
+                  // }, {
+                  //   name: 'hero-animation',
+                  //   id: 'hero',
+                  //   fromPage: this,
+                  //   timing: {
+                  //     delay: 150
+                  //   }
+                  // }]
+                }
+              },
+              observer:'_checkAnimconfig'
+            }
+
+          },
+
+
+          behaviors: [
+            Polymer.NeonSharedElementAnimatableBehavior
+          ],
 
     ready: function() {
       this.datastate = 'view';
@@ -269,6 +323,7 @@
     },
 
     usernameChange: function() {
+
       //this.identity.username = this.username;
       this.datachanged = true;
     },
@@ -305,11 +360,12 @@
       this.croppie = new Croppie(this.$.croppie, {
         viewport: {
           width: 100,
-          height: 100
+          height: 100,
+          type: 'circle'
         },
         boundary: {
-          width: 300,
-          height: 300
+          width: 200,
+          height: 200
         },
         showZoomer: false
           //enableOrientation: true
@@ -347,6 +403,7 @@
           self.avatarhash = result[0].hash;
           self.avatarurl = this.$.ipfs.geturl(result[0].hash);
           self.datachanged = true;
+
           self.fire('identity-update',{
             username: self.username,
             avatarhash: self.avatarhash
@@ -389,7 +446,11 @@
 //      window.location = '/';
     },
 
-    _username: function() {
+    _username: function(newVal,oldVal) {
+      if (oldVal!==undefined){
+        this.datachanged = true;
+      }
+
       //console.log(this.username);
       // if (this.username != this.identity.username) {
       //   var collapser = document.getElementById('collapse');
@@ -401,7 +462,7 @@
       // }
     },
 
-    exit: function(){      
+    exit: function(){
       this.datastate = 'view';
       this.datachanged = false;
       this.fire('exit');
@@ -410,11 +471,26 @@
     confirm: function() {
       this.set('identity.username', this.username);
       this.datachanged = false;
+
       this.fire('identity-update',{
         username: this.username,
         avatarhash: this.avatarhash
       });
-      this.fire('exit');
+      //this.fire('exit');
+
+    },
+
+    close: function() {
+      this.datachanged = false;
+    },
+
+    _datachanged: function() {
+      console.log('joooo');
+    },
+
+    _checkAnimconfig: function() {
+      // console.log('joooo, dit is de Animconfig', this.animationConfig);
+
     },
 
     // savenewUsername: function() {

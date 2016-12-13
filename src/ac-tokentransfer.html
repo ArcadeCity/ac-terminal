@@ -89,7 +89,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
      #sendcoins {
       width: 100%;
-      
+
       box-sizing: border-box;
      }
 
@@ -138,7 +138,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       margin: var(--coin-margins);
      }
 
-    
+
       .initbtns {
 /*        @apply(--layout-vertical);
         @apply(--layout-center-center);*/
@@ -153,7 +153,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ac-shortcode {
         width: var(--btn-width);
       }
-
 
       .initbtns p {
         color: var(--ac-yellow);
@@ -228,6 +227,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       web3host="{{web3host}}"
       ipfs="{{ipfs}}"
       etherscanroot="{{etherscanroot}}"></ac-config>
+      
     <ac-web3
       host="{{web3host}}"
       web3="{{web3}}"></ac-web3>
@@ -254,7 +254,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <iron-collapse id="sendcoins">
           <template is="dom-if" if="{{_is(sendcoinstate,'first')}}">
-          
+
           <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
             <ac-input color="red" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
             <ac-input color="red" class="sendinput" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>

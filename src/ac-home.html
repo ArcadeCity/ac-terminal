@@ -1,0 +1,385 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+
+<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../bower_components/ac-input/ac-input.html">
+
+<link rel="import" href="ac-sizeview.html">
+<link rel="import" href="ac-avatar.html">
+<link rel="import" href="ac-ipfsupload.html">
+<link rel="import" href="ac-ipfs.html">
+<link rel="import" href="ac-shortcode.html">
+
+<link rel="stylesheet" href="../bower_components/Croppie/croppie.css" />
+<script src="../bower_components/Croppie/croppie.js"></script>
+
+<dom-module id="ac-home">
+  <!-- Defines the element's style and local DOM -->
+  <template>
+    <style>
+  :host {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  h1 {
+    @apply(--ac-font-h1);
+  }
+
+  p {
+    @apply(--ac-font-body1);
+  }
+
+    .hometotal {
+      background-color: var(--ac-base);
+      height: 100%;
+    }
+
+    .homecontent {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0px 10vw 16px 10vw;
+      height: 84vh;
+    }
+
+    /*ac-avatar {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0px 0px 16px 10vw;
+      height: 16vh;
+      background-color: var(--ac-base);
+      z-index: 3;
+      @apply(--layout-horizontal);
+      @apply(--layout-end);
+    }*/
+
+    .arcbalance {
+      width: var(--ac-balance-width);
+      height: var(--ac-balance-height);
+    }
+
+    .tokentrans {
+      width: var(--tokentrans-width);
+      margin-top: var(--tokentrans-top);
+    }
+
+    .verticcenter {
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
+    }
+    .verticstart {
+      @apply(--layout-vertical);
+      @apply(--layout-start);
+      @apply(--layout-center-justified);
+    }
+
+    .horizontcenter {
+      @apply(--layout-horizontal);
+      @apply(--layout-center-center);
+    }
+    .horizontstart {
+      @apply(--layout-horizontal);
+      @apply(--layout-start);
+      @apply(--layout-center-justified);
+    }
+
+
+  </style>
+
+
+
+  <div class="hometotal">
+
+    <ac-avatar
+        identity="[[identity]]"
+        pubkey="[[account]]"
+        size="small"
+        on-tap="toProfile"
+        id="homeavatar"
+        ></ac-avatar>
+    <div class="homecontent">
+      <div class$="arcbalance {{arcalign}}">
+        <ac-balance
+        refcur="EUR"
+        on-tap="toWallet"
+        arcbalance="{{arcbalance}}"
+        ethbalance="{{ethbalance}}"></ac-balance>
+      </div>
+
+      <div class$="tokentrans {{arcalign}}">
+      </div>
+
+      <ac-wallet
+        keystore="[[keystore]]"
+        arcbalance="{{arcbalance}}"
+        ethbalance="{{ethbalance}}"></ac-wallet>
+    </div>
+
+  </div>
+
+
+
+</template>
+
+<script>
+  Polymer({
+    is: 'ac-home',
+    properties: {
+      identity: {
+        type: String,
+        observer: '_identity',
+        notify: true
+      },
+      datachanged: {
+        type: Boolean,
+        value: false
+      },
+
+      sharedElements: {
+        type: Object,
+        value: function() {
+          return {
+            'hero': this.$.homeavatar,
+          }
+        }
+      },
+
+      animationConfig: {
+        type: Object,
+        value: function() {
+          return {
+            // 'entry': [{
+            //   name: 'fade-in-animation',
+            //   toPage: this
+            // }, {
+            //   name: 'hero-animation',
+            //   id: 'hero',
+            //   toPage: this,
+            //   timing: {
+            //     delay: 150
+            //   }
+            // }],
+
+            'exit': [{
+              name: 'fade-out-animation',
+              fromPage: this
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this,
+              timing: {
+                delay: 150
+              }
+            }]
+          }
+        },
+        observer:'_checkAnimconfig'
+      }
+
+    },
+
+
+    behaviors: [
+      Polymer.NeonSharedElementAnimatableBehavior
+    ],
+
+    ready: function() {
+      this.datastate = 'view';
+    },
+
+    init: function(cb){
+      this.username = this.identity.username;
+      this.avatarhash = this.identity.avatarhash;
+      if (cb) cb();
+    },
+
+    uploadfile: function() {
+      document.querySelector('#avatarupload').click();
+    },
+
+    usernameChange: function() {
+      this.identity.username = this.username;
+      // this.datachanged = true;
+    },
+
+    avatarChange: function(e) {
+      var input = e.target;
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          this.toCropper(e.target.result);
+        }.bind(this);
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+
+    _is: function(a, b) {
+      if (b === undefined) {
+        b = true;
+      }
+      return a === b;
+    },
+
+    // receive identity from data binder
+    _identity: function() {
+      this.currentavatar = this.identity.avatarurl;
+    },
+
+    toCropper: function(image) {
+      this.datastate = 'edit';
+      this.currentavatar = image;
+      if (this.croppie && this.croppie.destroy) {
+        this.croppie.destroy();
+      }
+      this.croppie = new Croppie(this.$.croppie, {
+        viewport: {
+          width: 100,
+          height: 100,
+          type: 'circle'
+        },
+        boundary: {
+          width: 200,
+          height: 200
+        },
+        showZoomer: false
+          //enableOrientation: true
+      });
+      this.croppie.bind({
+        url: image,
+        orientation: 4
+      });
+    },
+
+    setcurrentavatar_cancel: function() {
+      this.datastate = 'view';
+      self.croppie.destroy();
+    },
+
+    setcurrentavatar: function() {
+      var self = this;
+      this.croppie.result({
+        type: 'base64',
+        format: 'jpeg',
+        quality: 0.9
+      }).then(function(base64) {
+
+        // set the avatar to the dataURL.
+        this.currentavatar = base64;
+        this.datastate = 'view';
+
+        // now convert and save to IPFS in the background.
+        var base64data = base64.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
+        var imgbuffer = this.$.ipfs.ipfs.Buffer(base64data, 'base64');
+
+        this.$.ipfs.add(imgbuffer, function(err, result) {
+          console.log(err, result[0].hash);
+          var hashurl = this.$.ipfs.geturl(result[0].hash);
+          self.identity.avatarurl = hashurl;
+          self.datachanged = true;
+          self.fire('identity-update',self.identity);
+        }.bind(this));
+
+        // remove cropper
+        self.croppie.destroy();
+        self.datachanged = true;
+
+      }.bind(this));
+
+    },
+
+    _sizeview: function() {
+      switch (this.sizeview) {
+        case 'phone':
+          this.align = 'verticcenter';
+          this.customStyle['--avatar-size'] = '90px';
+          this.updateStyles();
+          break;
+        case 'desktop':
+          this.align = 'verticstart';
+          this.customStyle['--avatar-size'] = '130px';
+          this.updateStyles();
+          break;
+        case 'xlarge':
+          this.align = 'verticstart';
+          this.customStyle['--avatar-size'] = '130px';
+          this.updateStyles();
+          break;
+        default:
+          console.log("!!! ** Niks");
+      }
+    },
+
+    logout: function() {
+      this.fire('logout');
+//      sessionStorage.removeItem('ac-password');
+//      window.location = '/';
+    },
+
+    _username: function(newVal,oldVal) {
+      if (oldVal!==undefined){
+        this.datachanged = true;
+      }
+      //console.log(this.username);
+      // if (this.username != this.identity.username) {
+      //   var collapser = document.getElementById('collapse');
+      //   collapser.show();
+      // }
+      // if (this.username == this.identity.username) {
+      //   var collapser = document.getElementById('collapse');
+      //   collapser.hide();
+      // }
+    },
+
+    exit: function(){
+      this.datastate = 'view';
+      this.datachanged = false;
+      this.fire('exit');
+    },
+
+    confirm: function() {
+      this.set('identity.username', this.username);
+      this.datachanged = false;
+      this.fire('identity-update',this.identity);
+      // this.fire('exit');
+    },
+
+    close: function() {
+      this.datachanged = false;
+    },
+
+    _datachanged: function() {
+      console.log('joooo');
+    },
+
+
+    toProfile: function() {
+      this.fire('to-profile');
+    },
+
+    _checkAnimconfig: function() {
+      // console.log('joooo, dit is de Animconfig', this.animationConfig);
+    },
+
+    // savenewUsername: function() {
+    //   var collapser = document.getElementById('collapse');
+    //   console.log("this is it", collapser);
+    //   collapser.toggle();
+    // },
+
+    // backtohome: function() {
+    //   this.datastate = 'view';
+    //   this.fire('exit');
+    // },
+
+    // toggleupload: function() {
+    //   this.$.ipfsupload.click();
+    // }
+
+  });
+</script>
+
+</dom-module>
