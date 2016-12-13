@@ -124,18 +124,24 @@
       <div class$="arcbalance {{arcalign}}">
         <ac-balance
         refcur="EUR"
-        on-tap="toWallet"
+        on-tap="monitorBalance"
         arcbalance="{{arcbalance}}"
         ethbalance="{{ethbalance}}"></ac-balance>
       </div>
+      BLA{{balanceupdating}}
+      <template is="dom-if" if="{{balanceupdating}}">
+      SPINNER HIER GRAAG
+      </template>
 
       <div class$="tokentrans {{arcalign}}">
         <ac-tokentransfer account="[[pubkey]]"></ac-tokentransfer>
       </div>
 
       <ac-wallet
+        id="wallet"
         keystore="[[keystore]]"
         pubkey="[[pubkey]]"
+        updating="{{balanceupdating}}"
         arcbalance="{{arcbalance}}"
         ethbalance="{{ethbalance}}"></ac-wallet>
     </div>
@@ -234,6 +240,10 @@
 
     _keystore: function(){
       //debugger;
+    },
+
+    monitorBalance: function(){
+      this.$.wallet.monitorBalance();
     },
 
   
