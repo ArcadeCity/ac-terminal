@@ -2,10 +2,8 @@
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/ac-input/ac-input.html">
 <link rel="import" href="../bower_components/ac-style/ac-style.html">
-
 <link rel="import" href="ac-helpers.html">
 <link rel="import" href="ac-password.html">
-
 <script src="scripts/lightwallet.min.js"></script>
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 
@@ -141,6 +139,14 @@
           <ac-button on-tap="uploadclick" txtbtn txtcolor="blue" bg="btncolor">Choose your wallet-file</ac-button>
         </div>
       </neon-animatable>
+
+      <neon-animatable data-page="backup">
+        <div class="pascanvas verticcenter">
+          <a id="downloadAnchorElem" style="display:none"></a>
+          <ac-button on-tap="downloadvault" txtbtn txtcolor="blue" bg="btncolor">Download your vault</ac-button>
+        </div>
+      </neon-animatable>
+
 <!--
       <neon-animatable data-page="new">
         <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="tocreatenew" txtbtn>Create a new vault</ac-button>
@@ -296,6 +302,18 @@
         //page.redirect('/home');
       },
 
+      downloadvault: function(){
+
+
+        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem('ac-vault'));;
+        var dlAnchorElem = document.getElementById('downloadAnchorElem');
+        dlAnchorElem.setAttribute("href", dataStr);
+        dlAnchorElem.setAttribute("download", 'ArcadeCityVault-' + Date.now() + '.json');
+        dlAnchorElem.click();
+
+//        download(window.localStorage.getItem('ac-vault'), 'ArcadeCityVault.json', "text/json");
+      },
+
       loadVault: function(){
 
         this.vault = JSON.parse(window.localStorage.getItem('ac-vault'));
@@ -307,6 +325,10 @@
           if (!this.password){
             throw new Error('ac-vault: loadVault: no password set.');
           }
+          if (!this.vault.type === 'ac-vault'){
+            throw new Error('ac-vault: loadVault: file format not recognized.');            
+          }
+
           switch (this.vault.version){
 
             case 1:
@@ -340,6 +362,7 @@
           var serializedIdentity = this.currentidentity || {};
 
           var vault = {
+            type: 'ac-vault',
             version:1,
             keystore: serializedKeystore,
             identity: serializedIdentity

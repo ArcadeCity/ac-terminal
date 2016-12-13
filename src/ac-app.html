@@ -182,7 +182,8 @@
       id="profile"
       identity="[[identity]]"
       on-exit="toHome"
-      on-identity-update="saveIdentity">
+      on-identity-update="saveIdentity"
+      on-backup="toBackup">
     </ac-profile>
 
 
@@ -366,6 +367,11 @@
         this.transitionto('/home');
       },
 
+      toBackup: function() {
+        this.transitionto('/vault/backup');
+      },
+
+
       toProfile: function() {
         // this.entryAnimation = 'slide-from-top-animation';
         // this.exitAnimation = 'slide-down-animation';
@@ -375,7 +381,7 @@
       },
 
       saveIdentity: function(e) {
-        debugger;
+        //debugger;
         this.identity = e.detail;
         this.$.thevault.saveVault();
       },
