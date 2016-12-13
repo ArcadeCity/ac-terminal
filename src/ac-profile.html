@@ -270,29 +270,29 @@
               type: Object,
               value: function() {
                 return {
-                  // 'entry': [{
-                  //   name: 'fade-in-animation',
-                  //   toPage: this
-                  // }, {
-                  //   name: 'hero-animation',
-                  //   id: 'hero',
-                  //   toPage: this,
-                  //   timing: {
-                  //     delay: 150
-                  //   }
-                  // }],
+                  'entry': [{
+                    name: 'fade-in-animation',
+                    toPage: this
+                  }, {
+                    name: 'hero-animation',
+                    id: 'hero',
+                    toPage: this,
+                    timing: {
+                      delay: 150
+                    }
+                  }],
 
-                  // 'exit': [{
-                  //   name: 'fade-out-animation',
-                  //   fromPage: this
-                  // }, {
-                  //   name: 'hero-animation',
-                  //   id: 'hero',
-                  //   fromPage: this,
-                  //   timing: {
-                  //     delay: 150
-                  //   }
-                  // }]
+                  'exit': [{
+                    name: 'fade-out-animation',
+                    fromPage: this
+                  }, {
+                    name: 'hero-animation',
+                    id: 'hero',
+                    fromPage: this,
+                    timing: {
+                      delay: 150
+                    }
+                  }]
                 }
               },
               observer:'_checkAnimconfig'

@@ -147,11 +147,14 @@ auto>
   <div class="horizontend prefcurrletters">
     <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
       <p class="extramargin"></p>
-
-      <p>({{prefcurrency}} {{balanceref}} / € {{eurref}})</p>
+      <!-- It shouldn't show all the currency, just the one you picked -->
+      <!-- <p>({{prefcurrency}} {{balanceref}} / € {{eurref}})</p> -->
+      <p>({{prefcurrency}} {{balanceref}})</p>
     </template>
     <template is="dom-if" if="{{_is(sizeview,'phone')}}">
-      <p>({{prefcurrency}} {{balanceref}} / € {{eurref}})</p>
+      <!-- It shouldn't show all the currency, just the one you picked -->
+      <!-- <p>({{prefcurrency}} {{balanceref}} / € {{eurref}})</p> -->
+      <p>{{prefcurrency}} {{balanceref}}</p>
     </template>
   </div>
 </div>
@@ -228,8 +231,8 @@ Polymer({
   _sizeview: function(){
     switch(this.sizeview) {
       case 'phone':
-      this.customStyle['--balance-h1'] = '60px';
-      this.customStyle['--balance-h1-lineheight'] = '72px';
+      this.customStyle['--balance-h1'] = '80px';
+      this.customStyle['--balance-h1-lineheight'] = '92px';
       this.customStyle['--arc-h1'] = '20px';
       this.customStyle['--arc-h1-lineheight'] = '24px';
       this.customStyle['--prefcurr-p'] = '16px';

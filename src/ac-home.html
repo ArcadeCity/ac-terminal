@@ -25,6 +25,11 @@
     display: block;
     width: 100%;
     height: 100%;
+    --ac-balance-width:100%;
+    --ac-balance-height:30vh;
+    --tokentrans-width:100%;
+    --tokentrans-top:3vh;
+
   }
 
   h1 {
@@ -46,8 +51,7 @@
       padding: 0px 10vw 16px 10vw;
       height: 84vh;
     }
-
-    .ac-avatar-box {
+    .toptoolbar {
       width: 100%;
       box-sizing: border-box;
       padding: 0px 0px 16px 10vw;
@@ -56,6 +60,11 @@
       z-index: 3;
       @apply(--layout-horizontal);
       @apply(--layout-end);
+    }
+
+    .ac-avatar-box {
+      @apply(--layout-horizontal);
+      @apply(--layout-center-center);
     }
 
     .arcbalance {
@@ -92,17 +101,24 @@
   </style>
 
 
-
+<ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
   <div class="hometotal">
-    <div class="ac-avatar-box">
+  <div class="toptoolbar">
+    <div class="ac-avatar-box" on-tap="toProfile">
     <ac-avatar
         identity="[[identity]]"
         pubkey="[[account]]"
         size="small"
-        on-tap="toProfile"
         id="homeavatar"
         ></ac-avatar>
+    <ac-avatar
+        identity="[[identity]]"
+        pubkey="[[account]]"
+        mode="txtonly"
+        ></ac-avatar>
+
     </div>
+  </div>
     <div class="homecontent">
       <div class$="arcbalance {{arcalign}}">
         <ac-balance
@@ -142,6 +158,15 @@
         value: false
       },
 
+      sizeview: {
+        type: String,
+        observer: '_sizeview'
+      },
+      
+      arcalign: {
+        type: String,
+      },
+      
       sharedElements: {
         type: Object,
         value: function() {
@@ -155,17 +180,17 @@
         type: Object,
         value: function() {
           return {
-            // 'entry': [{
-            //   name: 'fade-in-animation',
-            //   toPage: this
-            // }, {
-            //   name: 'hero-animation',
-            //   id: 'hero',
-            //   toPage: this,
-            //   timing: {
-            //     delay: 150
-            //   }
-            // }],
+            'entry': [{
+              name: 'fade-in-animation',
+              toPage: this
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                delay: 150
+              }
+            }],
 
             'exit': [{
               name: 'fade-out-animation',
@@ -294,27 +319,6 @@
 
     },
 
-    _sizeview: function() {
-      switch (this.sizeview) {
-        case 'phone':
-          this.align = 'verticcenter';
-          this.customStyle['--avatar-size'] = '90px';
-          this.updateStyles();
-          break;
-        case 'desktop':
-          this.align = 'verticstart';
-          this.customStyle['--avatar-size'] = '130px';
-          this.updateStyles();
-          break;
-        case 'xlarge':
-          this.align = 'verticstart';
-          this.customStyle['--avatar-size'] = '130px';
-          this.updateStyles();
-          break;
-        default:
-          console.log("!!! ** Niks");
-      }
-    },
 
     logout: function() {
       this.fire('logout');
@@ -362,6 +366,41 @@
     toProfile: function() {
       this.fire('to-profile');
     },
+
+
+      _sizeview: function() {
+        switch (this.sizeview) {
+          case 'phone':
+            this.arcalign = 'verticcenter';
+            this.customStyle['--ac-balance-height'] = '30vh';
+            this.customStyle['--ac-balance-width'] = '100%';
+            this.customStyle['--tokentrans-width'] = '100%';
+            this.customStyle['--tokentrans-top'] = '0vh';
+            this.updateStyles();
+            console.log('whhaaaaa',this.sizeview);
+            break;
+          case 'desktop':
+            this.arcalign = 'verticstart';
+            this.customStyle['--ac-balance-height'] = '20vh';
+            this.customStyle['--ac-balance-width'] = '100%';
+            this.customStyle['--tokentrans-top'] = '3vh';
+            this.updateStyles();
+            console.log('whhaaaaa',this.sizeview);
+
+            break;
+          case 'xlarge':
+            this.arcalign = 'verticstart';
+            this.customStyle['--ac-balance-height'] = '20vh';
+            this.customStyle['--ac-balance-width'] = '100%';
+            this.customStyle['--tokentrans-top'] = '4vh';
+            console.log('whhaaaaa',this.sizeview);
+
+            this.updateStyles();
+            break;
+          default:
+            console.log("!!! ** Niks");
+        }
+      },
 
     _checkAnimconfig: function() {
       // console.log('joooo, dit is de Animconfig', this.animationConfig);
