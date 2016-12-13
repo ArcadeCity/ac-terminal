@@ -313,8 +313,13 @@
     },
 
     init: function(cb){
-      this.username = this.identity.username;
-      this.avatarhash = this.identity.avatarhash;
+      try{
+        this.username = this.identity.username;
+        this.avatarhash = this.identity.avatarhash;
+      }catch(e){
+        console.log(e);
+        //
+      }
       if (cb) cb();
     },
 
