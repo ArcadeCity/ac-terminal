@@ -125,7 +125,7 @@
       monitorBalance: function(){
         if (!this.monitorcount || this.monitorcount == 0){
           this.monitorcount = 6;
-          this.monitorInterval = setInterval(this.updateBalance.bind(this), 5000);          
+          this.monitorInterval = setInterval(this.updateBalanceIntervalHandler.bind(this), 5000);          
         }
         this.updateBalanceIntervalHandler();
       },
@@ -133,8 +133,10 @@
       updateBalanceIntervalHandler: function(){
         this.updateBalance();
         this.monitorcount--;
+        console.log('monitorcount',this.monitorcount)
         if (this.monitorcount < 1){
             clearInterval(this.monitorInterval);
+            console.log('clearing interval');
         }
       },
 
