@@ -223,6 +223,7 @@
 
           <div class="logoutbtn">
             <ac-button on-tap="logout" txtbtn txtcolor="blue" bg="btncolor">log out</ac-button>
+            <ac-button on-tap="backupvault" txtbtn txtcolor="blue" bg="btncolor">Create backup</ac-button>
           </div>
         </div>
       </neon-animatable>
@@ -449,6 +450,9 @@
       this.fire('logout');
 //      sessionStorage.removeItem('ac-password');
 //      window.location = '/';
+    },
+    backupvault: function(){
+      this.fire('backup');
     },
 
     _username: function(newVal,oldVal) {

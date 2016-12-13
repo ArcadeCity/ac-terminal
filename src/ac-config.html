@@ -25,7 +25,7 @@
 
       ready: function(){
       
-        var environment = 'testnet';
+        var environment = 'livenet';
 
         switch (environment){
           case 'testnet':
@@ -53,7 +53,8 @@
             this.web3host = 'https://morden.infura.io/fNrdKYnEHWqldP4JnWZp';
             this.etherscanroot = 'https://etherscan.io/';
             this.tokencontractaddress = '0xAc709FcB44a43c35F0DA4e3163b117A17F3770f5'
-
+            break;
+            
           default:
             throw new Error('no environment defined.');
         }
