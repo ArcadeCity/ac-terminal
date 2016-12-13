@@ -35,10 +35,7 @@
     padding: 0px;
     width: 100%;
     height: 100vh;
-    --ac-balance-width:100%;
-    --ac-balance-height:30vh;
-    --tokentrans-width:100%;
-    --tokentrans-top:3vh;
+
 
   }
 
@@ -238,11 +235,11 @@
 
         sizeview: {
           type: String,
-          observer: '_sizeview'
-        },
-        arcalign: {
-          type: String,
-        }
+          // observer: '_sizeview'
+         },
+        // arcalign: {
+        //   type: String,
+        // }
       },
 
       observers: [
@@ -387,35 +384,35 @@
       //   console.log('NU DAN, entry==', this.entryAnimation, ' exit==', this.exitAnimation);
       // },
 
-      _sizeview: function() {
-        switch (this.sizeview) {
-          case 'phone':
-            this.arcalign = 'verticcenter';
-            this.customStyle['--ac-balance-height'] = '30vh';
-            this.customStyle['--ac-balance-width'] = '100%';
-            this.customStyle['--tokentrans-width'] = '100%';
-            this.customStyle['--tokentrans-top'] = '0vh';
-            this.updateStyles();
-            break;
-          case 'desktop':
-            this.arcalign = 'verticstart';
-            this.customStyle['--ac-balance-height'] = '20vh';
-            this.customStyle['--ac-balance-width'] = '100%';
-            this.customStyle['--tokentrans-top'] = '3vh';
-            this.updateStyles();
-            break;
-          case 'xlarge':
-            this.arcalign = 'verticstart';
-            this.customStyle['--ac-balance-height'] = '20vh';
-            this.customStyle['--ac-balance-width'] = '100%';
-            this.customStyle['--tokentrans-top'] = '4vh';
+      // _sizeview: function() {
+      //   switch (this.sizeview) {
+      //     case 'phone':
+      //       this.arcalign = 'verticcenter';
+      //       this.customStyle['--ac-balance-height'] = '30vh';
+      //       this.customStyle['--ac-balance-width'] = '100%';
+      //       this.customStyle['--tokentrans-width'] = '100%';
+      //       this.customStyle['--tokentrans-top'] = '0vh';
+      //       this.updateStyles();
+      //       break;
+      //     case 'desktop':
+      //       this.arcalign = 'verticstart';
+      //       this.customStyle['--ac-balance-height'] = '20vh';
+      //       this.customStyle['--ac-balance-width'] = '100%';
+      //       this.customStyle['--tokentrans-top'] = '3vh';
+      //       this.updateStyles();
+      //       break;
+      //     case 'xlarge':
+      //       this.arcalign = 'verticstart';
+      //       this.customStyle['--ac-balance-height'] = '20vh';
+      //       this.customStyle['--ac-balance-width'] = '100%';
+      //       this.customStyle['--tokentrans-top'] = '4vh';
 
-            this.updateStyles();
-            break;
-          default:
-            console.log("!!! ** Niks");
-        }
-      },
+      //       this.updateStyles();
+      //       break;
+      //     default:
+      //       console.log("!!! ** Niks");
+      //   }
+      // },
 
     });
   </script>
