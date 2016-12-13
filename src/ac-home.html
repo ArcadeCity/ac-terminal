@@ -51,8 +51,7 @@
       padding: 0px 10vw 16px 10vw;
       height: 84vh;
     }
-
-    .ac-avatar-box {
+    .toptoolbar {
       width: 100%;
       box-sizing: border-box;
       padding: 0px 0px 16px 10vw;
@@ -61,6 +60,11 @@
       z-index: 3;
       @apply(--layout-horizontal);
       @apply(--layout-end);
+    }
+
+    .ac-avatar-box {
+      @apply(--layout-horizontal);
+      @apply(--layout-center-center);
     }
 
     .arcbalance {
@@ -99,15 +103,22 @@
 
 <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
   <div class="hometotal">
-    <div class="ac-avatar-box">
+  <div class="toptoolbar">
+    <div class="ac-avatar-box" on-tap="toProfile">
     <ac-avatar
         identity="[[identity]]"
         pubkey="[[account]]"
         size="small"
-        on-tap="toProfile"
         id="homeavatar"
         ></ac-avatar>
+    <ac-avatar
+        identity="[[identity]]"
+        pubkey="[[account]]"
+        mode="txtonly"
+        ></ac-avatar>
+
     </div>
+  </div>
     <div class="homecontent">
       <div class$="arcbalance {{arcalign}}">
         <ac-balance
@@ -169,17 +180,17 @@
         type: Object,
         value: function() {
           return {
-            // 'entry': [{
-            //   name: 'fade-in-animation',
-            //   toPage: this
-            // }, {
-            //   name: 'hero-animation',
-            //   id: 'hero',
-            //   toPage: this,
-            //   timing: {
-            //     delay: 150
-            //   }
-            // }],
+            'entry': [{
+              name: 'fade-in-animation',
+              toPage: this
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                delay: 150
+              }
+            }],
 
             'exit': [{
               name: 'fade-out-animation',

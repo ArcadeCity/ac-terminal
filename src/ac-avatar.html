@@ -34,7 +34,7 @@
       }
       .avatar {
         display: inline-block;
-        background: red;
+        background: rgba(255,255,255,0.1);
       }
 
 
@@ -118,7 +118,10 @@
 
 
     <template is="dom-if" if="{{_is(mode, 'txtonly')}}">
-      <div><p>txtonly</p></div>
+      <div class="username-big">
+          <p>{{identity.username}}</p>
+          <div class="pub"><p>{{identity.pubkey}}</p></div>
+        </div>
     </template>
 
     <template is="dom-if" if="{{_is(mode, 'imgonly')}}">
