@@ -138,6 +138,9 @@
           <input type="file"  class="hidden" id="uploaditem"  on-change="readSingleFile">
           <ac-button on-tap="uploadclick" txtbtn txtcolor="blue" bg="btncolor">Choose your wallet-file</ac-button>
         </div>
+        <template is="dom-if" if="{{vaulterror}}">
+          <div class="error">Error : {{vaulterror}}</div>
+        </template>
       </neon-animatable>
 
       <neon-animatable data-page="backup">
@@ -259,8 +262,8 @@
         var reader = new FileReader();
         reader.onload = function(e) {
           var contents = e.target.result;
-          self.readwallet = contents;
-          //self.importWallet(contents);
+          //self.readwallet = contents;
+          self._parseVault(contents);
         };
         reader.readAsText(file);
       },
@@ -271,7 +274,7 @@
 
       createvaultfrompk: function(e) {
         this.password = e.detail.password;
-        this.createKeystore(0, function() {
+        this.createVault(0, function() {
           this._getpwDerivedKey(function(err, pwDerivedKey) {
             this.keystore.importPrivateKey(this.privatekey, pwDerivedKey);
             this.saveVault();
@@ -303,50 +306,67 @@
       },
 
       downloadvault: function(){
-
-
         var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem('ac-vault'));;
         var dlAnchorElem = document.getElementById('downloadAnchorElem');
         dlAnchorElem.setAttribute("href", dataStr);
         dlAnchorElem.setAttribute("download", 'ArcadeCityVault-' + Date.now() + '.json');
         dlAnchorElem.click();
-
-//        download(window.localStorage.getItem('ac-vault'), 'ArcadeCityVault.json', "text/json");
       },
 
+      // Load vault from local storage
       loadVault: function(){
+        var tmpvault = JSON.parse(window.localStorage.getItem('ac-vault'));
+        this._parseVault(tmpvault);
+      },
 
-        this.vault = JSON.parse(window.localStorage.getItem('ac-vault'));
+      _convertWalletToVault: function(content){
+        var self = this;
 
-        try{
-          if(!this.vault){
-            throw new Error('ac-vault: loadVault: vault is not defined.');
+        self.keystore = JSON.parse(JSON.parse(content));
+        self._creatBlankIdentity();
+        self.saveVault();
+        self.loadVault();
+
+      },
+
+      // parse vault data and unpack it
+      _parseVault: function(vaultdata) {
+        this.vaulterror = null;
+        if (!vaultdata) return;
+        try {
+          // if the vaultdata is a string - it's probably an old wallet file
+          if (typeof vaultdata === 'string') {
+            return this._convertWalletToVault(vaultdata);
+          } else {
+
+            if (!vaultdata) {
+              throw new Error('ac-vault: loadVault: vault is not defined.');
+            }
+            if (!this.password) {
+              throw new Error('ac-vault: loadVault: no password set.');
+            }
+            if (!vaultdata.type === 'ac-vault') {
+              throw new Error('ac-vault: loadVault: JSON format not recognized.');
+            }
+
+            switch (vaultdata.version) {
+
+              case 1:
+                this.keystore = lightwallet.keystore.deserialize(vaultdata.keystore);
+                this.currentaccount = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
+                this.currentidentity = vaultdata.identity;
+                console.log('ac-vault -> Vault opened. Account=', this.currentaccount);
+                break;
+
+              default:
+                throw new Error('Vault version unknown', vaultdata.version);
+                break;
+            }
           }
-          if (!this.password){
-            throw new Error('ac-vault: loadVault: no password set.');
-          }
-          if (!this.vault.type === 'ac-vault'){
-            throw new Error('ac-vault: loadVault: file format not recognized.');            
-          }
-
-          switch (this.vault.version){
-
-            case 1:
-              this.keystore = lightwallet.keystore.deserialize(this.vault.keystore);
-              this.currentaccount = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
-              this.currentidentity = this.vault.identity;
-              console.log('ac-vault -> Vault opened. Account=',this.currentaccount);
-              break;
-
-            default:
-              throw new Error('Vault version unknown',this.vault.version);
-              break;
-          }
+        } catch (e) {
+//          throw new Error('Vault could not be loaded', e);
+            this.vaulterror = 'Vault file could not be loaded';
         }
-        catch(e){
-          throw new Error('Vault could not be loaded',e);
-        }
-
       },
 
       importPrivateKey: function(pk) {
@@ -381,12 +401,12 @@
 
       createvault: function(e){
         this.password = e.detail.password;
-        this.createKeystore(1,function(){
+        this.createVault(1,function(){
            this.fire('unlocked');
         }.bind(this));
       },
 
-      createKeystore: function(amountofaccounts, fn) {
+      createVault: function(amountofaccounts, fn) {
         if (!this.password) {
           throw new Error('no password set for creating Vault');
         }
@@ -401,12 +421,8 @@
           self.keystore = ks;
 
           if (amountofaccounts==0){
-            self.currentidentity = {
-              version: 1,
-              username: 'MrArc',
-              avatarhash: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
-            };
 
+            self._creatBlankIdentity();
             self.saveVault();
             self.loadVault();
 
@@ -414,25 +430,33 @@
               fn();
             }
             return;
+            
+          }else{
+            self.generateNewAddress(1,function() {
+             
+              self._creatBlankIdentity();
+
+              self.saveVault();
+              self.loadVault();
+
+              if (fn) {
+                fn();
+              }
+              return;
+
+            });            
           }
 
-          self.generateNewAddress(1,function() {
-            //self._currentAccount();
-
-            self.currentidentity = {
-              version: 1,
-              username: 'MrArc',
-              avatarhash: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
-            };
-
-            self.saveVault();
-            self.loadVault();
-
-            if (fn) {
-              fn();
-            }
-          });
         });
+      },
+
+      _creatBlankIdentity: function() {
+        var self = this;
+        self.currentidentity = {
+          version: 1,
+          username: 'MrArc',
+          avatarhash: 'https://pbs.twimg.com/profile_images/2431469361/Wc0d22FE_400x400'
+        };
       },
 
       _getpwDerivedKey: function(cb){
