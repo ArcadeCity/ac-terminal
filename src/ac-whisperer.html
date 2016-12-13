@@ -56,10 +56,10 @@ Polymer({
     },
     // progress is a value between 0 and 100 denoting how much time until next topic will be generated
     // 0 = period start ; 100 = period is over
-    // progress: {
-    //   type: Number,
-    //   notify: true
-    // },
+    progress: {
+      type: Number,
+      notify: true
+    },
 
     // How many decimals should the topic have ( min 2 )
     decimals: {
@@ -123,6 +123,7 @@ Polymer({
     if (oldval == 0 && newval > 0){
       // activate request
       this.listenintervalInitialValue = newval;
+      this.progress = 100;
       this.listenintervalTimerInterval = setInterval(this.listenintervalTimer.bind(this), 1000)
       this.topic = this._getpincode(this.decimals);
     }
