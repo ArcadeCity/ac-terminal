@@ -374,10 +374,8 @@
 
 
       toProfile: function() {
-        // this.entryAnimation = 'slide-from-top-animation';
-        // this.exitAnimation = 'slide-down-animation';
         this.$.profile.init(function(){
-          this.transitionto('/profile');
+        this.transitionto('/profile');
         }.bind(this));
       },
 
@@ -386,10 +384,6 @@
         this.identity = e.detail;
         this.$.thevault.saveVault();
       },
-
-      // animLogger: function() {
-      //   console.log('NU DAN, entry==', this.entryAnimation, ' exit==', this.exitAnimation);
-      // },
 
       // _sizeview: function() {
       //   switch (this.sizeview) {
