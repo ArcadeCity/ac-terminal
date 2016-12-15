@@ -11,6 +11,8 @@
 <link rel="import" href="ac-avatar.html">
 <link rel="import" href="ac-ipfs.html">
 <link rel="import" href="ac-shortcode.html">
+<link rel="import" href="ac-spinner.html">
+<link rel="import" href="ac-preferences.html">
 
 <link rel="stylesheet" href="../bower_components/Croppie/croppie.css" />
 <script src="../bower_components/Croppie/croppie.js"></script>
@@ -29,6 +31,18 @@
     @apply(--ac-font-h1);
   }
 
+  h2 {
+    @apply(--ac-font-h2);
+  }
+
+  h3 {
+    @apply(--ac-font-h3);
+  }
+
+  h4 {
+    @apply(--ac-font-h4);
+    margin: 0px;
+  }
   p {
     @apply(--ac-font-body1);
   }
@@ -38,7 +52,11 @@
     width: 100%;
     height: 100%;
     background-color: var(--ac-base);
-    /*overflow-y: scroll;*/
+    overflow-y: scroll;
+  }
+
+  .flex {
+    @apply(--layout-flex);
   }
 
   .whitespace {
@@ -49,7 +67,7 @@
   .profilepic {
     width: 100%;
     box-sizing: border-box;
-    padding: 6vh 0px 2vh 0px;
+    padding: 5vh 0px 2vh 0px;
     @apply(--layout-vertical);
     @apply(--layout-center-center);
     /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
@@ -57,11 +75,12 @@
 
   .profilepicinner {
     @apply(--layout-vertical);
-    @apply(--layout-center-justified);
-    @apply(--layout-end
+    @apply(--layout-start-justified);
+    @apply(--layout-end);
   }
 
   .profilepicinner ac-button {
+    z-index: 12;
     margin-top: -20px;
     @apply(--base-structure-and-inset);
   }
@@ -82,7 +101,7 @@
   .profileusername {
     width: 100%;
     box-sizing: border-box;
-    padding: 0vh 0px 0px 0px;
+    padding: 0px 0px 7vh 0px;
     @apply(--layout-vertical);
     @apply(--layout-center-center);
     /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
@@ -123,15 +142,35 @@
   .topback {
     width: 100%;
     background-color: var(--ac-base);
+    @apply(--layout-horizontal);
+    @apply(--layout-center-center);
     box-sizing: border-box;
-    padding: 5vh 0px 0px 5vw;
-    opacity: 0.5;
+    padding: 5vh 5vw 0px 5vw;
   }
 
+  .topback ac-icon {
+    opacity: 0.5;
+  }
+  .topback ac-button {
+    @apply(--base-shadow);
+    opacity: 0.75;
+  }
+
+
   .profilepart {
+    width: 100%;
     border-bottom: 2px dotted rgba(255,255,255,0.05);
     box-sizing: border-box;
-    padding: 3vh 0px 3vh 0px;
+    padding: 2vh 0px 2vh 0px;
+  }
+
+  .topdots {
+    border-top: 2px dotted rgba(255,255,255,0.05);
+  }
+
+  .collapserz {
+    width: 100%;
+    margin: 20px 0px 20px 0px;
   }
 
 
@@ -140,40 +179,38 @@
     @apply(--layout-vertical);
     @apply(--layout-center-center);
     box-sizing: border-box;
-    padding: 3vh 0px 3vh 0px;
+    padding: 5vh 0px 5vh 0px;
   }
+
 
   .pubkey {
-    width: 100%;
-    @apply(--layout-vertical);
+    margin-top: 6px;
+    @apply(--layout-horizontal);
     @apply(--layout-center-center);
-    border-bottom: 2px dotted rgba(255,255,255,0.05);
-    box-sizing: border-box;
-    padding: 3vh 0px 3vh 0px;
   }
-
   .pubkey p {
-    display: inline-block;
-    font-size: 12px;
-    line-height: 14px;
-    color: var(--ac-blue);
-    word-break: break-all;
+    font-size: 13px;
+    line-height: 15px;
+    @apply(--montserrat-reg);
+    color: var(--ac-white);
+    opacity: 0.25;
     text-align: center;
-    opacity: 0.7;
-    padding-bottom:4px;
-    border-bottom: 1px dashed var(--ac-blue);
   }
 
-/*  .logout p {
-    color: var(--ac-blue);
-    border-bottom: 1px dotted var(--ac-blue);
-    box-sizing: border-box;
-    padding: 0px 0px 3px 0px;
-    font-size: 14px;
-    @apply(--montserrat-semibold);
 
-  }*/
 
+  .pubhidden {
+    width: 60px;
+  }
+  .pubhidden p {
+    @apply(--ac-font-nowrap);
+  }
+  .pubshown {
+    width: 70%;
+  }
+  .pubshown p {
+    word-break: break-all;
+  }
   .logout ac-button {
     @apply(--base-shadow);
   }
@@ -192,9 +229,79 @@
   .yellow {
     color: var(--ac-yellow);
   }
+  .red {
+    color: var(--ac-red);
+  }
+  .blue {
+    color: var(--ac-blue);
+  }
+  .white {
+    color: var(--ac-white);
+  }
 
-  #uploadbtn {
-    z-index: 9;
+  .centertxt {
+    text-align: center;
+  }
+
+
+  .avatarloading {
+    width: 120px;
+    height: 120px;
+    min-width: 120px;
+    min-height: 120px;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,0.75);
+    position: fixed;
+    z-index: 10;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+  }
+
+
+
+  .opacity {
+    opacity: 0.25;
+  }
+
+  .coll {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2vh 10vw 2vh 10vw;
+    transition: all 0.15s linear;
+  }
+  .coll h2 {
+    color: var(--ac-yellow);
+    text-align: center;
+    @apply(--montserrat-light);
+    opacity: 1;
+    font-size: 16px;
+    line-height: 18px;
+    transition: all 0.15s linear;
+  }
+
+
+  .openedcoll {
+    padding: 3vh 10vw 3vh 10vw;
+
+  }
+
+  .openedcoll h2 {
+    opacity: 0.1;
+  }
+
+  .loggerout {
+    margin: 3vh 0px 0px 0px;
+
+    @apply(--layout-horizontal);
+    @apply(--layout-center-center);
+        border-bottom: 1px dotted var(--ac-blue);
+    
+  }
+
+  .loggerout p {
+        font-size: 14px;
+
   }
 
   </style>
@@ -204,13 +311,21 @@
     <div class="total">
       <div class="topback">
         <ac-icon icon="ac-arrowleft" iconcolor="yellow" on-tap="exit" small>back</ac-icon>
+        <span class="flex"></span>
+  <!--       <ac-button icon="ac-logout2" bg="btncolor" txtcolor="blue" on-tap="logout" small>back</ac-button> -->
       </div>
 
-      <neon-animated-pages class="avataredit" selected="{{datastate}}" attr-for-selected="data-state">
+      <neon-animated-pages class="avataredit" selected="{{datastate}}" attr-for-selected="data-state" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
 
         <neon-animatable data-state="view">
           <div class="profilepic">
             <div class="profilepicinner" on-tap="uploadfile">
+
+            <template is="dom-if" if="{{avatarloading}}">
+            <div class="avatarloading">
+              <ac-spinner color="yellow" small></ac-spinner>
+            </div>
+            </template>
 
               <ac-avatar
             id="currentavatar"
@@ -225,33 +340,51 @@
           </div>
 
           <div class="profilecontent" id="profilecontent">
-          <div class="profileusername profilepart">
-            <ac-input color="white" label="username" type="input" on-change="usernameChange" bind-value="{{username}}" center inputvalue="MrArcade"></ac-input>
-            <iron-collapse id="collapse" opened="{{datachanged}}">
-              <div class="whitespace"></div>
-              <div class="whitespace"></div>
 
-              <div class="confirmbtns">
-                <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="close" small>decline</ac-icon>
-                <ac-button icon="ac-v" txtcolor="base" bg="yellow" on-tap="confirm" small>confirm</ac-button>
+            <div class="profileusername">
+              <ac-input color="white" label="username" type="input" on-change="usernameChange" bind-value="{{username}}" center inputvalue="{{username}}"></ac-input>
+              <iron-collapse id="collapse" opened="{{datachanged}}">
+                <div class="whitespace"></div>
+
+                <div class="confirmbtns">
+                  <ac-icon icon="ac-decline" iconcolor="white" on-tap="close" small>decline</ac-icon>
+                  <ac-button icon="ac-v" txtcolor="white" bg="btncolor" on-tap="confirm" small>confirm</ac-button>
+                </div>
+              </iron-collapse>
+
+              <div class$="pubkey {{pubwhat}}" on-tap="togglePub">
+                <p>{{pubkey}}</p>
               </div>
-            </iron-collapse>
-        </div>
-<!-- 
-         <div class="shortcode">
-           <ac-shortcode bg="btncolor" txtcolor="white" small>shortcode</ac-shortcode>
-         </div> -->
+            </div>             
 
-          <div class="profilepart verticcenter">
-          <p class="yellow">It's wise to backup your profile</p>
-          <div class="whitespace"></div>
+            <div class="profilepart topdots coll" id="preferencestotal">
+              <h2 on-tap="collapseMe" id="preferences">Preferences</h2>
+              <iron-collapse class="collapserz" id="preferencescollapser">
+               <ac-preferences place="center" prefselected={{prefselected}}></ac-preferences>
+              </iron-collapse>
+            </div>
 
-            <ac-button on-tap="backupvault" txtbtn txtcolor="yellow" bg="btncolor">Create backup</ac-button>
+
+            <div class="profilepart coll" id="synctotal">
+            <h2 on-tap="collapseMe" id="sync">Sync with device</h2>
+              <iron-collapse class="collapserz" id="synccollapser">
+                <h4 class="white centertxt">7789</h4><br>
+                <p on-tap="collapseMe" class="white centertxt">Use this shortcode to sync with another device.</p>
+              </iron-collapse>
+            </div>
+
+            <div class="profilepart coll" id="backuptotal">
+              <h2 on-tap="collapseMe" id="backup">Create backup</h2>
+              <iron-collapse class="collapserz" id="backupcollapser">
+                <p on-tap="collapseMe" class="yellow">Het is al geruime tijd een bekend gegeven dat een lezer, tijdens het bekijken van de layout van een pagina, afgeleid wordt door de tekstuele inhoud. Het belangrijke punt van het gebruik van Lorem Ipsum is dat het uit een min of meer normale verdeling van letters bestaat, in tegenstelling tot "Hier uw tekst, hier uw tekst" wat het tot min of meer leesbaar nederlands maakt. Veel desktop publishing pakketten en web pagina editors gebruiken tegenwoordig Lorem Ipsum als hun standaard model tekst, en een zoekopdracht naar "lorem ipsum" ontsluit veel websites die nog in aanbouw zijn. Verscheidene versies hebben zich ontwikkeld in de loop van de jaren, soms per ongeluk soms expres (ingevoegde humor en dergelijke).</p>
+              </iron-collapse>
+            </div>
+        
+          <div class="loggerout">
+            <p class="blue">log out</p>
+            <ac-icon icon="ac-logout" iconcolor="blue" on-tap="exit" small></ac-icon>
           </div>
 
-          <div class="verticcenter logout" >
-            <ac-button on-tap="logout" txtbtn txtcolor="blue" bg="btncolor" small>log out</ac-button>
-          </div>
           </div>
       </neon-animatable>
 
@@ -259,12 +392,21 @@
         <div class="profilepic">
           <div class="profilepicinner">
             <div id="croppie"></div>
+
+
+              <div class="confirmbtns">
+                <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="setcurrentavatar_cancel" small>decline</ac-icon>
+                <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="setcurrentavatar" small>confirm</ac-button>
+              </div>
+
+<!-- 
             <ac-button on-tap="setcurrentavatar_cancel" txtbtn txtcolor="blue" bg="btncolor" small>cancel</ac-button>
-            <ac-button on-tap="setcurrentavatar" txtbtn txtcolor="blue" bg="btncolor" small>save</ac-button>
+            <ac-button on-tap="setcurrentavatar" txtbtn txtcolor="blue" bg="btncolor" small>save</ac-button> -->
           </div>
         </div>
-      </neon-animatable>
+         
 
+      </neon-animatable>
     </neon-animated-pages>
   </div>
 
@@ -273,89 +415,116 @@
 <script>
   Polymer({
     is: 'ac-profile',
+
+    behaviors: [
+      Polymer.NeonSharedElementAnimatableBehavior
+    ],
+
     properties: {
       identity: {
         type: String,
         observer: '_identity',
         notify: true
       },
+
+      pubkey: {
+        type: String
+      },
+
+      pubwhat: {
+        type: String,
+        value: 'pubhidden'
+      },
+
       datachanged: {
         type: Boolean,
         value: false
       },
 
-            sharedElements: {
-              type: Object,
-              value: function() {
-                return {
-                  'hero': this.$.currentavatar,
-                }
+      avatarloading: {
+        type: Boolean,
+        value: false
+      },
+
+      username: {
+        type: String,
+        observer: '_username'
+      },
+
+      sharedElements: {
+        type: Object,
+        value: function() {
+          return {
+            'hero': this.$.currentavatar,
+          }
+        }
+      },
+
+      shownbool: {
+        type: String,
+        value: 'random'
+      },
+
+      animationConfig: {
+        type: Object,
+        value: function() {
+          return {
+            'entry': [{
+              name: 'fade-in-animation',
+              node:this.$.profilecontent,
+              toPage: this,
+              timing: {
+                duration: 750
               }
-            },
+            },{
+              name: 'fade-in-animation',
+              node:this.$.uploadbtn,
+              toPage: this,
+              timing: {
+                duration: 750
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                delay: 250
+              }
+            }],
 
-            animationConfig: {
-              type: Object,
-              value: function() {
-                return {
-                  'entry': [{
-                    name: 'fade-in-animation',
-                    node:this.$.profilecontent,
-                    toPage: this,
-                    timing: {
-                      duration: 750
-                    }
-                  },{
-                    name: 'fade-in-animation',
-                    node:this.$.uploadbtn,
-                    toPage: this,
-                    timing: {
-                      duration: 750
-                    }
-                  }, {
-                    name: 'hero-animation',
-                    id: 'hero',
-                    toPage: this,
-                    timing: {
-                      delay: 250
-                    }
-                  }],
-
-                  'exit': [{
-                    name: 'fade-out-animation',
-                    node:this.$.profilecontent,
-                    fromPage: this,
-                    timing: {
-                      duration: 750
-                    }
-                  },{
-                    name: 'fade-out-animation',
-                    node:this.$.uploadbtn,
-                    toPage: this,
-                    timing: {
-                      duration: 750
-                    }
-                  }, {
-                    name: 'hero-animation',
-                    id: 'hero',
-                    fromPage: this,
-                    timing: {
-                      delay: 250
-                    }
-                  }]
-                }
-              },
-              observer:'_checkAnimconfig'
+            'exit': [{
+              name: 'fade-out-animation',
+              node:this.$.profilecontent,
+              fromPage: this,
+              timing: {
+                duration: 750
+              }
+            },{
+              name: 'fade-out-animation',
+              node:this.$.uploadbtn,
+              toPage: this,
+              timing: {
+                duration: 750
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this,
+              timing: {
+                delay: 250
+              }
+              }]
             }
-
           },
+          observer:'_checkAnimconfig'
+        }
 
-
-          behaviors: [
-            Polymer.NeonSharedElementAnimatableBehavior
-          ],
+      },
 
     ready: function() {
       this.datastate = 'view';
+      console.log('pubkey',this.pubkey);
+
     },
 
     attached: function(){
@@ -380,7 +549,7 @@
     usernameChange: function() {
 
       //this.identity.username = this.username;
-      this.datachanged = true;
+      // this.datachanged = true;
     },
 
     avatarChange: function(e) {
@@ -414,13 +583,13 @@
       }
       this.croppie = new Croppie(this.$.croppie, {
         viewport: {
-          width: 100,
-          height: 100,
+          width: 120,
+          height: 120,
           type: 'circle'
         },
         boundary: {
-          width: 200,
-          height: 200
+          width: 150,
+          height: 150
         },
         showZoomer: false
           //enableOrientation: true
@@ -437,6 +606,7 @@
     },
 
     setcurrentavatar: function() {
+      this.avatarloading = true;
       var self = this;
       this.croppie.result({
         type: 'base64',
@@ -457,17 +627,18 @@
           //var hashurl = this.$.ipfs.geturl(result[0].hash);
           self.avatarhash = result[0].hash;
           self.avatarurl = this.$.ipfs.geturl(result[0].hash);
-          self.datachanged = true;
+          // self.datachanged = true;
 
           self.fire('identity-update',{
             username: self.username,
             avatarhash: self.avatarhash
           });
+          this.avatarloading = false;
         }.bind(this));
 
         // remove cropper
         self.croppie.destroy();
-        self.datachanged = true;
+        // self.datachanged = true;
 
       }.bind(this));
 
@@ -507,9 +678,14 @@
     _username: function(newVal,oldVal) {
       if (oldVal!==undefined){
         this.datachanged = true;
+      console.log('dit komt van username', newVal, oldVal);
+
       }
 
-      //console.log(this.username);
+      // console.log('dit komt van username', newVal, oldVal);
+
+      // this.datachanged = true;
+
       // if (this.username != this.identity.username) {
       //   var collapser = document.getElementById('collapse');
       //   collapser.show();
@@ -546,10 +722,43 @@
       console.log('joooo');
     },
 
-    _checkAnimconfig: function() {
-      // console.log('joooo, dit is de Animconfig', this.animationConfig);
-
+    _account: function() {
+      // console.log('joooo', this.account);
     },
+
+    togglePub: function()  {
+      if (this.pubwhat == "pubhidden"){
+        this.pubwhat = "pubshown";
+      } else {
+        this.pubwhat = "pubhidden";
+      }
+    },
+
+    collapseMe: function(e)  {
+      var item = e.target.parentNode.id;
+
+      var itemp = e.target.id;
+      var collapsid = itemp + 'collapser';
+      var collapsdis = document.getElementById(collapsid);
+      collapsdis.toggle();
+
+      var itemtotal = document.getElementById(item);
+      if (collapsdis.opened){
+       itemtotal.classList.add("openedcoll");
+      } else {
+       itemtotal.classList.remove("openedcoll");
+      }
+    },
+
+    closeMe: function()  {
+      var collapsid = this.shownbool + 'collapser';
+      var collapsdis = document.getElementById(collapsid);
+      collapsdis.toggle();
+      this.shownbool= 'random';
+    },
+
+
+
 
     // savenewUsername: function() {
     //   var collapser = document.getElementById('collapse');

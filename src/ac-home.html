@@ -14,6 +14,7 @@
 <link rel="import" href="ac-ipfs.html">
 <link rel="import" href="ac-shortcode.html">
 <link rel="import" href="ac-tokentransfer.html">
+<link rel="import" href="ac-spinner.html">
 
 <link rel="stylesheet" href="../bower_components/Croppie/croppie.css" />
 <script src="../bower_components/Croppie/croppie.js"></script>
@@ -121,15 +122,21 @@
     </div>
   </div>
     <div class="homecontent" id="homecontent">
-      <div class$="arcbalance {{arcalign}}">
-        <ac-balance
-        refcur="EUR"
-        on-tap="monitorBalance"
-        arcbalance="{{arcbalance}}"
-        ethbalance="{{ethbalance}}"></ac-balance>
-      </div>
+
+      <template is="dom-if" if="{{!balanceupdating}}">
+        <div class$="arcbalance {{arcalign}}" on-tap="monitorBalance">
+          <ac-balance
+          refcur="EUR"
+          arcbalance="{{arcbalance}}"
+          ethbalance="{{ethbalance}}"
+          on-refresh="monitorBalance"></ac-balance>
+        </div>
+      </template>
+
       <template is="dom-if" if="{{balanceupdating}}">
-      SPINNER HIER GRAAG DAT WE DEN BALANCE AAN HET UPDATEN ZIJN
+        <div class$="arcbalance {{arcalign}}">
+          <ac-spinner big></ac-spinner>
+        </div>
       </template>
 
       <div class$="tokentrans {{arcalign}}">
@@ -164,6 +171,8 @@
         type: Boolean,
         value: false
       },
+
+
       keystore: {
         type: Object,
          observer: '_keystore',
@@ -248,7 +257,6 @@
   
     ready: function() {
       this.datastate = 'view';
-      console.log("yyeeeeaahhhhh", this.account);
     },
 
     init: function(cb){
@@ -412,24 +420,19 @@
             this.customStyle['--tokentrans-width'] = '100%';
             this.customStyle['--tokentrans-top'] = '0vh';
             this.updateStyles();
-            console.log('whhaaaaa',this.sizeview);
             break;
           case 'desktop':
             this.arcalign = 'verticstart';
-            this.customStyle['--ac-balance-height'] = '20vh';
+            this.customStyle['--ac-balance-height'] = '16vh';
             this.customStyle['--ac-balance-width'] = '100%';
             this.customStyle['--tokentrans-top'] = '3vh';
             this.updateStyles();
-            console.log('whhaaaaa',this.sizeview);
-
             break;
           case 'xlarge':
             this.arcalign = 'verticstart';
             this.customStyle['--ac-balance-height'] = '20vh';
             this.customStyle['--ac-balance-width'] = '100%';
             this.customStyle['--tokentrans-top'] = '4vh';
-            console.log('whhaaaaa',this.sizeview);
-
             this.updateStyles();
             break;
           default:

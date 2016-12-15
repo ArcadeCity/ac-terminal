@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../bower_components/ac-button/ac-button.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="ac-sizeview.html">
 
@@ -14,7 +15,7 @@
     --arc-h1-lineheight:72px;
     --prefcurr-p:22px;
     --prefcurr-p-lineheight:24px;
-    --prefcurr-margins: 0px 0px 10px 20px;
+    --prefcurr-margins: 0px 0px 8px 14px;
     min-width: 50%;
 
   }
@@ -38,7 +39,7 @@
   }
   .horizontend {
     @apply(--layout-horizontal);
-    @apply(--layout-center-justified);
+    @apply(--layout-start-justified);
     @apply(--layout-end);
   }
 
@@ -46,6 +47,7 @@
     @apply(--layout-horizontal);
     @apply(--layout-wrap);
     @apply(--layout-start-justified);
+
   }
 
   .horizontcenterwrap {
@@ -119,7 +121,11 @@
   }
 
   .extramargin {
-    /*margin-right: 15px;*/
+    margin: 0px 10px 0px 10px;
+  }
+
+  .refrbtn {
+    margin: 0px 0px 0px 10px;
   }
 
 
@@ -142,21 +148,22 @@ auto>
 
 <div class$="arc-balance {{align}}">
   <div class="horizontend">
-    <h1>{{arcbalance}}</h1><h1><span class="ARCletters"> ARC</span></h1>
+    <h1>{{arcbalance}}</h1><h1><span class="ARCletters"> ARC</span>
+    <!-- <ac-button class="refrbtn" veryverysmall icon="refresh1" txtcolor="red" bg="btncolor" on-tap="fireRefresh"></ac-button> --></h1>
   </div>
-  <div class="horizontend prefcurrletters">
     <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
-      <p class="extramargin"></p>
-      <!-- It shouldn't show all the currency, just the one you picked -->
-      <!-- <p>({{prefcurrency}} {{balanceref}} / € {{eurref}})</p> -->
-      <p>({{prefcurrency}} {{balanceref}})</p>
+    <div class="horizontend prefcurrletters">
+        <!-- <p class="extramargin"></p> -->
+        <p>({{prefcurrency}} {{balanceref}})</p>
+
+      </div>
     </template>
     <template is="dom-if" if="{{_is(sizeview,'phone')}}">
-      <!-- It shouldn't show all the currency, just the one you picked -->
-      <!-- <p>({{prefcurrency}} {{balanceref}} / € {{eurref}})</p> -->
-      <p>{{prefcurrency}} {{balanceref}}</p>
+      <div class="verticcenter prefcurrletters">
+        <p>{{prefcurrency}} {{balanceref}}</p>
+        
+      </div>
     </template>
-  </div>
 </div>
 
 </template>
@@ -249,7 +256,7 @@ Polymer({
       this.customStyle['--arc-h1-lineheight'] = '26px';
       this.customStyle['--prefcurr-p'] = '24px';
       this.customStyle['--prefcurr-p-lineheight'] = '26px';
-      this.customStyle['--prefcurr-margins'] = '0px 0px 10px 20px';
+      this.customStyle['--prefcurr-margins'] = '0px 0px 8px 14px';
 
       this.align = 'horizontstartwrap';
       this.updateStyles();
@@ -261,7 +268,7 @@ Polymer({
       this.customStyle['--arc-h1-lineheight'] = '26px';
       this.customStyle['--prefcurr-p'] = '24px';
       this.customStyle['--prefcurr-p-lineheight'] = '26px';
-      this.customStyle['--prefcurr-margins'] = '0px 0px 10px 20px';
+      this.customStyle['--prefcurr-margins'] = '0px 0px 8px 14px';
 
       this.align = 'horizontstartwrap';
       this.updateStyles();
@@ -270,6 +277,10 @@ Polymer({
       console.log("!!! ** Niks");
     }
   },
+
+  fireRefresh: function(){
+    this.fire('refresh');
+  }
 
 });
 </script>
