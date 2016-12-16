@@ -230,7 +230,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       etherscanroot="{{etherscanroot}}"
       tokencontractaddress="{{tokencontractaddress}}"
       ></ac-config>
-      
+
     <ac-web3
       host="{{web3host}}"
       web3="{{web3}}"></ac-web3>
@@ -245,78 +245,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       id="whisper"></ac-whisperer>
 
     <div class="total">
-<!--       <template is="dom-if" if="{{sendcollsclosed}}">
+      <div class$="initbtns {{align}}">
+      <ac-shortcode on-cancel="deactivatereceivecoins" bg="btncolor" txtcolor="red" topic="[[topic]]" progress="[[progress]]" on-showshortcode="activatereceivecoins" btn>shortcode</ac-shortcode>
+
+    </div>
+   
+<div class="whitespace"></div>
+<div class="whitespace"></div>
+
+<!-- <ac-log></ac-log>
  -->
-         <div class$="initbtns {{align}}">
-         <!--  <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="togglesendcoins" class="sender">send ARC</ac-button> -->
 
-          <ac-shortcode on-cancel="deactivatereceivecoins" bg="btncolor" txtcolor="red" topic="[[topic]]" progress="[[progress]]" on-showshortcode="activatereceivecoins" btn>shortcode</ac-shortcode>
-
-        </div>
-<!--       </template> -->
-<!--       <div class="sendcoiners">
- --><!-- 
-        <iron-collapse id="sendcoins">
-          <template is="dom-if" if="{{_is(sendcoinstate,'first')}}">
-
-          <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
-            <ac-input color="red" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
-            <ac-input color="red" class="sendinput" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
-            <div class="whitespace"></div>
-            <div class="confirmbtns">
-              <ac-button icon="ac-decline" on-tap="togglesendcoins" small class="confirmbtn" bg="base" txtcolor="red"></ac-button>
-              <ac-button on-tap="toWaiting" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
-            </div>
-          </template>
-
-          <template is="dom-if" if="{{_is(sizeview,'phone')}}">
-            <ac-input center color="red" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
-            <ac-input center color="red" class="sendinput" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
-            <div class="whitespace"></div>
-            <div class="confirmbtnsmobile">
-              <ac-button icon="ac-decline" on-tap="togglesendcoins" small class="confirmbtn" bg="base" txtcolor="red"></ac-button>
-              <ac-button on-tap="toWaiting" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
-            </div>
-          </template>
-
-        </template>
-
-        <template is="dom-if" if="{{_is(sendcoinstate,'second')}}">
-          <div class="announce">
-            <p>Your transaction is being executed.</p>
-            <ac-button small icon="declinenew" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
-          </div>
-        </template>
-      </iron-collapse> -->
-
-</div>
-<!--     <div>
-<h1>
-E
-<span>{{ethbalance}}</span>
-</h1>
-<h1>
-L
-<span>{{arcbalance}}</span>
-</h1>
-<p on-tap="getLocalbalance">Refresh</p>
-<h1>Send funds to another locals user</h1>
-<p>enter the # of the other user</p>
-<ac-input autofocus bind-value="{{pincode}}" label="Pincode" center></ac-input>
-<locals-confirm on-confirm="toWaiting" type="next"></locals-confirm>
--->
-<!-- Hier hebben we dan de key van de partner -->
-<!-- <p>
-TO:
-<span>{{partnerpubkey}}</span>
-</p>
-<ac-button text on-tap="transfer">verstuur</locals-button>
--->
-<div class="whitespace"></div>
-<div class="whitespace"></div>
-
-<ac-log></ac-log>
-</div>
+ </div>
 </template>
 <script>
   (function() {
@@ -400,6 +340,7 @@ TO:
       ready: function(){
 //        this._getARCbalance();
         var self = this;
+        debugger;
 
         // window.setInterval(function(){
         //   self._getARCbalance();

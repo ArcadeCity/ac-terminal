@@ -1,0 +1,290 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+
+<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../bower_components/ac-input/ac-input.html">
+
+<link rel="import" href="ac-sizeview.html">
+<link rel="import" href="ac-wallet.html">
+<link rel="import" href="ac-shortcode.html">
+<link rel="import" href="ac-tokensend.html">
+<link rel="import" href="ac-tokenreceive.html">
+
+<!--
+<link rel="import" href="ac-tokentransfer.html">
+<link rel="import" href="ac-spinner.html">
+<link rel="import" href="ac-avatar.html">
+<link rel="import" href="ac-ipfsupload.html">
+<link rel="import" href="ac-ipfs.html"> -->
+
+<dom-module id="ac-walletview">
+  <!-- Defines the element's style and local DOM -->
+  <template>
+    <style>
+  :host {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  h1 {
+    @apply(--ac-font-h1);
+  }
+
+  p {
+    @apply(--ac-font-body1);
+  }
+
+
+  .total {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: var(--ac-base);
+    overflow-y: scroll;
+  }
+
+
+  .topback {
+    width: 100%;
+    background-color: var(--ac-base);
+    @apply(--layout-horizontal);
+    @apply(--layout-center-center);
+    box-sizing: border-box;
+    padding: 5vw 5vw 0px 5vw;
+    height: 10vh;
+  }
+
+  .topback ac-icon {
+    opacity: 0.5;
+  }
+  .topback ac-button {
+    @apply(--base-shadow);
+    opacity: 0.85;
+  }
+
+  .flex {
+    width: 100%;
+    @apply(--layout-flex);
+  }
+
+
+  .verticcenter {
+    width: 100%;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+  }
+
+  .balancebox {
+    height: 35vh;
+  }
+
+
+
+  </style>
+
+
+  <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+
+  <div class="total">
+      <div class="topback">
+        <span class="flex"></span>
+        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
+      </div>
+
+      <div class="balancebox verticcenter">
+        <div id="balance">
+          <template is="dom-if" if="{{!balanceupdating}}">
+            <div class$="arcbalance flex" on-tap="monitorBalance">
+              <ac-balance
+              refcur="EUR"
+              arcbalance="{{arcbalance}}"
+              ethbalance="{{ethbalance}}"
+              on-refresh="monitorBalance"
+              wereinwallet
+              ></ac-balance>
+            </div>
+          </template>
+
+          <template is="dom-if" if="{{balanceupdating}}">
+            <div class$="arcbalance {{arcalign}}">
+              <ac-spinner big></ac-spinner>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <div id="walletcontent">
+        <div class$="initbtns {{align}}">
+         <ac-tokenreceive  keystore="[[keystore]]"
+        pubkey="[[pubkey]]"
+        ></ac-tokenreceive>
+          <ac-tokensend on-activated="hideReceivebutton" on-deactivated="showReceivebutton"></ac-tokensend>
+        <template is="dom-if" if="{{sendcollsclosed}}">
+        TR
+          
+        TR2
+        </template>
+        </div>
+    
+      <ac-wallet
+        id="wallet"
+        keystore="[[keystore]]"
+        pubkey="[[pubkey]]"
+        updating="{{balanceupdating}}"
+        arcbalance="{{arcbalance}}"
+        ethbalance="{{ethbalance}}">
+      </ac-wallet> 
+
+      </div>
+
+  </div>
+
+
+
+</template>
+
+<script>
+  Polymer({
+    is: 'ac-walletview',
+    properties: {
+      // identity: {
+      //   type: String,
+      //   observer: '_identity',
+      //   notify: true
+      // },
+      // datachanged: {
+      //   type: Boolean,
+      //   value: false
+      // },
+
+
+      keystore: {
+        type: Object,
+         //observer: '_keystore',
+      },
+      // sizeview: {
+      //   type: String,
+      //   observer: '_sizeview'
+      // },
+      
+      // arcalign: {
+      //   type: String,
+      // },
+ 
+      pubkey: {
+        type: String,
+      },
+
+      sharedElements: {
+        type: Object,
+        value: function() {
+          return {
+            'hero': this.$.balance,
+          }
+        }
+      },
+
+      animationConfig: {
+        type: Object,
+        value: function() {
+          return {
+            'entry': [{
+              name: 'fade-in-animation',
+              node:this.$.walletcontent,
+              toPage: this,
+              timing: {
+                duration: 350,
+                delay: 500
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                  duration: 300
+              }
+            }],
+
+            'exit': [{
+              name: 'fade-out-animation',
+              node:this.$.walletcontent,
+              fromPage: this,
+              timing: {
+                  duration: 150,
+                delay: 0
+
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 300
+              }
+            }]
+          }
+        },
+        observer:'_checkAnimconfig'
+      }
+
+    },
+
+
+    behaviors: [
+      Polymer.NeonSharedElementAnimatableBehavior
+    ],
+
+
+    monitorBalance: function(){
+      this.$.wallet.monitorBalance();
+    },
+
+  
+    ready: function() {
+    },
+
+    attached: function(){
+    },
+
+
+    _is: function(a, b) {
+      if (b === undefined) {
+        b = true;
+      }
+      return a === b;
+    },
+
+      _sizeview: function() {
+        switch (this.sizeview) {
+          case 'phone':
+            this.customStyle['--ac-balance-height'] = '20vh';
+            this.updateStyles();
+            break;
+          case 'desktop':
+            this.customStyle['--ac-balance-height'] = '20vh';
+            this.updateStyles();
+            this.updateStyles();
+            break;
+          case 'xlarge':
+            this.customStyle['--ac-balance-height'] = '20vh';
+            this.updateStyles();
+            this.updateStyles();
+            break;
+          default:
+            console.log("!!! ** Niks");
+        }
+      },
+
+
+    exit: function(){
+      this.fire('exit');
+    },
+
+  });
+</script>
+
+</dom-module>

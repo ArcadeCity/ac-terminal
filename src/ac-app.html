@@ -17,6 +17,8 @@
 <link rel="import" href="ac-web3.html">
 <link rel="import" href="ac-profile.html">
 <link rel="import" href="ac-preferences.html">
+<link rel="import" href="ac-walletview.html">
+
 <!-- <link rel="import" href="ac-tokentransfer.html"> -->
 <link rel="import" href="ac-intro.html">
 <link rel="import" href="ac-home.html">
@@ -76,6 +78,11 @@
   }
 
 
+  ac-walletview {
+    width: 100vw;
+    height: 100vh;
+  }
+
 
   </style>
 
@@ -123,55 +130,14 @@
       on-novault="noVault">
     </ac-vault>
 
-    <!-- <ac-transactionlog account="[[account]]"></ac-transactionlog> -->
-
- <!--  <neon-animatable data-page="init">
-    <ac-createwallet on-to-home="toHome"></ac-createwallet>
-  </neon-animatable>
-
-  <neon-animatable data-page="newuser">
-    <ac-newuser id="newuser" on-newuser-created="createnewuser"></ac-newuser>
-  </neon-animatable> -->
-
-
-  <ac-home data-page="home"
-  keystore="[[keystore]]"
-  identity="[[identity]]"
-  pubkey="[[account]]"
-  on-to-profile="toProfile">
-  </ac-home>
-
-  <!-- <neon-animatable data-page="home">
-    <div class="hometotal">
-
-      <ac-avatar
-          identity="{{identity}}"
-          pubkey="{{account}}"
-          size="small"
-          on-tap="toProfile"
-          id="homeavatar"
-          ></ac-avatar>
-      <div class="homecontent">
-        <div class$="arcbalance {{arcalign}}">
-          <ac-balance
-          refcur="EUR"
-          on-tap="toWallet"
-          arcbalance="{{arcbalance}}"
-          ethbalance="{{ethbalance}}"></ac-balance>
-        </div>
-
-        <div class$="tokentrans {{arcalign}}">
-          <ac-tokentransfer account="{{account}}"></ac-tokentransfer>
-        </div>
-
-        <ac-wallet
-          keystore="[[keystore]]"
-          arcbalance="{{arcbalance}}"
-          ethbalance="{{ethbalance}}"></ac-wallet>
-      </div>
-
-    </div>
-  </neon-animatable> -->
+    <ac-home
+      data-page="home"
+      keystore="[[keystore]]"
+      identity="[[identity]]"
+      pubkey="[[account]]"
+      on-to-profile="toProfile"
+      on-to-walletview="toWalletview">
+    </ac-home>
 
 
     <ac-profile
@@ -184,36 +150,16 @@
       on-backup="toBackup">
     </ac-profile>
 
+    <ac-walletview
+      data-page="walletview"
+      id="walletview"
+      keystore="[[keystore]]"
+      identity="[[identity]]"
+      pubkey="[[account]]"
+      on-exit="toHome">
+    </ac-walletview>
 
-<!--   <neon-animatable data-page="wallet">
-    <div class="hometotal">
 
-      <ac-button
-            bg="base"
-            icon="declinenew"
-            on-tap="toHome"
-            small
-            id="exitbtn"
-            txtcolor="turquoise"></ac-button>
-
-      <ac-balance
-            refcur="EUR"
-            arcbalance="[[arcbalance]]"
-            ethbalance="[[ethbalance]]"></ac-balance>
-      <ac-wallet
-            keystore="[[keystore]]"
-            arcbalance="{{arcbalance}}"
-            ethbalance="{{ethbalance}}"></ac-wallet>
-    </div>
-  </neon-animatable> -->
-
-  <neon-animatable data-page="preferences">
-
-    <div class="hometotal">
-      <ac-preferences></ac-preferences>
-    </div>
-
-  </neon-animatable>
 </neon-animated-pages>
 
 </template>
@@ -223,22 +169,10 @@
       is: 'ac-app',
 
       properties: {
-        // entryAnimation: {
-        //   type: String,
-        //   observer: 'animLogger'
-        // },
-        // exitAnimation: {
-        //   type: String,
-        //   observer: 'animLogger'
-        // },
 
         sizeview: {
-          type: String,
-          // observer: '_sizeview'
+          type: String
          },
-        // arcalign: {
-        //   type: String,
-        // }
       },
 
       observers: [
@@ -376,41 +310,15 @@
         }.bind(this));
       },
 
+      toWalletview: function() {
+        this.transitionto('/walletview');
+      },
+      
       saveIdentity: function(e) {
         //debugger;
         this.identity = e.detail;
         this.$.thevault.saveVault();
       },
-
-      // _sizeview: function() {
-      //   switch (this.sizeview) {
-      //     case 'phone':
-      //       this.arcalign = 'verticcenter';
-      //       this.customStyle['--ac-balance-height'] = '30vh';
-      //       this.customStyle['--ac-balance-width'] = '100%';
-      //       this.customStyle['--tokentrans-width'] = '100%';
-      //       this.customStyle['--tokentrans-top'] = '0vh';
-      //       this.updateStyles();
-      //       break;
-      //     case 'desktop':
-      //       this.arcalign = 'verticstart';
-      //       this.customStyle['--ac-balance-height'] = '20vh';
-      //       this.customStyle['--ac-balance-width'] = '100%';
-      //       this.customStyle['--tokentrans-top'] = '3vh';
-      //       this.updateStyles();
-      //       break;
-      //     case 'xlarge':
-      //       this.arcalign = 'verticstart';
-      //       this.customStyle['--ac-balance-height'] = '20vh';
-      //       this.customStyle['--ac-balance-width'] = '100%';
-      //       this.customStyle['--tokentrans-top'] = '4vh';
-
-      //       this.updateStyles();
-      //       break;
-      //     default:
-      //       console.log("!!! ** Niks");
-      //   }
-      // },
 
     });
   </script>

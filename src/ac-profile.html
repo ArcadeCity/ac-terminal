@@ -56,6 +56,7 @@
   }
 
   .flex {
+    width: 100%;
     @apply(--layout-flex);
   }
 
@@ -145,7 +146,8 @@
     @apply(--layout-horizontal);
     @apply(--layout-center-center);
     box-sizing: border-box;
-    padding: 5vh 5vw 0px 5vw;
+    padding: 5vw 5vw 0px 5vw;
+    height: 10vh;
   }
 
   .topback ac-icon {
@@ -153,7 +155,7 @@
   }
   .topback ac-button {
     @apply(--base-shadow);
-    opacity: 0.75;
+    opacity: 0.85;
   }
 
 
@@ -161,7 +163,7 @@
     width: 100%;
     border-bottom: 2px dotted rgba(255,255,255,0.05);
     box-sizing: border-box;
-    padding: 2vh 0px 2vh 0px;
+    padding: 1vh 0px 1vh 0px;
   }
 
   .topdots {
@@ -216,14 +218,14 @@
   }
 
   .avataredit {
-    height: 300px;
+    height: 100vh;
   }
   .hidden {
     display:none;
   }
 
   neon-animated-pages {
-    height: 100vh;
+    height: 90vh;
   }
 
   .yellow {
@@ -271,13 +273,14 @@
     transition: all 0.15s linear;
   }
   .coll h2 {
-    color: var(--ac-yellow);
+    color: var(--ac-blue);
     text-align: center;
     @apply(--montserrat-light);
     opacity: 1;
-    font-size: 16px;
-    line-height: 18px;
+    font-size: 14px;
+    line-height: 16px;
     transition: all 0.15s linear;
+    margin: 0px;
   }
 
 
@@ -311,12 +314,12 @@
 
     <div class="total">
       <div class="topback">
-        <ac-icon icon="ac-arrowleft" iconcolor="yellow" on-tap="exit" small>back</ac-icon>
         <span class="flex"></span>
+        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
   <!--       <ac-button icon="ac-logout2" bg="btncolor" txtcolor="blue" on-tap="logout" small>back</ac-button> -->
       </div>
 
-      <neon-animated-pages class="avataredit" selected="{{datastate}}" attr-for-selected="data-state" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
+      <neon-animated-pages selected="{{datastate}}" attr-for-selected="data-state" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
 
         <neon-animatable data-state="view">
           <div class="profilepic">
@@ -333,6 +336,7 @@
             identity="{{identity}}"
             pubkey="{{account}}"
             mode="imgonly"
+            size="big"
             ></ac-avatar>
 
               <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>
@@ -357,8 +361,9 @@
                 <p>{{pubkey}}</p>
               </div>
             </div>             
+            <div class="flex"></div>
 
-            <div class="profilepart topdots coll" id="preferencestotal">
+            <div class="profilepart coll" id="preferencestotal">
               <h2 on-tap="collapseMe" id="preferences">Preferences</h2>
               <iron-collapse class="collapserz" id="preferencescollapser">
                <ac-preferences place="center" prefselected={{prefselected}}></ac-preferences>
@@ -381,12 +386,11 @@
               </iron-collapse>
             </div>
         
-          <div class="loggerout">
-            <!-- <p class="blue">log out</p> -->
+<!--           <div class="loggerout">
             <ac-button bg="white" txtcolor="base" small txtbtn>log out
             <ac-icon icon="ac-logout" iconcolor="base" on-tap="exit" small></ac-icon>
             </ac-button>
-          </div>
+          </div> -->
 
           </div>
       </neon-animatable>
@@ -477,21 +481,21 @@
               node:this.$.profilecontent,
               toPage: this,
               timing: {
-                duration: 750
+                duration: 200
               }
             },{
               name: 'fade-in-animation',
               node:this.$.uploadbtn,
               toPage: this,
               timing: {
-                duration: 750
+                duration: 200
               }
             }, {
               name: 'hero-animation',
               id: 'hero',
               toPage: this,
               timing: {
-                delay: 250
+                  duration: 200
               }
             }],
 
@@ -500,21 +504,21 @@
               node:this.$.profilecontent,
               fromPage: this,
               timing: {
-                duration: 750
+                duration: 200
               }
             },{
               name: 'fade-out-animation',
               node:this.$.uploadbtn,
               toPage: this,
               timing: {
-                duration: 750
+                duration: 200
               }
             }, {
               name: 'hero-animation',
               id: 'hero',
               fromPage: this,
               timing: {
-                delay: 250
+                  duration: 200
               }
               }]
             }
