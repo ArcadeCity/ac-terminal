@@ -433,6 +433,24 @@
 
 
     toProfile: function() {
+
+    this.sharedElements = {
+        'hero': avatar,
+      };
+
+    this.animationConfig = {
+          'entry': [{
+                  name: 'hero-animation',
+                  id: 'hero',
+                  toPage: this
+            }],
+
+            'exit': [{
+                  name: 'hero-animation',
+                  id: 'hero',
+                  fromPage: this
+            }]
+          };
       this.fire('to-profile');
     },
 
