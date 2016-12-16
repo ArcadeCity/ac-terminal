@@ -21,10 +21,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="ac-web3.html">
 <link rel="import" href="ac-log.html">
 <link rel="import" href="ac-wallet.html">
-<link rel="import" href="ac-tokensend.html">
-<link rel="import" href="ac-tokenreceive.html">
 
-<dom-module id="ac-tokentransfer">
+<dom-module id="ac-tokenreceive">
   <template>
     <style>
       :host {
@@ -232,7 +230,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       etherscanroot="{{etherscanroot}}"
       tokencontractaddress="{{tokencontractaddress}}"
       ></ac-config>
-
+      
     <ac-web3
       host="{{web3host}}"
       web3="{{web3}}"></ac-web3>
@@ -247,38 +245,59 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       id="whisper"></ac-whisperer>
 
     <div class="total">
-        <div class$="initbtns {{align}}">
-          <ac-tokensend on-activated="hideReceivebutton" on-deactivated="showReceivebutton"></ac-tokensend>
-        <template is="dom-if" if="{{sendcollsclosed}}">
-          <ac-tokenreceive></ac-tokenreceive> 
+<!--       <template is="dom-if" if="{{sendcollsclosed}}">
+ -->
+         <div class$="initbtns {{align}}">
+         <!--  <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="togglesendcoins" class="sender">send ARC</ac-button> -->
+
+          <ac-shortcode on-cancel="deactivatereceivecoins" bg="btncolor" txtcolor="red" topic="[[topic]]" progress="[[progress]]" on-showshortcode="activatereceivecoins" btn>shortcode</ac-shortcode>
+
+        </div>
+<!--       </template> -->
+<!--       <div class="sendcoiners">
+ --><!-- 
+        <iron-collapse id="sendcoins">
+          <template is="dom-if" if="{{_is(sendcoinstate,'first')}}">
+
+          <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
+            <ac-input color="red" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
+            <ac-input color="red" class="sendinput" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
+            <div class="whitespace"></div>
+            <div class="confirmbtns">
+              <ac-button icon="ac-decline" on-tap="togglesendcoins" small class="confirmbtn" bg="base" txtcolor="red"></ac-button>
+              <ac-button on-tap="toWaiting" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
+            </div>
+          </template>
+
+          <template is="dom-if" if="{{_is(sizeview,'phone')}}">
+            <ac-input center color="red" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
+            <ac-input center color="red" class="sendinput" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
+            <div class="whitespace"></div>
+            <div class="confirmbtnsmobile">
+              <ac-button icon="ac-decline" on-tap="togglesendcoins" small class="confirmbtn" bg="base" txtcolor="red"></ac-button>
+              <ac-button on-tap="toWaiting" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
+            </div>
+          </template>
+
         </template>
-    </div>
-    
 
-  <template is="dom-repeat" items="{{history}}">
-    <div class="avatar" id="avatar">
-      <img src="{{item.avatar}}"></div>
-    <p>
-      <span>{{item.receiver}}</span>
-      &Delta;
-      <span>{{item.amount}}</span>
-    </p>
-    <!-- <p class="temp">
-    &Delta;
-    <span>{{item.amount}}</span>
-    <span>{{item.receiver}}</span>
-  </p>
-  -->
-</template>
+        <template is="dom-if" if="{{_is(sendcoinstate,'second')}}">
+          <div class="announce">
+            <p>Your transaction is being executed.</p>
+            <ac-button small icon="declinenew" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+          </div>
+        </template>
+      </iron-collapse> -->
 
+</div>
 <!--     <div>
 <h1>
-  E
-  <span>{{ethbalance}}</span>
+E
+<span>{{ethbalance}}</span>
 </h1>
 <h1>
-  L
-  <span>{{arcbalance}}</span>
+L
+<span>{{arcbalance}}</span>
 </h1>
 <p on-tap="getLocalbalance">Refresh</p>
 <h1>Send funds to another locals user</h1>
@@ -304,15 +323,10 @@ TO:
     'use strict';
 
     Polymer({
-      is: 'ac-tokentransfer',
+      is: 'ac-tokenreceive',
 
       properties: {
-        foo: {
-          type: String,
-          value: 'ac-tokentransfer',
-          notify: true
-        },
-
+       
         sizeview: {
           type: String,
           observer: '_sizeview'
@@ -322,9 +336,9 @@ TO:
           type:String,
         },
 
-        web3: {
-          type: Object
-        },
+        // web3: {
+        //   type: Object
+        // },
 
         sendcoinstate: {
           type: String,
@@ -337,19 +351,19 @@ TO:
         //   value: false
         // },
 
-        topic: {
-          type: Number,
-        },
+        // topic: {
+        //   type: Number,
+        // },
 
         collsclosed: {
           type: Boolean,
           value: true
         },
 
-        sendcollsclosed: {
-          type: Boolean,
-          value: true
-        },
+        // sendcollsclosed: {
+        //   type: Boolean,
+        //   value: true
+        // },
 
         receivecollsclosed: {
           type: Boolean,
@@ -383,15 +397,6 @@ TO:
         console.log(this.pincode);
       },
 
-      hideReceivebutton: function(){
-        this.sendcollsclosed = true;
-      },
-
-      showReceivebutton: function(){
-        this.sendcollsclosed = false;
-      },
-
-
       ready: function(){
 //        this._getARCbalance();
         var self = this;
@@ -415,7 +420,7 @@ TO:
 
       attached: function(){
 //        var self=this;
-        console.log('ac-tokentransfer attached');
+        console.log('ac-tokenreceive attached');
         console.log('my account',this.account);
       },
 
@@ -425,12 +430,12 @@ TO:
         var message = JSON.parse(m.detail.message);
         console.log('incoming tokentransfer msg: ', message);
         switch (message.command) {
-          case 'requestpubkeyforlocalstransfer':
-            self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
-              'command': 'sendpubkey',
-              'pubkey': self.account
-            }));
-            break;
+          // case 'requestpubkeyforlocalstransfer':
+          //   self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
+          //     'command': 'sendpubkey',
+          //     'pubkey': self.account
+          //   }));
+          //   break;
           case 'sendpubkey':
             var transferamount = this.amount * 1e18;
             console.log('Send ARC to ', message.pubkey);
@@ -456,18 +461,18 @@ TO:
 
 
 
-      toWaiting: function(){
-        var self = this;
-        //debugger;
-        //this.handler = document.querySelector('locals-verification-validator');
-        //console.log('wallet: ',this.$.whisper.topic, ' pin: ', this.pincode);
-        //debugger;
-        this.$.whisper.whisperpost(this.pincode, JSON.stringify({
-                'command': 'requestpubkeyforlocalstransfer',
-              }));
-        this.state = 'waiting';
-        this.sendcoinstate = 'second';
-      },
+      // toWaiting: function(){
+      //   var self = this;
+      //   //debugger;
+      //   //this.handler = document.querySelector('locals-verification-validator');
+      //   //console.log('wallet: ',this.$.whisper.topic, ' pin: ', this.pincode);
+      //   //debugger;
+      //   this.$.whisper.whisperpost(this.pincode, JSON.stringify({
+      //           'command': 'requestpubkeyforlocalstransfer',
+      //         }));
+      //   this.state = 'waiting';
+      //   this.sendcoinstate = 'second';
+      // },
 
       clearInputs: function(){
         this.pincode = '';
@@ -486,7 +491,7 @@ TO:
 
       // _getARCbalance: function() {
       //   if(!this.web3) return;
-      //   //console.log('ac-tokentransfer ', Date.now());
+      //   //console.log('ac-tokenreceive ', Date.now());
       //   this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
 
       //   var self = this;
@@ -554,12 +559,12 @@ TO:
       return a === b;
     },
 
-      togglesendcoins: function() {
-        var sendcoins = this.$.sendcoins;
-        sendcoins.toggle();
-        this.sendcollsclosed=!this.sendcollsclosed;
-        this.sendcoinstate = 'first';
-      },
+      // togglesendcoins: function() {
+      //   var sendcoins = this.$.sendcoins;
+      //   sendcoins.toggle();
+      //   this.sendcollsclosed=!this.sendcollsclosed;
+      //   this.sendcoinstate = 'first';
+      // },
 
       togglereceivecoins: function() {
         // this.whisper = this.$.whisper;
