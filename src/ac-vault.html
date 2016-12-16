@@ -115,6 +115,13 @@
       @apply(--montserrat-bold);
     }
 
+    .paddingside {
+      box-sizing: border-box;
+      padding-left: 6vw;
+      padding-right: 6vw;
+
+    }
+
     </style>
 
   <template>
@@ -177,8 +184,8 @@
       </neon-animatable> -->
 
       <neon-animatable data-page="createnew">
-        <div class="pascanvas verticcenter">
-        <p class="yellow centertxt">Choose a password and repeat</p>
+        <div class="pascanvas verticcenter paddingside">
+        <p class="yellow centertxt">Choose a password (min. 9 characters) and repeat.</p>
         <div class="whitespace"></div>
         <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
       </div>
