@@ -131,8 +131,8 @@
         <div class$="arcbalance {{arcalign}}" on-tap="monitorBalance">
           <ac-balance
           refcur="EUR"
-          arcbalance="{{arcbalance}}"
-          ethbalance="{{ethbalance}}"
+          arcbalance="[[arcbalance]]"
+          ethbalance="[[ethbalance]]"
           on-refresh="monitorBalance"
           ></ac-balance>
         </div>
@@ -155,6 +155,9 @@
         updating="{{balanceupdating}}"
         arcbalance="{{arcbalance}}"
         ethbalance="{{ethbalance}}"></ac-wallet>
+
+
+        <ac-transactionlog account="[[pubkey]]"></ac-transactionlog>
     </div>
 
   </div>

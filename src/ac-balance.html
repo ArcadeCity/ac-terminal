@@ -221,7 +221,7 @@ Polymer({
   convertcurrency: function(e) {
     if(this.priceusd && this.arcbalance) {
       var x = e / this.priceusd;
-      console.log(x);
+      //console.log(x);
       this.balanceref = this.arcbalance * this.priceusd;
       this.balanceref = this.balanceref.toFixed(2);
       this.eurref = this.balanceref * this.eurusd;

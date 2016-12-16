@@ -40,10 +40,12 @@
       },
 
       initcache: function(){
-        this.firstblock= 0;
-        this.lastblock= 0;
-        this.logitems = [];
-        this.saveCache();
+        if (this.$.txlogcache.name){
+          this.firstblock= 0;
+          this.lastblock= 0;
+          this.logitems = [];
+          this.saveCache();          
+        }
       },
 
       saveCache: function() {
