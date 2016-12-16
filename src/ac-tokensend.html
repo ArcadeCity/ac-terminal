@@ -284,6 +284,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <ac-button small icon="declinenew" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
             </div>
           </template>
+    <div class="whitespace"></div>
+    <div class="whitespace"></div>
+
         </iron-collapse>
         <iron-collapse id="receivecoins">
           <div class="code">
@@ -305,32 +308,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       </template>
 
-      <!--     <div>
-      <h1>
-        E
-        <span>{{ethbalance}}</span>
-      </h1>
-      <h1>
-        L
-        <span>{{arcbalance}}</span>
-      </h1>
-      <p on-tap="getLocalbalance">Refresh</p>
-      <h1>Send funds to another locals user</h1>
-      <p>enter the # of the other user</p>
-      <ac-input autofocus bind-value="{{pincode}}" label="Pincode" center></ac-input>
-      <locals-confirm on-confirm="toWaiting" type="next"></locals-confirm>
-      -->
-      <!-- Hier hebben we dan de key van de partner -->
-      <!-- <p>
-      TO:
-      <span>{{partnerpubkey}}</span>
-    </p>
-    <ac-button text on-tap="transfer">verstuur</locals-button>
-    -->
-    <div class="whitespace"></div>
-    <div class="whitespace"></div>
-
-    <!-- <ac-log></ac-log> -->
   </div>
 </template>
 <script>
@@ -414,7 +391,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _pincode: function() {
-        console.log(this.pincode);
+        // console.log(this.pincode);
       },
 
       ready: function(){
@@ -440,8 +417,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       attached: function(){
 //        var self=this;
-        console.log('ac-tokensend attached');
-        console.log('my account',this.account);
+        // console.log('ac-tokensend attached');
+        // console.log('my account',this.account);
       },
 
       // receiving side

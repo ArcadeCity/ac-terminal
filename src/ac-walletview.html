@@ -82,6 +82,13 @@
     height: 35vh;
   }
 
+  #walletcontent {
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 10vw;
+    padding-right: 10vw;
+  }
+
 
 
   </style>
@@ -119,15 +126,17 @@
 
       <div id="walletcontent">
         <div class$="initbtns {{align}}">
-         <ac-tokenreceive  keystore="[[keystore]]"
+          <ac-tokensend on-activated="hideReceivebutton" on-deactivated="showReceivebutton"></ac-tokensend>
+    <div class="whitespace"></div>
+
+           <ac-tokenreceive  keystore="[[keystore]]"
         pubkey="[[pubkey]]"
         ></ac-tokenreceive>
-          <ac-tokensend on-activated="hideReceivebutton" on-deactivated="showReceivebutton"></ac-tokensend>
-        <template is="dom-if" if="{{sendcollsclosed}}">
+<!--         <template is="dom-if" if="{{sendcollsclosed}}">
         TR
           
         TR2
-        </template>
+        </template> -->
         </div>
     
       <ac-wallet
@@ -228,7 +237,6 @@
             }]
           }
         },
-        observer:'_checkAnimconfig'
       }
 
     },
