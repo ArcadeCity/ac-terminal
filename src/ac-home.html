@@ -32,6 +32,9 @@
     --tokentrans-width:100%;
     --tokentrans-top:3vh;
 
+    --avbox-padding: 15vh 0px 2vh 0px;
+    --homecontent-height:85vh;
+
   }
 
   h1 {
@@ -44,14 +47,15 @@
 
     .hometotal {
       background-color: var(--ac-base);
+      /*@apply(--base-structure);*/
       height: 100%;
     }
 
     .homecontent {
       width: 100%;
       box-sizing: border-box;
-      padding: 0px 10vw 16px 10vw;
-      height: 84vh;
+      padding: 2vh 10vw 10vh 10vw;
+      /*height: var(--homecontent-height);*/
     }
     .toptoolbar {
       width: 100%;
@@ -67,9 +71,9 @@
     .ac-avatar-box {
       @apply(--layout-vertical);
       @apply(--layout-center-center);
-    width: 100%;
-    box-sizing: border-box;
-    padding: 5vh 0px 2vh 0px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: var(--avbox-padding);
     }
 
     .arcbalance {
@@ -102,33 +106,45 @@
       @apply(--layout-center-justified);
     }
 
+    .flex {
+      @apply(--layout-flex);
+    }
+    .whitespace {
+      width: 100%;
+      height: 20px;
+    }
+
+    .toridesharebtn {
+      padding: 26px 38px 26px 38px;
+      @apply(--base-shadow-and-inset);
+      width: 80%;
+      max-width: 400px; 
+    }
+
 
   </style>
 
 
 <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
-  <div class="hometotal">
-  <div class="ac-avatar-box">
+  <div class="hometotal verticcenter">
     <div class="ac-avatar-box" on-tap="toProfile">
     <ac-avatar
         identity="[[identity]]"
         pubkey="[[pubkey]]"
-        size="small"
         id="homeavatar"
         ></ac-avatar>
+    <div class="whitespace"></div>
     <ac-avatar
         identity="[[identity]]"
         pubkey="[[pubkey]]"
         mode="txtonly"
         viewmode="center"
         ></ac-avatar>
-
     </div>
-  </div>
-    <div class="homecontent" id="homecontent">
+    <div class="homecontent flex verticcenter" id="homecontent">
 
       <template is="dom-if" if="{{!balanceupdating}}">
-        <div class$="arcbalance {{arcalign}}" on-tap="monitorBalance">
+        <div class$="arcbalance flex" on-tap="toWalletview">
           <ac-balance
           refcur="EUR"
           arcbalance="{{arcbalance}}"
@@ -138,12 +154,15 @@
         </div>
       </template>
 
-<!--       <template is="dom-if" if="{{balanceupdating}}">
+      <template is="dom-if" if="{{balanceupdating}}">
         <div class$="arcbalance {{arcalign}}">
           <ac-spinner big></ac-spinner>
         </div>
       </template>
+      <div class="flex"></div>
+        <ac-button txtbtn bg="btncolor" txtcolor="yellow" class="toridesharebtn">to /rideshare</ac-button>
 
+<!-- 
       <div class$="tokentrans {{arcalign}}">
         <ac-tokentransfer account="[[pubkey]]"></ac-tokentransfer>
       </div> -->
@@ -154,7 +173,9 @@
         pubkey="[[pubkey]]"
         updating="{{balanceupdating}}"
         arcbalance="{{arcbalance}}"
-        ethbalance="{{ethbalance}}"></ac-wallet>
+        ethbalance="{{ethbalance}}"></ac-wallet> 
+
+
     </div>
 
   </div>
@@ -213,14 +234,14 @@
               node:this.$.homecontent,
               toPage: this,
               timing: {
-                      duration: 750
+                duration: 200
               }
             }, {
               name: 'hero-animation',
               id: 'hero',
               toPage: this,
               timing: {
-                delay: 75
+                  duration: 200
               }
             }],
 
@@ -229,14 +250,14 @@
               node:this.$.homecontent,
               fromPage: this,
               timing: {
-                      duration: 750
+                  duration: 200
               }
             }, {
               name: 'hero-animation',
               id: 'hero',
               fromPage: this,
               timing: {
-                delay: 75
+                  duration: 200
               }
             }]
           }
@@ -415,12 +436,15 @@
       this.fire('to-profile');
     },
 
+    toWalletview: function() {
+      this.fire('to-walletview');
+    },
 
       _sizeview: function() {
         switch (this.sizeview) {
           case 'phone':
             this.arcalign = 'verticcenter';
-            this.customStyle['--ac-balance-height'] = '30vh';
+            this.customStyle['--ac-balance-height'] = '20vh';
             this.customStyle['--ac-balance-width'] = '100%';
             this.customStyle['--tokentrans-width'] = '100%';
             this.customStyle['--tokentrans-top'] = '0vh';
