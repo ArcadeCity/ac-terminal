@@ -69,7 +69,7 @@
     line-height: var(--balance-h1-lineheight);
 
     color: var(--ac-red);
-    text-shadow: -1px 1px 8px rgba(249,85,85,0.2), 1px -1px 18px rgba(249,85,85,0.2);
+    text-shadow: -1px 1px 8px rgba(249,85,85,0.1), 1px -1px 18px rgba(249,85,85,0.1);
 
   }
 
@@ -151,19 +151,19 @@ auto>
     <h1>{{arcbalance}}</h1><h1><span class="ARCletters"> ARC</span>
     <!-- <ac-button class="refrbtn" veryverysmall icon="refresh1" txtcolor="red" bg="btncolor" on-tap="fireRefresh"></ac-button> --></h1>
   </div>
-    <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
-    <div class="horizontend prefcurrletters">
-        <!-- <p class="extramargin"></p> -->
-        <p>({{prefcurrency}} {{balanceref}})</p>
+    <template is="dom-if" if="{{wereinwallet}}">
+      <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
+      <div class="horizontend prefcurrletters">
+          <p>({{prefcurrency}} {{balanceref}})</p>
+        </div>
+      </template>
+      <template is="dom-if" if="{{_is(sizeview,'phone')}}">
+        <div class="verticcenter prefcurrletters">
+          <p>{{prefcurrency}} {{balanceref}}</p>
+        </div>
+      </template>
+    </template>
 
-      </div>
-    </template>
-    <template is="dom-if" if="{{_is(sizeview,'phone')}}">
-      <div class="verticcenter prefcurrletters">
-        <p>{{prefcurrency}} {{balanceref}}</p>
-        
-      </div>
-    </template>
 </div>
 
 </template>
@@ -194,7 +194,10 @@ Polymer({
     align: {
       type: String,
     },
-
+    wereinwallet: {
+      type: Boolean,
+      value: false
+    }
   },
 
   ready: function() {

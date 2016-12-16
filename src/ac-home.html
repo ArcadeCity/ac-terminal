@@ -65,8 +65,11 @@
     }
 
     .ac-avatar-box {
-      @apply(--layout-horizontal);
+      @apply(--layout-vertical);
       @apply(--layout-center-center);
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5vh 0px 2vh 0px;
     }
 
     .arcbalance {
@@ -105,7 +108,7 @@
 
 <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
   <div class="hometotal">
-  <div class="toptoolbar">
+  <div class="ac-avatar-box">
     <div class="ac-avatar-box" on-tap="toProfile">
     <ac-avatar
         identity="[[identity]]"
@@ -117,6 +120,7 @@
         identity="[[identity]]"
         pubkey="[[pubkey]]"
         mode="txtonly"
+        viewmode="center"
         ></ac-avatar>
 
     </div>
@@ -129,13 +133,12 @@
           refcur="EUR"
           arcbalance="{{arcbalance}}"
           ethbalance="{{ethbalance}}"
-          on-refresh="monitorBalance"></ac-balance>
+          on-refresh="monitorBalance"
+          ></ac-balance>
         </div>
       </template>
 
-      <ac-transactionlog account="[[pubkey]]"></ac-transactionlog>
-
-      <template is="dom-if" if="{{balanceupdating}}">
+<!--       <template is="dom-if" if="{{balanceupdating}}">
         <div class$="arcbalance {{arcalign}}">
           <ac-spinner big></ac-spinner>
         </div>
@@ -143,7 +146,7 @@
 
       <div class$="tokentrans {{arcalign}}">
         <ac-tokentransfer account="[[pubkey]]"></ac-tokentransfer>
-      </div>
+      </div> -->
 
       <ac-wallet
         id="wallet"
