@@ -182,7 +182,11 @@ Polymer({
   _stopTopicFilter: function() {
     if (this.filter) {
       console.log('ac-whisperer: stop watching channel',this.topic);
-      this.filter.stopWatching();
+      try{
+        this.filter.stopWatching();
+      }catch(e){
+        console.log(e);
+      }
     }
   },
 

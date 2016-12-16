@@ -133,6 +133,8 @@
         </div>
       </template>
 
+      <ac-transactionlog account="[[pubkey]]"></ac-transactionlog>
+
       <template is="dom-if" if="{{balanceupdating}}">
         <div class$="arcbalance {{arcalign}}">
           <ac-spinner big></ac-spinner>
