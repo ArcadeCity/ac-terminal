@@ -72,6 +72,17 @@
   }
 
 
+  .verticcenter {
+    width: 100%;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+  }
+
+  .balancebox {
+    height: 35vh;
+  }
+
+
 
   </style>
 
@@ -84,27 +95,27 @@
         <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
       </div>
 
-      <template is="dom-if" if="{{!balanceupdating}}">
-        <div class$="arcbalance flex" on-tap="monitorBalance" id="balance">
-          <ac-balance
-          refcur="EUR"
-          arcbalance="{{arcbalance}}"
-          ethbalance="{{ethbalance}}"
-          on-refresh="monitorBalance"
-          ></ac-balance>
-        </div>
-      </template>
+      <div class="balancebox verticcenter">
+        <div id="balance">
+          <template is="dom-if" if="{{!balanceupdating}}">
+            <div class$="arcbalance flex" on-tap="monitorBalance">
+              <ac-balance
+              refcur="EUR"
+              arcbalance="{{arcbalance}}"
+              ethbalance="{{ethbalance}}"
+              on-refresh="monitorBalance"
+              wereinwallet
+              ></ac-balance>
+            </div>
+          </template>
 
-      <template is="dom-if" if="{{balanceupdating}}">
-        <div class$="arcbalance {{arcalign}}">
-          <ac-spinner big></ac-spinner>
+          <template is="dom-if" if="{{balanceupdating}}">
+            <div class$="arcbalance {{arcalign}}">
+              <ac-spinner big></ac-spinner>
+            </div>
+          </template>
         </div>
-      </template>
-
-<!-- 
-      <div class$="tokentrans {{arcalign}}">
-        <ac-tokentransfer account="[[pubkey]]"></ac-tokentransfer>
-      </div> -->
+      </div>
 
       <div id="walletcontent">
         <div class$="initbtns {{align}}">
@@ -120,7 +131,9 @@
         pubkey="[[pubkey]]"
         updating="{{balanceupdating}}"
         arcbalance="{{arcbalance}}"
-        ethbalance="{{ethbalance}}"></ac-wallet> 
+        ethbalance="{{ethbalance}}">
+      </ac-wallet> 
+
       </div>
 
   </div>
@@ -179,14 +192,15 @@
               node:this.$.walletcontent,
               toPage: this,
               timing: {
-                duration: 200
+                duration: 350,
+                delay: 500
               }
             }, {
               name: 'hero-animation',
               id: 'hero',
               toPage: this,
               timing: {
-                  duration: 200
+                  duration: 300
               }
             }],
 
@@ -195,14 +209,16 @@
               node:this.$.walletcontent,
               fromPage: this,
               timing: {
-                  duration: 200
+                  duration: 150,
+                delay: 0
+
               }
             }, {
               name: 'hero-animation',
               id: 'hero',
               fromPage: this,
               timing: {
-                  duration: 200
+                  duration: 300
               }
             }]
           }
