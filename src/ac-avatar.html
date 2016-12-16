@@ -74,9 +74,6 @@
 
       .username-big {
         width: 100%;
-        @apply(--layout-vertical);
-        @apply(--layout-center-justified);
-        @apply(--layout-start);
         /*color: #7157D9;*/
         color: var(--ac-white);
         box-sizing: border-box;
@@ -87,6 +84,18 @@
         @apply(--montserrat-semibold);
         font-size: 13px;
         line-height: 16px;
+      }
+
+
+      .left {
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        @apply(--layout-start);
+      }
+
+      .center {
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
       }
 
       .pub {
@@ -120,7 +129,7 @@
 
 
     <template is="dom-if" if="{{_is(mode, 'txtonly')}}">
-      <div class="username-big">
+      <div class$="username-big {{viewmode}}">
           <p>{{identity.username}}</p>
           <div class="pub"><p>{{pubkey}}</p></div>
         </div>
@@ -153,6 +162,10 @@
         },
         pubkey: {
           type: String
+        },
+        viewmode: {
+          type: String,
+          value: 'left'
         }
       },
 
