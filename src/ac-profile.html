@@ -688,14 +688,14 @@
 
       // this.datachanged = true;
 
-      // if (this.username != this.identity.username) {
-      //   var collapser = document.getElementById('collapse');
-      //   collapser.show();
-      // }
-      // if (this.username == this.identity.username) {
-      //   var collapser = document.getElementById('collapse');
-      //   collapser.hide();
-      // }
+      if (this.username != this.identity.username) {
+        var collapser = document.getElementById('collapse');
+        collapser.show();
+      }
+      if (this.username == this.identity.username) {
+        var collapser = document.getElementById('collapse');
+        collapser.hide();
+      }
     },
 
     exit: function(){
