@@ -1,6 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/ac-style/ac-style.html">
-<link rel="import" href="ac-ipfs.html">
 
 <dom-module id="ac-avatar">
   <template>
@@ -33,10 +32,6 @@
         @apply(--layout-horizontal);
         @apply(--layout-start-justified);
       }
-      .avatar {
-        display: inline-block;
-        background: rgba(255,255,255,0.1);
-      }
 
 
       .arc-avatar:hover {
@@ -58,25 +53,11 @@
         height: 100%;
       }
 
-      .normal {
-        width: 85px;
-        height: 85px;
-        min-width: 85px;
-        min-height: 85px;
-        overflow: hidden;
-        border-radius: 50%;
-      }
-
-      .normal img {
-        width: 100%;
-        height: 100%;
-      }
-
       .big {
-        width: 105px;
-        height: 105px;
-        min-width: 105px;
-        min-height: 105px;
+        width: 120px;
+        height: 120px;
+        min-width: 120px;
+        min-height: 120px;
         overflow: hidden;
         border-radius: 50%;
       }
@@ -88,6 +69,9 @@
 
       .username-big {
         width: 100%;
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        @apply(--layout-start);
         /*color: #7157D9;*/
         color: var(--ac-white);
         box-sizing: border-box;
@@ -100,29 +84,12 @@
         line-height: 16px;
       }
 
-      .username-big h1 {
-        @apply(--montserrat-reg);
-        font-size: 16px;
-        line-height: 18px;
-      }
-
-      .left {
-        @apply(--layout-vertical);
-        @apply(--layout-center-justified);
-        @apply(--layout-start);
-      }
-
-      .center {
-        @apply(--layout-vertical);
-        @apply(--layout-center-center);
-      }
-
       .pub {
-        width: 40px;
+        width: 80px;
       }
 
       .pub p {
-        font-size: 10px;
+        font-size: 9px;
         line-height: 13px;
         @apply(--montserrat-reg);
         @apply(--ac-font-nowrap);
@@ -132,36 +99,27 @@
 
     </style>
 
-    <ac-ipfs id="ipfs"></ac-ipfs>
 
     <template is="dom-if" if="{{_is(mode, 'imgandtxt')}}">
       <div class="arc-avatar">
         <div class$="avatar {{size}}">
-          <img src="{{ipfsurl(identity.avatarhash)}}">
+          <img src="{{identity.avatarurl}}">
         </div>
-        <!-- <div class="username-big">
+        <div class="username-big">
           <p>{{identity.username}}</p>
           <div class="pub"><p>{{identity.pubkey}}</p></div>
-        </div> -->
+        </div>
       </div>
     </template>
 
 
     <template is="dom-if" if="{{_is(mode, 'txtonly')}}">
-      <div class$="username-big {{viewmode}}">
-          <template is="dom-if" if="{{_is(size, 'small')}}">
-            <p>{{identity.username}}</p>
-          </template>
-        <template is="dom-if" if="{{!_is(size, 'small')}}">
-            <h1>{{identity.username}}</h1>
-          </template>
-          <div class="pub"><p>{{pubkey}}</p></div>
-        </div>
+      <div><p>txtonly</p></div>
     </template>
 
     <template is="dom-if" if="{{_is(mode, 'imgonly')}}">
         <div class$="avatar {{size}}">
-          <img src="{{ipfsurl(identity.avatarhash)}}">
+          <img src="{{artwork}}">
         </div>
     </template>
 
@@ -179,19 +137,20 @@
         },
         size: {
           type: String,
-          value: 'normal',
+          value: 'big',
         },
         identity: {
           type: Object
         },
         pubkey: {
-          type: String
-        },
-        viewmode: {
           type: String,
-          value: 'left'
+          value: 'ff9980effO'
         }
       },
+
+      observers: [
+        'userListChanged(identity.*, filter)'
+      ],
 
       _is: function(a, b) {
         if (b === undefined){
@@ -199,15 +158,6 @@
         }
         //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
         return a === b;
-      },
-
-      // attached: function(){
-      //   console.log(this.identity); 
-      //   debugger;       
-      // },
-
-      ipfsurl: function(hash){
-        return this.$.ipfs.geturl(hash);
       },
 
     });
