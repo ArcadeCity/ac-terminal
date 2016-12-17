@@ -298,7 +298,7 @@
 
     @apply(--layout-horizontal);
     @apply(--layout-center-center);
-    
+
   }
 
   .loggerout ac-button {
@@ -316,7 +316,7 @@
       <div class="topback">
         <span class="flex"></span>
         <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
-  <!--       <ac-button icon="ac-logout2" bg="btncolor" txtcolor="blue" on-tap="logout" small>back</ac-button> -->
+        <!-- <ac-button icon="ac-logout2" bg="btncolor" txtcolor="blue" on-tap="logout" small>back</ac-button> -->
       </div>
 
       <neon-animated-pages selected="{{datastate}}" attr-for-selected="data-state" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
@@ -360,7 +360,7 @@
               <div class$="pubkey {{pubwhat}}" on-tap="togglePub">
                 <p>{{pubkey}}</p>
               </div>
-            </div>             
+            </div>
             <div class="flex"></div>
 
             <div class="profilepart coll" id="preferencestotal">
@@ -385,12 +385,10 @@
                 <p on-tap="collapseMe" class="yellow">Het is al geruime tijd een bekend gegeven dat een lezer, tijdens het bekijken van de layout van een pagina, afgeleid wordt door de tekstuele inhoud. Het belangrijke punt van het gebruik van Lorem Ipsum is dat het uit een min of meer normale verdeling van letters bestaat, in tegenstelling tot "Hier uw tekst, hier uw tekst" wat het tot min of meer leesbaar nederlands maakt. Veel desktop publishing pakketten en web pagina editors gebruiken tegenwoordig Lorem Ipsum als hun standaard model tekst, en een zoekopdracht naar "lorem ipsum" ontsluit veel websites die nog in aanbouw zijn. Verscheidene versies hebben zich ontwikkeld in de loop van de jaren, soms per ongeluk soms expres (ingevoegde humor en dergelijke).</p>
               </iron-collapse>
             </div>
-        
-<!--           <div class="loggerout">
-            <ac-button bg="white" txtcolor="base" small txtbtn>log out
-            <ac-icon icon="ac-logout" iconcolor="base" on-tap="exit" small></ac-icon>
-            </ac-button>
-          </div> -->
+
+          <div class="profilepart coll">
+            <h2 on-tap="logout" id="backup">Log out</h2>
+          </div>
 
           </div>
       </neon-animatable>
@@ -406,12 +404,12 @@
                 <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="setcurrentavatar" small>confirm</ac-button>
               </div>
 
-<!-- 
+<!--
             <ac-button on-tap="setcurrentavatar_cancel" txtbtn txtcolor="blue" bg="btncolor" small>cancel</ac-button>
             <ac-button on-tap="setcurrentavatar" txtbtn txtcolor="blue" bg="btncolor" small>save</ac-button> -->
           </div>
         </div>
-         
+
 
       </neon-animatable>
     </neon-animated-pages>
@@ -672,8 +670,8 @@
 
     logout: function() {
       this.fire('logout');
-//      sessionStorage.removeItem('ac-password');
-//      window.location = '/';
+      sessionStorage.removeItem('ac-password');
+      window.location = '/';
     },
     backupvault: function(){
       this.fire('backup');
