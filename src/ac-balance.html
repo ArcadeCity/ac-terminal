@@ -138,7 +138,7 @@ auto>
 
 <div class$="arc-balance {{align}}">
   <div class="horizontend">
-    <h1>{{arcbalance2}}</h1><h1><span class="ARCletters"> ARC</span>
+    <h1>{{arcbalance}}</h1><h1><span class="ARCletters"> ARC</span>
     <!-- <ac-button class="refrbtn" veryverysmall icon="refresh1" txtcolor="red" bg="btncolor" on-tap="fireRefresh"></ac-button> --></h1>
   </div>
     <!-- <template is="dom-if" if="{{wereinwallet}}"> -->
@@ -206,14 +206,13 @@ Polymer({
     var charcount = this.arcbalance.toString().length;
     this.balancesize = charcount * this.basesize;
     this.balanceref = this.convertcurrency(this.arcbalance);
-    this.arcbalance2 = this.arcbalance.toFixed(2) / 1e18;
   },
 
   convertcurrency: function(e) {
-    if(this.priceusd && this.arcbalance2) {
+    if(this.priceusd && this.arcbalance) {
       var x = e / this.priceusd;
       //console.log(x);
-      this.balanceref = this.arcbalance2 * this.priceusd;
+      this.balanceref = this.arcbalance * this.priceusd;
       this.balanceref = this.balanceref.toFixed(2);
       this.eurref = this.balanceref * this.eurusd;
       this.eurref = this.eurref.toFixed(2);
