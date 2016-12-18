@@ -141,7 +141,7 @@ auto>
     <h1>{{arcbalance}}</h1><h1><span class="ARCletters"> ARC</span>
     <!-- <ac-button class="refrbtn" veryverysmall icon="refresh1" txtcolor="red" bg="btncolor" on-tap="fireRefresh"></ac-button> --></h1>
   </div>
-    <!-- <template is="dom-if" if="{{wereinwallet}}"> -->
+    <template is="dom-if" if="{{wereinwallet}}">
       <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
       <div class="horizontend prefcurrletters">
           <p>({{prefcurrency}} {{balanceref}})</p>
@@ -152,7 +152,7 @@ auto>
           <p>{{prefcurrency}} {{balanceref}}</p>
         </div>
       </template>
-    <!-- </template> -->
+    </template>
 
 </div>
 
