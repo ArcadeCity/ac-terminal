@@ -35,7 +35,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --code-h2: 32px;
         --code-lineheight: 36px;
         --code-small: 10px;
-        --btn-width: 200px;
         width: 100%;
 
       }
@@ -125,11 +124,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       width: 100%;
       max-width: 500px;
       box-sizing: border-box;
-      @apply(--layout-vertical);
+      @apply(--layout-horizontal);
       @apply(--layout-center-center);
+      @apply(--layout-wrap);
+
      }
 
+    .announce ac-button {
+      margin-left: 10px;
+    }
      .announce p {
+       /*font-size: 14px;
+       line-height: 16px;*/
       color: var(--ac-yellow);
      }
 
@@ -146,12 +152,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .initbtns ac-button {
-        width: var(--btn-width);
+        width: 200px;
         @apply(--base-shadow-and-inset);
       }
 
       ac-shortcode {
-        width: var(--btn-width);
+        width: 200px;
       }
 
       .initbtns p {
@@ -180,7 +186,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .sender {
-          margin: var(--margin-btns);
+          margin: 0px 0px 5px 0px;
         }
 
       .verticcenter {
@@ -219,10 +225,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         overflow: hidden;
       }
 
+
+
+      .item {
+        width: 100%;
+        background: red;
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-start-justified);
+        @apply(--layout-end);
+
+      }
+
+      .amount p {
+        color: var(--ac-red);
+      }
+
+      .ARCletters {
+        font-size: 12px;
+      }
+
+      .receiver {
+
+      }
+
+      .receiveravatar {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .receiveravatar img {
+        width: 100%;
+        height: 100%;
+      }
+
+
     </style>
 
     <ac-helpers id="helpers"></ac-helpers>
-    <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
     <ac-config
       id="config"
       web3host="{{web3host}}"
@@ -244,9 +288,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       on-message-received="handlewhispermessage"
       id="whisper"></ac-whisperer>
 
-    <div class="total">
+    <div class="total verticcenter">
       <template is="dom-if" if="{{sendcollsclosed}}">
-        <div class$="initbtns {{align}}">
+        <div class="initbtns verticcenter">
           <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="togglesendcoins" class="sender">send ARC</ac-button>
 
         </div>
@@ -254,19 +298,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="sendcoiners">
 
         <iron-collapse id="sendcoins">
-          <template is="dom-if" if="{{_is(sendcoinstate,'first')}}">
-
-            <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
-              <ac-input color="red" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
-              <ac-input color="red" class="sendinput" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
-              <div class="whitespace"></div>
-              <div class="confirmbtns">
-                <ac-button icon="ac-decline" on-tap="togglesendcoins" small class="confirmbtn" bg="base" txtcolor="red"></ac-button>
-                <ac-button on-tap="toWaiting" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
-              </div>
-            </template>
-
-            <template is="dom-if" if="{{_is(sizeview,'phone')}}">
+          <template is="dom-if" if="{{_is(sendcoinstate,'init')}}">
               <ac-input center color="red" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
               <ac-input center color="red" class="sendinput" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
               <div class="whitespace"></div>
@@ -274,14 +306,60 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <ac-button icon="ac-decline" on-tap="togglesendcoins" small class="confirmbtn" bg="base" txtcolor="red"></ac-button>
                 <ac-button on-tap="toWaiting" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
               </div>
-            </template>
+          </template>
 
+          <template is="dom-if" if="{{_is(sendcoinstate,'balancelow')}}">
+            <div class="announce">
+              <p>Your balance is too low for this transaction.</p>
+              <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+            </div>
+          </template>
+
+
+          <template is="dom-if" if="{{_is(sendcoinstate,'notvalidcode')}}">
+            <div class="announce">
+              <p>The givven shortcode is not valid.</p>
+              <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+            </div>
+          </template>
+
+          <template is="dom-if" if="{{_is(sendcoinstate,'searchingforpeer')}}">
+            <div class="announce">
+              <ac-loader small color="blue">Searching for your peer</ac-loader>
+              <ac-button verysmall bg="btncolor" txtcolor="blue" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+            </div>
+          </template>
+
+
+          <template is="dom-if" if="{{_is(sendcoinstate,'nopeer')}}">
+            <div class="announce">
+              <p>We can not find your peer.</p>
+              <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+            </div>
+          </template>
+
+          <template is="dom-if" if="{{_is(sendcoinstate,'confirmtx')}}">
+            <div class="announce">
+              <div class="item">
+                <div class="amount">
+                  <p>44<span class="ARCletters">ARC</span></p>
+
+                </div>
+                <div class="receiver">
+                  <div class="receiveravatar">
+                    <img src="http://2.bp.blogspot.com/-xVt_WQ_J_QA/T_djAeH7TSI/AAAAAAAAGwk/6ct_sT-RD7A/s1600/media_l_1638.jpg">
+                  </div>
+                </div>
+              </div>
+              <p>Do you want {{item.amount}}???</p>
+              <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+            </div>
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'second')}}">
             <div class="announce">
               <p>Your transaction is being executed.</p>
-              <ac-button small icon="declinenew" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+              <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
             </div>
           </template>
     <div class="whitespace"></div>
@@ -324,11 +402,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           notify: true
         },
 
-        sizeview: {
-          type: String,
-          observer: '_sizeview'
-        },
-
         account: {
           type:String,
         },
@@ -339,7 +412,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         sendcoinstate: {
           type: String,
-          value: 'first',
 //          observer: '_sendcoinstate'
         },
 
@@ -372,21 +444,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: []
         },
 
-        // contractaddr: {
-        //   type: String,
-        //   //value: '0xe94a4e5615E5d1BAfbDBc8a221D9b0995f67A752'
-        // },
-        // arcbalance: {
-        //   type: Number,
-        //   notify: true
-        // },
-        // ethbalance: {
-        //   type: Number
-        // },
-
-        align: {
-          type: String,
-        },
 
       },
 
@@ -403,7 +460,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // }, 5000);
 
 
-        this.sendcoinstate = 'first';
+        this.sendcoinstate = 'init';
         this.password = sessionStorage.getItem('ac-password');
       },
 
@@ -460,10 +517,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       toWaiting: function(){
         var self = this;
-        //debugger;
-        //this.handler = document.querySelector('locals-verification-validator');
-        //console.log('wallet: ',this.$.whisper.topic, ' pin: ', this.pincode);
-        //debugger;
         this.$.whisper.whisperpost(this.pincode, JSON.stringify({
                 'command': 'requestpubkeyforlocalstransfer',
               }));
@@ -474,79 +527,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       clearInputs: function(){
         this.pincode = '';
         this.amount = '';
-//        console.log("Cleared inputs!!!!!! PINCODE=",this.pincode,' & AMOUNT=',this.amount);
       },
 
-      // refreshBalance:function() {
-      //   this.spinclass = 'spinonce';
-      //   //this._getARCbalance();
-      //   var self = this;
-      //   setTimeout(function(){
-      //       self.spinclass = '';
-      //   },500)
-      // },
-
-      // _getARCbalance: function() {
-      //   if(!this.web3) return;
-      //   //console.log('ac-tokensend ', Date.now());
-      //   this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
-
-      //   var self = this;
-
-      //   this.importHref(this.contracturl, function(e) {
-      //     var contractjson = JSON.parse(e.target.import.body.innerText);
-      //     var tokenContract = self.web3.eth.contract(contractjson.abi);
-      //     var tokenContractInstance = tokenContract.at(self.$.config.tokencontractaddress);
-      //     var account = self.$.helpers.fixaddress(self.account);
-      //     self.arcbalance = tokenContractInstance.balanceOf(account) / 1e18;
-      //     self.balanceloaded = true;
-      //     self.fire('balance-loaded');
-      //     self.fire('map-update');
-      //   });
-
-      // },
-
-      // transfer: function(amount,pubkey,cb){
-
-      //   var self = this;
-
-      //   this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
-      //   this.importHref(this.contracturl, function(e) {
-      //     this.contractjson = JSON.parse(e.target.import.body.innerText);
-      //        self.web3.eth.getGasPrice(function(err, result){
-      //       var gasPrice = result.toNumber(10);
-      //     console.log('gasprice: ', gasPrice);
-
-      //     var MyContract = self.web3.eth.contract(self.contractjson.abi);
-      //     var myContractInstance = MyContract.at(self.$.config.tokencontractaddress);
-      //       console.log('doing transfer of ',amount,' LC to: ', pubkey, 'from: ', self.account);
-      //       myContractInstance.transfer.sendTransaction(pubkey, amount, {
-      //         from: self.$.helpers.fixaddress(self.account),
-      //         gasPrice: gasPrice,
-      //         gasLimit: 3000000,
-      //         gas: 2000000
-      //       }, function(err, result){
-      //         console.log(err, result);
-      //         var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(self.account));
-      //           self.arcbalance = coinbalance;
-      //           if (cb){
-      //             cb(err,result);
-      //           }
-      //       });
-
-      //     });
-      //   });
-
-      //   this.clearInputs();
-      //   var sendcoins = self.$.sendcoins;
-      //   sendcoins.toggle();
-      //   this.collsclosed=!this.collsclosed;
-      //   this.sendcoinstate = 'first';
-      // },
-
-    // toHome: function() {
-    //   this.fire('to-home');
-    // },
 
 
     _is: function(a, b) {
@@ -560,7 +542,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var sendcoins = this.$.sendcoins;
       sendcoins.toggle();
       this.sendcollsclosed=!this.sendcollsclosed;
-      this.sendcoinstate = 'first';
+      // this.sendcoinstate = 'init';
       if (this.sendcollsclosed){
         this.fire('activated');
       }else{
@@ -568,35 +550,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     },
 
-//      _sendcoinstate: function(){
-        // console.log('********************* !!!! SENCOINSTATE', this.sendcoinstate);
-//      },
-
-
-    _sizeview: function(){
-      switch(this.sizeview) {
-          case 'phone':
-              this.customStyle['--btn-width'] = '200px';
-              this.customStyle['--margin-btns'] = '0px 0px 5px 0px';
-              this.align = 'verticcenter';
-              this.updateStyles();
-              break;
-          case 'desktop':
-              this.customStyle['--btn-width'] = '150px';
-              this.customStyle['--margin-btns'] = '0px 5px 0px 5px';
-              this.align = 'horizontstartwrap';
-              this.updateStyles();
-              break;
-          case 'xlarge':
-              this.customStyle['--btn-width'] = '150px';
-              this.customStyle['--margin-btns'] = '0px 5px 0px 5px';
-              this.align = 'horizontstartwrap';
-              this.updateStyles();
-              break;
-          default:
-          console.log("!!! ** Niks");
-      }
-    },
 
 
 

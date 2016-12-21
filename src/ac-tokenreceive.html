@@ -146,12 +146,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .initbtns ac-button {
-        width: var(--btn-width);
+        width: 200px;
         @apply(--base-shadow-and-inset);
       }
 
       ac-shortcode {
-        width: var(--btn-width);
+        width: 200px;
       }
 
       .initbtns p {
@@ -180,7 +180,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .sender {
-          margin: var(--margin-btns);
+          margin: 0px 0px 5px 0px;
         }
 
       .verticcenter {
@@ -244,7 +244,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       on-message-received="handlewhispermessage"
       id="whisper"></ac-whisperer>
 
-    <div class="total">
+    <div class="total verticcenter">
       <div class$="initbtns {{align}}">
       <ac-shortcode on-cancel="deactivatereceivecoins" bg="btncolor" txtcolor="red" topic="[[topic]]" progress="[[progress]]" on-showshortcode="activatereceivecoins" btn>shortcode</ac-shortcode>
 
@@ -264,7 +264,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'ac-tokenreceive',
 
       properties: {
-       
+
         sizeview: {
           type: String,
           observer: '_sizeview'
@@ -519,30 +519,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
 
-    _sizeview: function(){
-      switch(this.sizeview) {
-          case 'phone':
-              this.customStyle['--btn-width'] = '200px';
-              this.customStyle['--margin-btns'] = '0px 0px 5px 0px';
-              this.align = 'verticcenter';
-              this.updateStyles();
-              break;
-          case 'desktop':
-              this.customStyle['--btn-width'] = '150px';
-              this.customStyle['--margin-btns'] = '0px 5px 0px 5px';
-              this.align = 'horizontstartwrap';
-              this.updateStyles();
-              break;
-          case 'xlarge':
-              this.customStyle['--btn-width'] = '150px';
-              this.customStyle['--margin-btns'] = '0px 5px 0px 5px';
-              this.align = 'horizontstartwrap';
-              this.updateStyles();
-              break;
-          default:
-          console.log("!!! ** Niks");
-      }
-    },
+    // _sizeview: function(){
+    //   switch(this.sizeview) {
+    //       case 'phone':
+    //           this.customStyle['--btn-width'] = '200px';
+    //           this.customStyle['--margin-btns'] = '0px 0px 5px 0px';
+    //           this.align = 'verticcenter';
+    //           this.updateStyles();
+    //           break;
+    //       case 'desktop':
+    //           this.customStyle['--btn-width'] = '150px';
+    //           this.customStyle['--margin-btns'] = '0px 5px 0px 5px';
+    //           this.align = 'horizontstartwrap';
+    //           this.updateStyles();
+    //           break;
+    //       case 'xlarge':
+    //           this.customStyle['--btn-width'] = '150px';
+    //           this.customStyle['--margin-btns'] = '0px 5px 0px 5px';
+    //           this.align = 'horizontstartwrap';
+    //           this.updateStyles();
+    //           break;
+    //       default:
+    //       console.log("!!! ** Niks");
+    //   }
+    // },
 
 
 

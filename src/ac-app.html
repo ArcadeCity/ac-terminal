@@ -85,10 +85,11 @@
 
 
   </style>
-
+<!-- <div class$="{{sizeview}}"> -->
     <!-- app-location binds with the URL and produces a route for
     app-route elements to consume. -->
     <app-location route="{{route}}" use-hash-as-path></app-location>
+    <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
 
     <!-- app-routes parse route paths based on the their `pattern`.
     Parameters are extracted into the `data` object. The rest of the path that
@@ -98,7 +99,6 @@
 <!--     <app-route route="{{route}}" pattern="/vault" data="{{data}}" tail="{{vaultTail}}"></app-route>
  -->    <!--     <app-route route="{{route}}" pattern="/video" tail="{{videoTail}}" active="{{videoPageActive}}"></app-route>
   -->
-  <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
 
   <ac-config web3host="{{web3host}}"></ac-config>
 
@@ -112,6 +112,7 @@
       on-importfile="toimportfile"
       on-importpk="toimportpk"
       route="[[pageTail]]"
+      sizeview="{{sizeview}}"
       >
     </ac-intro>
 
@@ -124,7 +125,8 @@
       currentaccount="{{account}}"
       on-unlocked="vaultUnlocked"
       on-locked="vaultLocked"
-      on-novault="noVault">
+      on-novault="noVault"
+      sizeview="{{sizeview}}">
     </ac-vault>
 
     <ac-home
@@ -133,7 +135,8 @@
       identity="[[identity]]"
       pubkey="[[account]]"
       on-to-profile="toProfile"
-      on-to-walletview="toWalletview">
+      on-to-walletview="toWalletview"
+      sizeview="{{sizeview}}">
     </ac-home>
 
 
@@ -144,7 +147,8 @@
       pubkey="[[account]]"
       on-exit="toHome"
       on-identity-update="saveIdentity"
-      on-backup="toBackup">
+      on-backup="toBackup"
+      sizeview="{{sizeview}}">
     </ac-profile>
 
     <ac-walletview
@@ -153,12 +157,12 @@
       keystore="[[keystore]]"
       identity="[[identity]]"
       pubkey="[[account]]"
-      on-exit="toHome">
+      on-exit="toHome"
+      sizeview="{{sizeview}}">
     </ac-walletview>
 
 
 </neon-animated-pages>
-
 </template>
 
 <script>
@@ -215,6 +219,7 @@
 
       attached: function() {
           this.$.thevault.activate();
+          console.log("OP APP...............",this.sizeview);
       },
 
       toWallet: function() {
@@ -239,7 +244,7 @@
       toWalletview: function() {
         this.transitionto('/walletview');
       },
-      
+
       saveIdentity: function(e) {
         //debugger;
         this.identity = e.detail;

@@ -94,7 +94,6 @@
   </style>
 
 
-  <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
 
   <div class="total">
       <div class="topback">
@@ -126,7 +125,7 @@
 
       <div id="walletcontent">
         <div class$="initbtns {{align}}">
-          <ac-tokensend on-activated="hideReceivebutton" on-deactivated="showReceivebutton"></ac-tokensend>
+          <ac-tokensend on-activated="hideReceivebutton" on-deactivated="showReceivebutton" sizeview="{{sizeview}}"></ac-tokensend>
     <div class="whitespace"></div>
 
            <ac-tokenreceive  keystore="[[keystore]]"
@@ -134,11 +133,11 @@
         ></ac-tokenreceive>
 <!--         <template is="dom-if" if="{{sendcollsclosed}}">
         TR
-          
+
         TR2
         </template> -->
         </div>
-    
+
       <ac-wallet
         id="wallet"
         keystore="[[keystore]]"
@@ -146,7 +145,7 @@
         updating="{{balanceupdating}}"
         arcbalance="{{arcbalance}}"
         ethbalance="{{ethbalance}}">
-      </ac-wallet> 
+      </ac-wallet>
 
       </div>
 
@@ -179,11 +178,11 @@
       //   type: String,
       //   observer: '_sizeview'
       // },
-      
+
       // arcalign: {
       //   type: String,
       // },
- 
+
       pubkey: {
         type: String,
       },
@@ -246,12 +245,15 @@
       Polymer.NeonSharedElementAnimatableBehavior
     ],
 
+    observers: [
+        '_checkSize(sizeview)'
+      ],
 
     monitorBalance: function(){
       this.$.wallet.monitorBalance();
     },
 
-  
+
     ready: function() {
     },
 
@@ -266,7 +268,7 @@
       return a === b;
     },
 
-      _sizeview: function() {
+      _checkSize: function() {
         switch (this.sizeview) {
           case 'phone':
             this.customStyle['--ac-balance-height'] = '20vh';

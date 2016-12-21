@@ -165,8 +165,23 @@
     @apply(--layout-vertical);
     @apply(--layout-center-center);
     box-sizing: border-box;
-    padding: 5vh 10vw 10vw 10vw;
+    padding: 0px 10vw 10vw 10vw;
   }
+
+  .phone {
+    padding: 0px 10vw 10vw 10vw;
+  }
+
+
+  .desktop {
+    padding: 10vh 10vw 10vw 10vw;
+  }
+
+
+  .xlarge {
+    padding: 10vh 10vw 10vw 10vw;
+  }
+
 
   .logo {
     @apply(--layout-vertical);
@@ -212,10 +227,11 @@
     }
 
 
+
     </style>
 
     <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
-    <ac-sizeview sizeview=“{{sizeview}}”></ac-sizeview>
+    <!-- <ac-sizeview sizeview=“{{sizeview}}”></ac-sizeview> -->
 
     <div class="topback">
       <span class="flex"></span>
@@ -226,7 +242,7 @@
 
     <neon-animated-pages id="createwalletpgs" attr-for-selected="data-page" selected="[[data.page]]" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
       <neon-animatable data-page="welcome">
-        <div class="total vertic logo_canvas">
+        <div class$="total vertic logo_canvas {{sizeview}}">
           <div class="logo">
             <ac-icon icon="ac-brandlogo-color" big></ac-icon>
             <p>arcade.city</p>
@@ -273,10 +289,7 @@
         //   type: String,
         //   value: 'intro'
         // },
-        sizeview: {
-          type: String,
-          observer: '_sizeview'
-        },
+
         route: {
           type: Object,
           notify: true
@@ -286,6 +299,7 @@
 
       observers: [
           '_onRoutePathChanged(data.page)'
+          // '_checkSize(sizeview)'
         ],
 
         toon: function(a){
@@ -316,7 +330,10 @@
 
         }
       },
-      ready: function() {},
+      attached: function() {
+        console.log('YOOOOOOOO attached ======', this.sizeview);
+
+      },
 
       totokenquestion: function() {
         this.set('route.path', '/first');
@@ -339,35 +356,27 @@
       tocreatewallet: function() {
         this.fire('newvault');
       },
-      _sizeview: function() {
-        switch (this.sizeview) {
-          case 'phone':
-            this.arcalign = 'verticcenter';
-            this.customStyle['--ac-balance-height'] = '30vh';
-            this.customStyle['--ac-balance-width'] = '100%';
-            this.customStyle['--tokentrans-width'] = '100%';
-            this.customStyle['--tokentrans-top'] = '0vh';
-            this.updateStyles();
-            break;
-          case 'desktop':
-            this.arcalign = 'verticstart';
-            this.customStyle['--ac-balance-height'] = '20vh';
-            this.customStyle['--ac-balance-width'] = '100%';
-            this.customStyle['--tokentrans-top'] = '3vh';
-            this.updateStyles();
-            break;
-          case 'xlarge':
-            this.arcalign = 'verticstart';
-            this.customStyle['--ac-balance-height'] = '20vh';
-            this.customStyle['--ac-balance-width'] = '100%';
-            this.customStyle['--tokentrans-top'] = '4vh';
-
-            this.updateStyles();
-            break;
-          default:
-            console.log("!!! ** Niks");
-        }
-      },
+      // _checkSize: function() {
+      //   switch (this.sizeview) {
+      //     case 'phone':
+      //       this.customStyle['--intro-toppadding'] = '0px 10vw 10vw 10vw';
+      //       this.updateStyles();
+      //       console.log('YOOOOOOOO ======', this.sizeview);
+      //       break;
+      //     case 'desktop':
+      //       this.customStyle['--intro-toppadding'] = '10vw 10vw 10vw 10vw';
+      //       this.updateStyles();
+      //       console.log('YOOOOOOOO ======', this.sizeview);
+      //       break;
+      //     case 'xlarge':
+      //       this.customStyle['--intro-toppadding'] = '10vw 10vw 10vw 10vw';
+      //       this.updateStyles();
+      //       console.log('YOOOOOOOO ======', this.sizeview);
+      //       break;
+      //     default:
+      //       console.log("!!! ** Niks");
+      //   }
+      // },
 
       _is: function(a, b) {
         if (b === undefined) {
