@@ -33,6 +33,38 @@
     background-position: bottom;
     background-size: auto 100%;*/
   }
+  .totalwithtopback {
+    width: 100%;
+    height: 90%;
+    box-sizing: border-box;
+    padding: 10vw;
+    margin: 0px;
+    background-color: var(--ac-base);
+    text-align: center;
+    /*background: url(../images/AC-intro-bg2b.png) #1d143f;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: auto 100%;*/
+  }
+
+  .topback {
+      width: 100%;
+      background-color: var(--ac-base);
+      @apply(--layout-horizontal);
+      @apply(--layout-center-center);
+      box-sizing: border-box;
+      padding: 5vw 5vw 0px 5vw;
+      height: 10%;
+    }
+
+
+    .topback ac-icon {
+      opacity: 0.5;
+    }
+    .topback ac-button {
+      @apply(--base-shadow);
+      opacity: 0.85;
+    }
 
   neon-animated-pages {
     height: 100%;
@@ -192,7 +224,7 @@
 
     </style>
     DEN INTRO --{{route}}--
-    <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>    
+    <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
     <ac-sizeview sizeview=“{{sizeview}}”></ac-sizeview>
     <neon-animated-pages id="createwalletpgs" attr-for-selected="data-page" selected="[[data.page]]" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
@@ -212,7 +244,12 @@
       </neon-animatable>
 
       <neon-animatable data-page="first">
-        <div class="total vertic">
+        <div class="totalwithtopback vertic">
+          <div class="topback">
+            <span class="flex"></span>
+            <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
+      <!--       <ac-button icon="ac-logout2" bg="btncolor" txtcolor="blue" on-tap="logout" small>back</ac-button> -->
+          </div>
           <p class="red">Do you own ARC-tokens?</p>
           <div class="whitespace"></div>
           <div class="whitespace"></div>
@@ -256,7 +293,7 @@
           notify: true
         },
       },
-      
+
       observers: [
           '_onRoutePathChanged(data.page)'
         ],
