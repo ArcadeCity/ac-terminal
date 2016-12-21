@@ -190,6 +190,7 @@
       </neon-animatable> -->
 
       <neon-animatable data-page="createnew">
+        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button> 
         <div class="pascanvas verticcenter paddingside">
         <p class="yellow centertxt">Choose a password (min. 9 characters) and repeat.</p>
         <div class="whitespace"></div>
@@ -200,6 +201,7 @@
     </neon-animatable>
 
     <neon-animatable data-page="unlock">
+        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>     
       <div class="pascanvas verticcenter">
         <ac-password id="newuser" sessionname="vaultpassword" on-password-received="unlockvault"></ac-password>
       </div>
