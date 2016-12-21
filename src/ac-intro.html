@@ -223,12 +223,13 @@
 
 
     </style>
+
     DEN INTRO --{{route}}--
     <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
     <ac-sizeview sizeview=“{{sizeview}}”></ac-sizeview>
     <neon-animated-pages id="createwalletpgs" attr-for-selected="data-page" selected="[[data.page]]" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
-      <neon-animatable data-page="intro">
+      <neon-animatable data-page="welcome">
 
         <div class="total vertic logo_canvas">
           <div class="logo">
@@ -297,6 +298,10 @@
       observers: [
           '_onRoutePathChanged(data.page)'
         ],
+
+        toon: function(a){
+          return JSON.stringify(a);
+        },
 
       _onRoutePathChanged: function(page) {
 
