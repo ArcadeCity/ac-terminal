@@ -95,8 +95,8 @@
     comes after the `pattern` is put into the `tail` object, which can be
     passed to the `route` property of downstream app-routes. -->
     <app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{pageTail}}"></app-route>
-    <app-route route="{{route}}" pattern="/vault" tail="{{vaultTail}}"></app-route>
-    <!--     <app-route route="{{route}}" pattern="/video" tail="{{videoTail}}" active="{{videoPageActive}}"></app-route>
+<!--     <app-route route="{{route}}" pattern="/vault" data="{{data}}" tail="{{vaultTail}}"></app-route>
+ -->    <!--     <app-route route="{{route}}" pattern="/video" tail="{{videoTail}}" active="{{videoPageActive}}"></app-route>
   -->
   <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
 
@@ -177,12 +177,7 @@
       ],
 
       _onRoutePathChanged: function(path) {
-         console.log('ac-app -> _onRoutePathChanged',this.route);
-        // if (!path) {
-        //   console.log('setting DEFAULT route');
-        //   debugger;
-        //   this.transitionto('/vault/unlock');
-        // }
+         console.log('ac-app -> _onRoutePathChanged',this.route,this.pageTail);
       },
 
       vaultUnlocked: function(){
@@ -194,7 +189,7 @@
       },
 
       noVault: function(){
-        this.transitionto('/intro');
+        this.transitionto('/intro/welcome');
       },
 
       createNewVault: function(){
