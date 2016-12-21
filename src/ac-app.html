@@ -87,9 +87,7 @@
   </style>
 
     <!-- app-location binds with the URL and produces a route for
-    app-route elements to consume. Since this demo needs to run without
-    server cooperation (e.g. with polyserve, in the elements catalog, etc) we'll
-    use the hash portion of the URL for our route paths. -->
+    app-route elements to consume. -->
     <app-location route="{{route}}" use-hash-as-path></app-location>
 
     <!-- app-routes parse route paths based on the their `pattern`.
@@ -104,8 +102,6 @@
 
   <ac-config web3host="{{web3host}}"></ac-config>
 
-  <!-- <ac-wallet id="thewallet" keystore="{{keystore}}"></ac-wallet> -->
-
   <ac-web3 host="{{web3host}}" web3="{{web3}}"></ac-web3>
 
   <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[data.page]]">
@@ -115,13 +111,14 @@
       on-newvault="createNewVault"
       on-importfile="toimportfile"
       on-importpk="toimportpk"
+      route="[[pageTail]]"
       >
     </ac-intro>
 
     <ac-vault
       id="thevault"
       data-page="vault"
-      route="[[pageTail]]"
+      route="[[vaultTail]]"
       currentkeystore="{{keystore}}"
       currentidentity="{{identity}}"
       currentaccount="{{account}}"
@@ -180,9 +177,12 @@
       ],
 
       _onRoutePathChanged: function(path) {
-        if (!path) {
-          this.transitionto('/vault/unlock');
-        }
+         console.log('ac-app -> _onRoutePathChanged',this.route);
+        // if (!path) {
+        //   console.log('setting DEFAULT route');
+        //   debugger;
+        //   this.transitionto('/vault/unlock');
+        // }
       },
 
       vaultUnlocked: function(){
@@ -210,85 +210,16 @@
       },
 
       transitionto: function(target){
-        // console.log('ac-app -> transitionTo',target);
+        console.log('ac-app -> transitionTo',target);
         this.set('route.path',target);
       },
 
+      ready: function() {
+
+      },
+
       attached: function() {
-        // Setup some basic routing
-        var self = this;
-        // this.entryAnimation = 'slide-from-right-animation';
-        // this.exitAnimation = 'slide-left-animation';
-
-        // page('/',function(){
-        //   if (this.$.thevault.hasVault()) {
-        //     page.redirect('/password');
-        //   } else {
-        //     page.redirect('/newuser');
-        //   }
-        // }.bind(this));
-
-
-
-        // page('/newuser',function(){
-        //   if (Polymer.isInstance(this.$.newuser)) {
-        //     this.selected = 'newuser';
-        //     return;
-        //   }
-
-        //   Polymer.Base.importHref(
-        //     '/src/ac-newuser.html',function(){
-        //       this.selected = 'newuser';
-        //     }.bind(this),function(){
-        //       console.log('Something failed!');
-        //     }.bind(this), true
-        //   );
-        // }.bind(this));
-
-        // page('/password',function(){
-
-        //   if (!this.$.thevault.hasVault()) {
-        //     return page.redirect('/');
-        //   }
-
-        //   if (Polymer.isInstance(this.$.password)) {
-        //     this.selected = 'password';
-        //     return;
-        //   }
-
-        //   Polymer.Base.importHref(
-        //     '/src/ac-password.html',function(){
-        //       this.selected = 'password';
-        //     }.bind(this),function(){
-        //       console.log('Something failed!');
-        //     }.bind(this), true
-        //   );
-        // }.bind(this));
-
-        // page('/home',function(){
-        //   if (!self.$.thevault.keystore) {
-        //     page.redirect('/');
-        //   } else {
-        //     this.selected = 'home';
-        //   }
-        // }.bind(this));
-
-        // page('/wallet',function(){
-        //   this.selected = 'wallet';
-        // }.bind(this));
-
-        // page('/profile',function(){
-        //   this.selected = 'profile';
-        // }.bind(this));
-
-        // page('/stage',function(){
-        //   this.selected = 'stage';
-        // }.bind(this));
-
-        // page({
-        //   hashbang: true
-        // });
-
+          this.$.thevault.activate();
       },
 
       toWallet: function() {

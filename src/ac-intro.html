@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 <link rel="import" href="../bower_components/ac-button/ac-button.html">
 <link rel="import" href="../bower_components/ac-icon/ac-icon.html">
@@ -190,10 +191,12 @@
 
 
     </style>
+    DEN INTRO --{{route}}--
+    <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>    
     <ac-sizeview sizeview=“{{sizeview}}”></ac-sizeview>
-    <neon-animated-pages id="createwalletpgs" attr-for-selected="state" selected="{{state}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
+    <neon-animated-pages id="createwalletpgs" attr-for-selected="data-page" selected="[[data.page]]" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
 
-      <neon-animatable state="intro">
+      <neon-animatable data-page="intro">
 
         <div class="total vertic logo_canvas">
           <div class="logo">
@@ -208,7 +211,7 @@
 
       </neon-animatable>
 
-      <neon-animatable state="first">
+      <neon-animatable data-page="first">
         <div class="total vertic">
           <p class="red">Do you own ARC-tokens?</p>
           <div class="whitespace"></div>
@@ -220,7 +223,7 @@
         </div>
       </neon-animatable>
 
-      <neon-animatable state="importwallet">
+      <neon-animatable data-page="importwallet">
         <div class="total vertic">
           <p class="red">Do you have an ARC-Wallet json-file?</p>
           <div class="whitespace"></div>
@@ -240,25 +243,58 @@
       is: 'ac-intro',
 
       properties: {
-        state: {
-          type: String,
-          value: 'intro'
-        },
+        // state: {
+        //   type: String,
+        //   value: 'intro'
+        // },
         sizeview: {
           type: String,
           observer: '_sizeview'
         },
-
+        route: {
+          type: Object,
+          notify: true
+        },
       },
+      
+      observers: [
+          '_onRoutePathChanged(data.page)'
+        ],
 
+      _onRoutePathChanged: function(page) {
+
+        switch (page) {
+           case '':
+            this.set('route.path', '/welcome');
+
+        //   case 'importpkmakewallet':
+        //   case 'importfile':
+        //   case 'createnew':
+        //     if (this.hasVault()) {
+        //       console.log('You already have a vault');
+        //     }
+        //     break;
+        //   default:
+        //     if (!this.hasVault()) {
+        //       return this.fire('novault');
+        //     };
+        //     if (!this.password) {
+        //       return this.fire('locked');
+        //     }
+            break;
+
+        }
+      },
       ready: function() {},
 
       totokenquestion: function() {
-        this.state = 'first';
+        this.set('route.path', '/first');
+//        this.state = 'first';
       },
 
       toimportwallet: function() {
-        this.state = 'importwallet';
+        this.set('route.path', '/importwallet');
+//        this.state = 'importwallet';
       },
 
       toprivatekey: function() {

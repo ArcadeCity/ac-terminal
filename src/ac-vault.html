@@ -210,7 +210,8 @@
 
       properties: {
         route: {
-          type: Object
+          type: Object,
+          notify: true, 
         },
         password: {
           type: String,
@@ -236,22 +237,12 @@
         }
       },
 
-    observers: [
-          '_onRoutePathChanged(data.page)'
-        ],
+      observers: [
+          '_onRoutePathChanged(data.page,data)'
+      ],
 
-        // tocreatenew: function(){
-        //   this.set('route.path', '/createnew');
-        // },
-        // toimportfile: function(){
-        //   this.set('route.path', '/importfile');
-        // },
-        // toimportpk: function(){
-        //   this.set('route.path', '/importpk');
-        // },
-
-      _onRoutePathChanged: function(page) {
-
+      _onRoutePathChanged: function(page,d) {
+        console.log('ac-vault _onRoutePathChanged',d,page);
         switch (page) {
           case 'importpk':
           case 'importpkmakewallet':
@@ -261,15 +252,21 @@
               console.log('You already have a vault');
             }
             break;
-          default:
-            if (!this.hasVault()) {
-              return this.fire('novault');
-            };
-            if (!this.password) {
-              return this.fire('locked');
-            }
+          case 'unlock':
+           
             break;
+          default:
+            console.log('unknown path ', page);
+            break;
+        }
+      },
 
+      activate: function(){
+        if (!this.hasVault()) {
+          return this.fire('novault');
+        };
+        if (!this.password) {
+          return this.fire('locked');
         }
       },
 
