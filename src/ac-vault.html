@@ -52,6 +52,8 @@
       background-color: var(--ac-base);
      }
 
+
+
      .verticcenter {
        @apply(--layout-vertical);
        @apply(--layout-center-center);
@@ -211,7 +213,7 @@
       properties: {
         route: {
           type: Object,
-          notify: true, 
+          notify: true,
         },
         password: {
           type: String,
@@ -253,7 +255,7 @@
             }
             break;
           case 'unlock':
-           
+
             break;
           default:
             console.log('unknown path ', page);
@@ -464,10 +466,10 @@
               fn();
             }
             return;
-            
+
           }else{
             self.generateNewAddress(1,function() {
-             
+
               self.currentidentity = self._creatBlankIdentity();
 
               self.saveVault();
@@ -478,7 +480,7 @@
               }
               return;
 
-            });            
+            });
           }
 
         });
