@@ -125,11 +125,19 @@
 
       <div id="walletcontent">
         <div class$="initbtns {{align}}">
-          <ac-tokensend on-activated="hideReceivebutton" on-deactivated="showReceivebutton" sizeview="{{sizeview}}"></ac-tokensend>
-    <div class="whitespace"></div>
+          <ac-tokensend 
+            account="[[account]]"
+            identity="[[identity]]"
+            on-activated="hideReceivebutton"
+            on-deactivated="showReceivebutton"
+            sizeview="{{sizeview}}">
+          </ac-tokensend>
+        <div class="whitespace"></div>
 
-           <ac-tokenreceive  keystore="[[keystore]]"
-        pubkey="[[pubkey]]"
+        <ac-tokenreceive
+          account="[[account]]"
+          identity="[[identity]]"
+          keystore="[[keystore]]"
         ></ac-tokenreceive>
 <!--         <template is="dom-if" if="{{sendcollsclosed}}">
         TR
@@ -141,7 +149,7 @@
       <ac-wallet
         id="wallet"
         keystore="[[keystore]]"
-        pubkey="[[pubkey]]"
+        account="[[account]]"
         updating="{{balanceupdating}}"
         arcbalance="{{arcbalance}}"
         ethbalance="{{ethbalance}}">
@@ -159,17 +167,9 @@
   Polymer({
     is: 'ac-walletview',
     properties: {
-      // identity: {
-      //   type: String,
-      //   observer: '_identity',
-      //   notify: true
-      // },
-      // datachanged: {
-      //   type: Boolean,
-      //   value: false
-      // },
-
-
+      identity: {
+        type: Object,
+      },
       keystore: {
         type: Object,
          //observer: '_keystore',
@@ -183,7 +183,7 @@
       //   type: String,
       // },
 
-      pubkey: {
+      account: {
         type: String,
       },
 

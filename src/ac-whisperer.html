@@ -169,8 +169,8 @@ Polymer({
     if (fromTimer){
       console.log('timeout on remotechannel ',_pin);
     }
-    if (this.remotechannel[_pin]){
-       this.remotechannel[_pin].filter.stopWatching();
+    if (this.remotechannels[_pin]){
+       this.remotechannels[_pin].filter.stopWatching();
     }
   },
 
@@ -264,7 +264,7 @@ Polymer({
               // timeout timer to cleanup local channel.
               this.localchannels[datatopic].timer = setTimeout(function() {
                 this.closelocalchannel(datatopic,true);
-              }.bind(this), 10 * 1000);
+              }.bind(this), 2 * 60 * 1000);
 
               //debugger;
               self.localchannels[datatopic].filter.watch(this._processmessage.bind(this));
@@ -276,7 +276,7 @@ Polymer({
               // timeout timer to cleanup remote channel list
               this.remotechannels[payload.from].timer = setTimeout(function() {
                 this.closeremotechannel(payload.from,true);
-              }.bind(this), 10 * 1000);
+              }.bind(this), 2 * 60 * 1000);
 
               self.raw_whisperpost(payload.from, {
                 command: 'aes',

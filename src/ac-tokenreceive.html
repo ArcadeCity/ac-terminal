@@ -21,6 +21,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="ac-web3.html">
 <link rel="import" href="ac-log.html">
 <link rel="import" href="ac-wallet.html">
+<link rel="import" href="ac-ipfs.html">
 
 <dom-module id="ac-tokenreceive">
   <template>
@@ -220,7 +221,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
     </style>
-
+    <ac-ipfs id="ipfs"></ac-ipfs>
     <ac-helpers id="helpers"></ac-helpers>
     <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
     <ac-config
@@ -246,15 +247,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="total verticcenter">
       <div class$="initbtns {{align}}">
-      <ac-shortcode on-cancel="deactivatereceivecoins" bg="btncolor" txtcolor="red" topic="[[topic]]" progress="[[progress]]" on-showshortcode="activatereceivecoins" btn>shortcode</ac-shortcode>
+        <template is="dom-if" if="{{_is(receivecoinstate,'init')}}">
+          <ac-shortcode on-cancel="deactivatereceivecoins" bg="btncolor" txtcolor="red" topic="[[topic]]" progress="[[progress]]" on-showshortcode="activatereceivecoins" btn>shortcode</ac-shortcode>
+        </template>
 
-    </div>
+        <template is="dom-if" if="{{_is(receivecoinstate,'userinfosent')}}">
+          <div class="announce">
+            <div class="item red">
+              <p>Sending user info for payment</p>
+            </div>
+          </div>
+        </template>
 
+        <template is="dom-if" if="{{_is(receivecoinstate,'waittx')}}">
+          <div class="announce">
+            <div class="item red">
+              <p>You're receiving</p>
+              <p>
+                <span class="amount">{{transactiondetails.amount}} ARC</span>
+                to
+              </p>
+              <div class="receiver">
+                <div class="receiveravatar">
+                  <img src="{{transactiondetails.avatarurl}}"></div>
+                <div class="receiverusername">
+                  <p>{{transactiondetails.username}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
 
-<!-- <ac-log></ac-log>
- -->
+      </div>
 
- </div>
+      <!-- <ac-log></ac-log>
+    -->
+  </div>
 </template>
 <script>
   (function() {
@@ -329,6 +357,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
         },
 
+        identity: {
+          type: Object,
+        },
       },
 
       _pincode: function() {
@@ -336,15 +367,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       ready: function(){
-//        this._getARCbalance();
         var self = this;
-        // window.setInterval(function(){
-        //   self._getARCbalance();
-        // }, 5000);
-
-
-        this.sendcoinstate = 'first';
-        this.password = sessionStorage.getItem('ac-password');
+        this.receivecoinstate = 'init';
       },
 
       activatereceivecoins: function(){
@@ -367,28 +391,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var message = JSON.parse(m.detail.message);
         console.log('incoming tokentransfer msg: ', message);
         switch (message.command) {
-          // case 'requestpubkeyforlocalstransfer':
-          //   self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
-          //     'command': 'sendpubkey',
-          //     'pubkey': self.account
-          //   }));
-          //   break;
-          case 'sendpubkey':
-            var transferamount = this.amount * 1e18;
-            console.log('Send ARC to ', message.pubkey);
-            this.transfer(transferamount, this.$.helpers.fixaddress(message.pubkey), function(err, result) {
-              console.log('Transfer started. Sending confirmation to ',m.detail.from);
-              self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
-                'command': 'confirmtransfer',
-                'amount': transferamount,
-              }));
-            });
-            //var username = //self._getUsername(message.pubkey,function(username, avatarurl){
-
+          case 'requestuserinfo':
+            self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
+              'command': 'userinfo',
+              'account': self.account,
+              'avatarhash': self.identity.avatarhash,
+              'username': self.identity.username,
+            }));
+            this.receivecoinstate = 'userinfosent';
             break;
           case 'confirmtransfer':
             // TODO : show transfer in history...
-            console.log('transfer confirmed...', message.amount, 'received');
+            //console.log('transfer confirmed...', message.amount, 'received');
+            this.transactiondetails = message;
+            this.transactiondetails.avatarurl = this.$.ipfs.geturl(this.transactiondetails.avatarhash);
+            this.receivecoinstate = 'waittx';
+
+            // TODO : wait for the transactionID... now we just fake this , allemaal voor dat den BAN voortkan he. achteraf vervangen we dit door een transaction monitor.
+
+            setTimeout(function() {
+                this.receivecoinstate = 'init';
+                this.listeninterval = 0;
+              }.bind(this), 50 * 1000);
 
             break;
           default:
@@ -446,43 +470,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       // },
 
-      transfer: function(amount,pubkey,cb){
+      // transfer: function(amount,pubkey,cb){
 
-        var self = this;
+      //   var self = this;
 
-        this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
-        this.importHref(this.contracturl, function(e) {
-          this.contractjson = JSON.parse(e.target.import.body.innerText);
-             self.web3.eth.getGasPrice(function(err, result){
-            var gasPrice = result.toNumber(10);
-          console.log('gasprice: ', gasPrice);
+      //   this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
+      //   this.importHref(this.contracturl, function(e) {
+      //     this.contractjson = JSON.parse(e.target.import.body.innerText);
+      //        self.web3.eth.getGasPrice(function(err, result){
+      //       var gasPrice = result.toNumber(10);
+      //     console.log('gasprice: ', gasPrice);
 
-          var MyContract = self.web3.eth.contract(self.contractjson.abi);
-          var myContractInstance = MyContract.at(self.$.config.tokencontractaddress);
-            console.log('doing transfer of ',amount,' LC to: ', pubkey, 'from: ', self.account);
-            myContractInstance.transfer.sendTransaction(pubkey, amount, {
-              from: self.$.helpers.fixaddress(self.account),
-              gasPrice: gasPrice,
-              gasLimit: 3000000,
-              gas: 2000000
-            }, function(err, result){
-              console.log(err, result);
-              var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(self.account));
-                self.arcbalance = coinbalance;
-                if (cb){
-                  cb(err,result);
-                }
-            });
+      //     var MyContract = self.web3.eth.contract(self.contractjson.abi);
+      //     var myContractInstance = MyContract.at(self.$.config.tokencontractaddress);
+      //       console.log('doing transfer of ',amount,' LC to: ', pubkey, 'from: ', self.account);
+      //       myContractInstance.transfer.sendTransaction(pubkey, amount, {
+      //         from: self.$.helpers.fixaddress(self.account),
+      //         gasPrice: gasPrice,
+      //         gasLimit: 3000000,
+      //         gas: 2000000
+      //       }, function(err, result){
+      //         console.log(err, result);
+      //         var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(self.account));
+      //           self.arcbalance = coinbalance;
+      //           if (cb){
+      //             cb(err,result);
+      //           }
+      //       });
 
-          });
-        });
+      //     });
+      //   });
 
-        this.clearInputs();
-        var sendcoins = self.$.sendcoins;
-        sendcoins.toggle();
-        this.collsclosed=!this.collsclosed;
-        this.sendcoinstate = 'first';
-      },
+      //   this.clearInputs();
+      //   var sendcoins = self.$.sendcoins;
+      //   sendcoins.toggle();
+      //   this.collsclosed=!this.collsclosed;
+      //   this.sendcoinstate = 'first';
+      // },
 
     toHome: function() {
       this.fire('to-home');

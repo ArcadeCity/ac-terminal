@@ -21,6 +21,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="ac-web3.html">
 <link rel="import" href="ac-log.html">
 <link rel="import" href="ac-wallet.html">
+<link rel="import" href="ac-ipfs.html">
 
 <dom-module id="ac-tokensend">
   <template>
@@ -292,7 +293,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
     </style>
-
+    <ac-ipfs id="ipfs"></ac-ipfs>
     <ac-helpers id="helpers"></ac-helpers>
     <ac-config
       id="config"
@@ -316,23 +317,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       id="whisper"></ac-whisperer>
 
     <div class="total verticcenter">
-      <template is="dom-if" if="{{sendcollsclosed}}">
+      <template is="dom-if" if="{{_is(sendcoinstate,'init')}}">
         <div class="initbtns verticcenter">
-          <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="togglesendcoins" class="sender">send ARC</ac-button>
+          <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="tosendform" class="sender">send ARC</ac-button>
 
         </div>
       </template>
       <div class="sendcoiners">
 
-        <iron-collapse id="sendcoins">
-          <template is="dom-if" if="{{_is(sendcoinstate,'init')}}">
-              <ac-input center color="red" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
-              <ac-input center color="red" class="sendinput" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
-              <div class="whitespace"></div>
-              <div class="confirmbtnsmobile">
-                <ac-button icon="ac-decline" on-tap="togglesendcoins" small class="confirmbtn" bg="base" txtcolor="red"></ac-button>
-                <ac-button on-tap="toWaiting" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
-              </div>
+          <template is="dom-if" if="{{_is(sendcoinstate,'sendform')}}">
+            <ac-input center color="red" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
+            <ac-input center color="red" class="sendinput" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
+            <div class="whitespace"></div>
+            <div class="confirmbtnsmobile">
+              <ac-button icon="ac-decline" on-tap="togglesendcoins" small class="confirmbtn" bg="base" txtcolor="red"></ac-button>
+              <ac-button on-tap="tosearchingforpeer" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
+            </div>
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'balancelow')}}">
@@ -341,7 +341,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
             </div>
           </template>
-
 
           <template is="dom-if" if="{{_is(sendcoinstate,'notvalidcode')}}">
             <div class="announce">
@@ -353,10 +352,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <template is="dom-if" if="{{_is(sendcoinstate,'searchingforpeer')}}">
             <div class="announce">
               <ac-loader small color="blue">Searching for your peer</ac-loader>
-              <ac-button verysmall bg="btncolor" txtcolor="blue" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+              <ac-button verysmall bg="btncolor" txtcolor="blue" icon="ac-decline" confirmsmall on-tap="cancelsend" class="closebtn"></ac-button>
             </div>
           </template>
-
 
           <template is="dom-if" if="{{_is(sendcoinstate,'nopeer')}}">
             <div class="announce">
@@ -368,38 +366,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <template is="dom-if" if="{{_is(sendcoinstate,'confirmtx')}}">
             <div class="announce">
               <div class="item red">
-                  <p>You're sending </p><p><span class="amount">44000 ARC</span> to</p>
+                <p>You're sending</p>
+                <p>
+                  <span class="amount">{{amount}} ARC</span>
+                  to
+                </p>
                 <div class="receiver">
                   <div class="receiveravatar">
-                    <img src="http://2.bp.blogspot.com/-xVt_WQ_J_QA/T_djAeH7TSI/AAAAAAAAGwk/6ct_sT-RD7A/s1600/media_l_1638.jpg">
-                  </div>
+                    <img src="{{receiver.avatarurl}}"></div>
                   <div class="receiverusername">
-                  <p>Schele rudy</p>
-                  <p class="pubkey">0xgge...</p>
-                </div>
+                    <p>{{receiver.username}}</p>
+                    <p class="pubkey">{{receiver.account}}</p>
+                  </div>
                 </div>
               </div>
+              <ac-button on-tap="tosendcoins" bg="red" txtcolor="base" icon="ac-v" small></ac-button>              
               <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
             </div>
           </template>
 
-          <template is="dom-if" if="{{_is(sendcoinstate,'second')}}">
+          <template is="dom-if" if="{{_is(sendcoinstate,'sendcoins')}}">
             <div class="announce">
               <p>Your transaction is being executed.</p>
               <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
             </div>
           </template>
-    <div class="whitespace"></div>
-    <div class="whitespace"></div>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
 
-        </iron-collapse>
-        <iron-collapse id="receivecoins">
-          <div class="code">
-
-            <h2>{{topic}}</h2>
-          </div>
-
-        </iron-collapse>
+       
       </div>
 
       <template is="dom-repeat" items="{{history}}">
@@ -413,9 +408,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       </template>
 
-  </div>
-</template>
-<script>
+    </div>
+  </template>
+  <script>
   (function() {
     'use strict';
 
@@ -423,29 +418,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'ac-tokensend',
 
       properties: {
-        foo: {
-          type: String,
-          value: 'ac-tokensend',
-          notify: true
+        identity: {
+          type: Object,
         },
 
         account: {
           type:String,
         },
 
-        // web3: {
-        //   type: Object
-        // },
-
         sendcoinstate: {
           type: String,
-//          observer: '_sendcoinstate'
         },
-
-        // balanceloaded: {
-        //   type: Boolean,
-        //   value: false
-        // },
 
         topic: {
           type: Number,
@@ -487,8 +470,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // }, 5000);
 
 
-        this.sendcoinstate = 'confirmtx';
+        this.sendcoinstate = 'init';
         this.password = sessionStorage.getItem('ac-password');
+      },
+
+
+      tosendform: function(){
+        this.sendcoinstate = 'sendform';
       },
 
       // activatereceivecoins: function(){
@@ -505,31 +493,54 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // console.log('my account',this.account);
       },
 
+      cancelsend: function(){
+        this.sendcoinstate = 'init';
+        this.reset();
+      },
+
+      reset: function(){
+        this.amount = '';
+        this.pincode = '';
+        this.receiver = null;
+      },
+
+      tosendcoins: function() {
+        var self = this;
+        this.sendcoinstate = 'sendcoins';
+        this.transfer(this.amount, this.$.helpers.fixaddress(self.receiver.account), function(err, result) {
+          self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
+            'command': 'confirmtransfer',
+            'amount': self.amount,
+            'avatarhash': self.identity.avatarhash,
+            'username': self.identity.username,
+            'txhash': result
+          }));
+
+        });
+      },
+
       // receiving side
       handlewhispermessage: function(m) {
         var self = this;
         var message = JSON.parse(m.detail.message);
         console.log('incoming tokentransfer msg: ', message);
         switch (message.command) {
-          case 'requestpubkeyforlocalstransfer':
-            self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
-              'command': 'sendpubkey',
-              'pubkey': self.account
-            }));
-            break;
-          // case 'sendpubkey':
-          //   var transferamount = this.amount * 1e18;
-          //   console.log('Send ARC to ', message.pubkey);
-          //   this.transfer(transferamount, this.$.helpers.fixaddress(message.pubkey), function(err, result) {
-          //     console.log('Transfer started. Sending confirmation to ',m.detail.from);
-          //     self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
-          //       'command': 'confirmtransfer',
-          //       'amount': transferamount,
-          //     }));
-          //   });
-          //   //var username = //self._getUsername(message.pubkey,function(username, avatarurl){
+          case 'userinfo':
+//            var transferamount = this.amount;
 
-          //   break;
+            this.receiver = message;
+            this.receiver.avatarurl = this.$.ipfs.geturl(this.receiver.avatarhash);
+            this.receiver.from = m.detail.from;
+            this.sendcoinstate = 'confirmtx';
+            // this.transfer(transferamount, this.$.helpers.fixaddress(message.pubkey), function(err, result) {
+            //   console.log('Transfer started. Sending confirmation to ',m.detail.from);
+            //   self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
+            //     'command': 'confirmtransfer',
+            //     'amount': transferamount,
+            //   }));
+            // });
+
+            break;
           case 'confirmtransfer':
             // TODO : show transfer in history...
             console.log('transfer confirmed...', message.amount, 'received');
@@ -542,13 +553,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 
-      toWaiting: function(){
+      tosearchingforpeer: function(){
         var self = this;
         this.$.whisper.whisperpost(this.pincode, JSON.stringify({
-                'command': 'requestpubkeyforlocalstransfer',
+                'command': 'requestuserinfo',
               }));
-        this.state = 'waiting';
-        this.sendcoinstate = 'second';
+        this.sendcoinstate = 'searchingforpeer';
       },
 
       clearInputs: function(){
@@ -566,18 +576,55 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     togglesendcoins: function() {
-      var sendcoins = this.$.sendcoins;
-      sendcoins.toggle();
-      this.sendcollsclosed=!this.sendcollsclosed;
+      //var sendcoins = this.$.sendcoins;
+      //sendcoins.toggle();
+      //this.sendcollsclosed=!this.sendcollsclosed;
       // this.sendcoinstate = 'init';
-      if (this.sendcollsclosed){
-        this.fire('activated');
-      }else{
-        this.fire('deactivated');
-      }
+      // if (this.sendcollsclosed){
+      //   this.fire('activated');
+      // }else{
+      //   this.fire('deactivated');
+      // }
     },
 
 
+      transfer: function(amount,pubkey,cb){
+
+        var self = this;
+
+        this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
+        this.importHref(this.contracturl, function(e) {
+          this.contractjson = JSON.parse(e.target.import.body.innerText);
+             self.web3.eth.getGasPrice(function(err, result){
+            var gasPrice = result.toNumber(10);
+          console.log('gasprice: ', gasPrice);
+
+          var MyContract = self.web3.eth.contract(self.contractjson.abi);
+          var myContractInstance = MyContract.at(self.$.config.tokencontractaddress);
+            console.log('doing transfer of ',amount,' LC to: ', pubkey, 'from: ', self.account);
+            myContractInstance.transfer.sendTransaction(pubkey, amount, {
+              from: self.$.helpers.fixaddress(self.account),
+              gasPrice: gasPrice,
+              gasLimit: 3000000,
+              gas: 2000000
+            }, function(err, result){
+              console.log(err, result);
+              var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(self.account));
+                self.arcbalance = coinbalance;
+                if (cb){
+                  cb(err,result);
+                }
+            });
+
+          });
+        });
+
+        this.clearInputs();
+        var sendcoins = self.$.sendcoins;
+        sendcoins.toggle();
+        this.collsclosed=!this.collsclosed;
+        this.sendcoinstate = 'first';
+      },
 
 
 
