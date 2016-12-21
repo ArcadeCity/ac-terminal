@@ -308,9 +308,9 @@
 
       _onRoutePathChanged: function(page) {
 
-        switch (page) {
-           case '':
-            this.set('route.path', '/welcome');
+        // switch (page) {
+           // case '':
+           //  this.set('route.path', '/welcome');
 
         //   case 'importpkmakewallet':
         //   case 'importfile':
@@ -326,13 +326,17 @@
         //     if (!this.password) {
         //       return this.fire('locked');
         //     }
-            break;
+            // break;
 
-        }
+        // }
       },
       attached: function() {
         console.log('YOOOOOOOO attached ======', this.sizeview);
 
+      },
+
+      exit: function(){
+        this.set('route.path', '/welcome');
       },
 
       totokenquestion: function() {

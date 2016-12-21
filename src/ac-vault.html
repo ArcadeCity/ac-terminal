@@ -133,8 +133,10 @@
     <neon-animated-pages attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
       <!-- first stage in importing PK -->
-      <neon-animatable data-page="importpk">
+      <neon-animatable data-page="importpk"> 
+        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>     
         <div class="pascanvas verticcenter">
+         
           <div class="importpk">
           <p class="yellow centertxt">Enter the private key you'll find on your paper wallet</p>
           <div class="whitespace"></div>
@@ -149,6 +151,7 @@
 
       <!-- second stage in importing PK -->
       <neon-animatable data-page="importpkmakewallet">
+        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>           
         <div class="pascanvas verticcenter">
           <p class="yellow centertxt maxwidth">Enter a password to protect the vault that will hold this key</p>
           <div class="whitespace"></div>
@@ -158,6 +161,7 @@
 
       <!-- import a keyfile -->
       <neon-animatable data-page="importfile">
+        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>           
         <div class="pascanvas verticcenter">
         <template is="dom-if" if="{{vaulterror}}">
           <div class="error red"><p><span class="oops">Oops!</span><br>{{vaulterror}}<p>
@@ -261,6 +265,10 @@
             console.log('unknown path ', page);
             break;
         }
+      },
+
+      exit: function(){
+        this.fire('exit');
       },
 
       activate: function(){
