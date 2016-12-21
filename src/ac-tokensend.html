@@ -64,6 +64,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-size: var(--code-small);
       }
 
+      .red {
+        color: var(--ac-red);
+      }
+
+      .blue {
+        color: var(--ac-blue);
+      }
+      .yellow {
+        color: var(--ac-yellow);
+      }
 
       .total {
         width: 100%;
@@ -133,11 +143,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     .announce ac-button {
       margin-left: 10px;
     }
-     .announce p {
-       /*font-size: 14px;
-       line-height: 16px;*/
-      color: var(--ac-yellow);
-     }
 
      .marginbtm {
       margin-left: 15px;
@@ -229,23 +234,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .item {
         width: 100%;
-        background: red;
-        @apply(--layout-horizontal);
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+        /*@apply(--layout-horizontal);
         @apply(--layout-wrap);
-        @apply(--layout-start-justified);
-        @apply(--layout-end);
+        @apply(--layout-center-justified);
+        @apply(--layout-end);*/
+        text-align: center;
+        box-sizing: border-box;
+        padding: 2vh 0px 2vh 0px;
 
+        border-top: 2px dotted rgba(255,255,255,0.05);
+        border-bottom: 2px dotted rgba(255,255,255,0.05);
       }
 
-      .amount p {
-        color: var(--ac-red);
+      .amount {
+        @apply(--montserrat-bold);
       }
 
-      .ARCletters {
-        font-size: 12px;
-      }
 
       .receiver {
+        display: inline-block;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+        margin: 2vh 0px 2vh 0px;
 
       }
 
@@ -262,6 +274,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: 100%;
         height: 100%;
       }
+
+      .receiverusername {
+        @apply(--layout-vertical);
+        @apply(--layout-start);
+        @apply(--layout-center-justified);
+        max-width: 80%;
+        margin-left: 10px;
+      }
+
+      .pubkey {
+        opacity: 0.5;
+        font-size: 12px;
+        line-height: 14px;
+      }
+
 
 
     </style>
@@ -340,18 +367,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <template is="dom-if" if="{{_is(sendcoinstate,'confirmtx')}}">
             <div class="announce">
-              <div class="item">
-                <div class="amount">
-                  <p>44<span class="ARCletters">ARC</span></p>
-
-                </div>
+              <div class="item red">
+                  <p>You're sending </p><p><span class="amount">44000 ARC</span> to</p>
                 <div class="receiver">
                   <div class="receiveravatar">
                     <img src="http://2.bp.blogspot.com/-xVt_WQ_J_QA/T_djAeH7TSI/AAAAAAAAGwk/6ct_sT-RD7A/s1600/media_l_1638.jpg">
                   </div>
+                  <div class="receiverusername">
+                  <p>Schele rudy</p>
+                  <p class="pubkey">0xgge...</p>
+                </div>
                 </div>
               </div>
-              <p>Do you want {{item.amount}}???</p>
               <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
             </div>
           </template>
@@ -460,7 +487,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // }, 5000);
 
 
-        this.sendcoinstate = 'init';
+        this.sendcoinstate = 'confirmtx';
         this.password = sessionStorage.getItem('ac-password');
       },
 
