@@ -124,7 +124,9 @@
       currentaccount="{{account}}"
       on-unlocked="vaultUnlocked"
       on-locked="vaultLocked"
-      on-novault="noVault">
+      on-novault="noVault"
+      on-exit="reset"
+      >
     </ac-vault>
 
     <ac-home
@@ -178,6 +180,10 @@
 
       _onRoutePathChanged: function(path) {
          console.log('ac-app -> _onRoutePathChanged',this.route,this.pageTail);
+      },
+
+      reset: function(){
+        this.transitionto('/intro/welcome');        
       },
 
       vaultUnlocked: function(){
