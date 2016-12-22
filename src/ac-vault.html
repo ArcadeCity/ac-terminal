@@ -184,8 +184,22 @@
         padding: 30px 30px 40px 30px;
         border-top: 1px dashed rgba(249,85,85,0.25);
         border-bottom: 1px dashed rgba(249,85,85,0.25);
-
         margin:5vh 0px 4vh 0px;
+      }
+      .yesnobtns {
+        width: 100%;
+      }
+
+      .yesno {
+        width: 80%;
+        max-width: 280px;
+        margin: 5px;
+      }
+
+      .caution {
+        color:var(--ac-base);
+        background-color: var(--ac-blue);
+        padding: 5px 12px 5px 12px;
       }
 
 
@@ -197,6 +211,7 @@
 
     <neon-animated-pages attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
+
       <!-- first stage in importing PK -->
       <neon-animatable data-page="importpk">
         <div class="pascanvas verticcenter">
@@ -206,9 +221,9 @@
           </div>
           <div class="pascanvasunderexit verticcenter paddingside">
           <div class="smallio">
-          <p class="yellow centertxt">Enter the private key you'll find on your paper wallet</p>
+          <p class="yellow centertxt">Enter the private key you'll find on your ARC-wallet.</p>
           <div class="whitespace"></div>
-            <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="enter your private key" type="password" bind-value="{{privatekey}}" center></ac-input>
+            <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="Private key" type="password" bind-value="{{privatekey}}" center></ac-input>
             <div class="whitespace"></div>
             <div class="whitespace"></div>
 
@@ -223,17 +238,18 @@
         <div class="pascanvas verticcenter">
           <div class="topback">
             <span class="flex"></span>
-              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
+              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="toClearvault" verysmall>back</ac-button>
           </div>
           <div class="pascanvasunderexit verticcenter paddingside">
           <div class="pascanvas verticcenter">
-            <p class="yellow centertxt maxwidth">Enter a password to protect the vault that will hold this key</p>
+            <p class="yellow centertxt maxwidth">A profile will be created for the wallet with public key <span class="bold">0x4455687</span>. <br><br> Enter a password (min. 9 characters) for this new profile and repeat.</p>
             <div class="whitespace"></div>
             <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
           </div>
         </div>
       </div>
       </neon-animatable>
+
 
       <!-- import a keyfile -->
       <neon-animatable data-page="importfile">
@@ -256,12 +272,62 @@
 
       </neon-animatable>
 
+
+      <!-- unlock imported file -->
+      <neon-animatable data-page="unlockimport">
+        <div class="pascanvas verticcenter">
+          <div class="topback">
+            <span class="flex"></span>
+              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="toClearvault" verysmall>back</ac-button>
+          </div>
+          <div class="pascanvasunderexit verticcenter paddingside">
+          <div class="pascanvas verticcenter">
+            <p class="yellow centertxt maxwidth">Unlock this AC-wallet with its password</p>
+            <div class="whitespace"></div>
+            <ac-password></ac-password>
+          </div>
+        </div>
+      </div>
+      </neon-animatable>
+
+      <!-- Create password for vault with imported jsonfile -->
+      <neon-animatable data-page="importfilemakewallet">
+        <div class="pascanvas verticcenter">
+          <div class="topback">
+            <span class="flex"></span>
+              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="toClearvault" verysmall>back</ac-button>
+          </div>
+          <div class="pascanvasunderexit verticcenter paddingside">
+          <div class="pascanvas verticcenter">
+            <p class="yellow centertxt maxwidth"><span class="bold">Great!</span><br>A profile will now be created with your ARC-wallet. <br><br> Enter a password (min. 9 characters) for this new profile and repeat.</p>
+            <div class="whitespace"></div>
+            <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
+          </div>
+        </div>
+      </div>
+      </neon-animatable>
+
+
+
       <neon-animatable data-page="backup">
         <div class="pascanvas verticcenter">
           <a id="downloadAnchorElem" style="display:none"></a>
           <ac-button on-tap="downloadvault" txtbtn txtcolor="blue" bg="btncolor">Download your vault</ac-button>
         </div>
       </neon-animatable>
+
+
+        <neon-animatable data-page="clearvault">
+          <div class="pascanvas verticcenter paddingside">
+            <p class="centertxt smallio blue"><span class="bold caution">Caution!</span><br><br>Do you want to cancel all progress and start over?</p>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="yesnobtns verticcenter">
+              <ac-button big class="yesno" bg="btncolor" txtcolor="blue" on-tap="" txtbtn>Yes</ac-button>
+              <ac-button big class="yesno" bg="btncolor" txtcolor="blue" on-tap="" txtbtn>No</ac-button>
+            </div>
+          </div>
+        </neon-animatable>
 
 
       <neon-animatable data-page="createnew">
@@ -380,6 +446,15 @@
       removeall: function(){
         this.set('route.path', '/removeall');
       },
+
+      toClearvault: function(){
+        this.exitAnimation = "slide-down-animation";
+        this.entryAnimation = "slide-from-top-animation";
+        this.set('route.path', '/clearvault');
+        this.exitAnimation = "slide-up-animation";
+        this.entryAnimation = "slide-from-bottom-animation";
+      },
+
 
       cancel: function(){
         this.exitAnimation = "slide-right-animation";

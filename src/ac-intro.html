@@ -228,6 +228,24 @@
 
 
 
+    .externallink {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 20px 0px 20px 0px;
+
+    }
+    .externallink a {
+      color:var(--ac-red);
+      box-sizing: border-box;
+      padding: 3px 0px 3px 0px;
+      text-decoration: none;
+      border-bottom: 1px dotted var(--ac-red);
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+
+
     </style>
 
     <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
@@ -240,7 +258,7 @@
       </template>
     </div>
 
-    <neon-animated-pages id="createwalletpgs" attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
+    <neon-animated-pages id="createwalletpgs" attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimationintro}}" exit-animation="{{exitAnimationintro}}">
       <neon-animatable data-page="welcome">
         <div class$="total vertic logo_canvas {{sizeview}}">
           <div class="logo">
@@ -267,15 +285,24 @@
 
       <neon-animatable data-page="importwallet">
         <div class="total vertic">
-          <p class="red">Do you have an ARC-Wallet json-file?</p>
+          <p class="red">How did you save your ARC-wallet?</p>
           <div class="whitespace"></div>
           <div class="whitespace"></div>
           <div class="yesnobtns vertic">
-            <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="touploadjson" txtbtn>Yes</ac-button>
-            <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toprivatekey" txtbtn>No</ac-button>
+            <ac-button class="yesno" bg="btncolor" txtcolor="red" on-tap="touploadjson" txtbtn>as a json-file</ac-button>
+            <ac-button class="yesno" bg="btncolor" txtcolor="red" on-tap="toprivatekey" txtbtn>as a print / pdf</ac-button>
+            <div class="whitespace"></div>
+            <div class="externallink">
+              <a on-tap="toexternalkey">I have an external wallet<br> with ARC-tokens</a>
+            </div>
+
           </div>
         </div>
       </neon-animatable>
+
+
+
+
     </neon-animated-pages>
   </template>
 
@@ -331,14 +358,16 @@
         // }
       },
       attached: function() {
-        this.exitAnimation = "slide-left-animation";
-        this.entryAnimation = "slide-from-right-animation";
+        this.exitAnimationintro = "slide-left-animation";
+        this.entryAnimationintro = "slide-from-right-animation";
       },
 
       exit: function(){
-        this.exitAnimation = "slide-right-animation";
-        this.entryAnimation = "slide-from-left-animation";
+        this.exitAnimationintro = "slide-right-animation";
+        this.entryAnimationintro = "slide-from-left-animation";
         this.set('route.path', '/welcome');
+        this.exitAnimationintro = "slide-left-animation";
+        this.entryAnimationintro = "slide-from-right-animation";
       },
 
       totokenquestion: function() {
@@ -351,8 +380,17 @@
 //        this.state = 'importwallet';
       },
 
+      topaperorexternal: function() {
+        this.set('route.path', '/paperorexternal');
+      },
+
+
       toprivatekey: function() {
         this.fire('importpk');
+      },
+
+      toexternalkey: function() {
+        this.fire('externalpk');
       },
 
       touploadjson: function() {

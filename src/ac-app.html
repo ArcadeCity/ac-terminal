@@ -111,6 +111,7 @@
       on-newvault="createNewVault"
       on-importfile="toimportfile"
       on-importpk="toimportpk"
+      on-externalpk="toexternalpk"
       route="[[pageTail]]"
       sizeview="{{sizeview}}"
       >
@@ -210,6 +211,11 @@
       toimportpk: function(){
         this.transitionto('/vault/importpk');
       },
+
+      toexternalpk: function(){
+        this.transitionto('/vault/externalpk');
+      },
+
 
       toimportfile: function(){
         this.transitionto('/vault/importfile');

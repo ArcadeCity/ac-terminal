@@ -79,7 +79,7 @@
   }
 
   .balancebox {
-    height: 35vh;
+    height: 25vh;
   }
 
   #walletcontent {
@@ -87,6 +87,11 @@
     box-sizing: border-box;
     padding-left: 10vw;
     padding-right: 10vw;
+  }
+
+  .whitespace {
+    height: 20px;
+    width:100%;
   }
 
 
@@ -125,14 +130,13 @@
 
       <div id="walletcontent">
         <div class$="initbtns {{align}}">
-          <ac-tokensend 
+          <ac-tokensend
             account="[[account]]"
             identity="[[identity]]"
             on-activated="hideReceivebutton"
             on-deactivated="showReceivebutton"
             sizeview="{{sizeview}}">
           </ac-tokensend>
-        <div class="whitespace"></div>
 
         <ac-tokenreceive
           account="[[account]]"
@@ -155,7 +159,16 @@
         ethbalance="{{ethbalance}}">
       </ac-wallet>
 
+      <div class="whitespace"></div>
+      <div class="whitespace"></div>
+      <div class="whitespace"></div>
+      <div class="whitespace"></div>
+      <div class="whitespace"></div>
+      <div class="whitespace"></div>
+      <ac-logitem></ac-logitem>
       </div>
+
+
 
   </div>
 
