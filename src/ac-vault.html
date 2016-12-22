@@ -52,6 +52,11 @@
       background-color: var(--ac-base);
      }
 
+     .pascanvasunderexit {
+       width: 100%;
+       height: 92%;
+     }
+
 
 
      .verticcenter {
@@ -71,6 +76,17 @@
     .red {
       color: var(--ac-red);
     }
+
+    .blue {
+      color: var(--ac-blue);
+    }
+
+    .white {
+
+      color: var(--ac-white);
+
+    }
+
     ac-password {
     width: 80%;
     max-width: 500px;
@@ -86,13 +102,13 @@
 
     }
 
-    .importpk {
+    .smallio {
       text-align: center;
       width: 80%;
       max-width: 500px;
     }
 
-    .importpk ac-input {
+    .smallio ac-input {
       width: 100%;
     }
 
@@ -124,6 +140,55 @@
 
     }
 
+    .flex {
+      @apply(--layout-flex);
+    }
+    .topback {
+        width: 100%;
+        background-color: var(--ac-base);
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+        box-sizing: border-box;
+        padding: 5vh 5vw 0px 5vw;
+        height: 8%;
+      }
+
+
+      .topback ac-icon {
+        opacity: 0.5;
+      }
+      .topback ac-button {
+        @apply(--base-shadow);
+        opacity: 0.9;
+      }
+
+      .bold {
+        @apply(--montserrat-semibold);
+
+      }
+
+      .smaller {
+        font-size: 14px;
+        line-height: 20px;
+      }
+
+      .notundone ac-button {
+        @apply(--base-shadow-and-inset);
+      }
+
+      .notundone {
+        width: 100%;
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+        box-sizing: border-box;
+        padding: 30px 30px 40px 30px;
+        border-top: 1px dashed rgba(249,85,85,0.25);
+        border-bottom: 1px dashed rgba(249,85,85,0.25);
+
+        margin:5vh 0px 4vh 0px;
+      }
+
+
     </style>
 
   <template>
@@ -133,11 +198,14 @@
     <neon-animated-pages attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
       <!-- first stage in importing PK -->
-      <neon-animatable data-page="importpk"> 
-        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>     
+      <neon-animatable data-page="importpk">
         <div class="pascanvas verticcenter">
-         
-          <div class="importpk">
+          <div class="topback">
+            <span class="flex"></span>
+              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
+          </div>
+          <div class="pascanvasunderexit verticcenter paddingside">
+          <div class="smallio">
           <p class="yellow centertxt">Enter the private key you'll find on your paper wallet</p>
           <div class="whitespace"></div>
             <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="enter your private key" type="password" bind-value="{{privatekey}}" center></ac-input>
@@ -147,22 +215,34 @@
             <ac-button class="loginbtn" icon="ac-arrowright" on-tap="pkreceived" bg="btncolor" txtcolor="yellow"></ac-button>
           </div>
         </div>
+      </div>
       </neon-animatable>
 
       <!-- second stage in importing PK -->
       <neon-animatable data-page="importpkmakewallet">
-        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>           
         <div class="pascanvas verticcenter">
-          <p class="yellow centertxt maxwidth">Enter a password to protect the vault that will hold this key</p>
-          <div class="whitespace"></div>
-          <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
+          <div class="topback">
+            <span class="flex"></span>
+              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
+          </div>
+          <div class="pascanvasunderexit verticcenter paddingside">
+          <div class="pascanvas verticcenter">
+            <p class="yellow centertxt maxwidth">Enter a password to protect the vault that will hold this key</p>
+            <div class="whitespace"></div>
+            <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
+          </div>
         </div>
+      </div>
       </neon-animatable>
 
       <!-- import a keyfile -->
       <neon-animatable data-page="importfile">
-        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>           
         <div class="pascanvas verticcenter">
+          <div class="topback">
+            <span class="flex"></span>
+              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
+          </div>
+          <div class="pascanvasunderexit verticcenter">
         <template is="dom-if" if="{{vaulterror}}">
           <div class="error red"><p><span class="oops">Oops!</span><br>{{vaulterror}}<p>
         <div class="whitespace"></div>
@@ -172,6 +252,7 @@
           <ac-button on-tap="uploadclick" txtbtn txtcolor="blue" bg="btncolor">Choose your wallet-file</ac-button>
 
         </div>
+      </div>
 
       </neon-animatable>
 
@@ -182,30 +263,52 @@
         </div>
       </neon-animatable>
 
-<!--
-      <neon-animatable data-page="new">
-        <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="tocreatenew" txtbtn>Create a new vault</ac-button>
-        <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toimportfile" txtbtn>Import a wallet file</ac-button>
-        <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toimportpk" txtbtn>Enter a private key</ac-button>
-      </neon-animatable> -->
 
       <neon-animatable data-page="createnew">
-        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button> 
-        <div class="pascanvas verticcenter paddingside">
-        <p class="yellow centertxt">Choose a password (min. 9 characters) and repeat.</p>
-        <div class="whitespace"></div>
-        <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
-      </div>
-        <!-- <ac-createwallet on-to-home="toHome"></ac-createwallet>
-      -->
+        <div class="pascanvas verticcenter">
+          <div class="topback">
+            <span class="flex"></span>
+              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
+          </div>
+          <div class="pascanvasunderexit verticcenter paddingside">
+            <p class="yellow centertxt">Choose a password (min. 9 characters) and repeat.</p>
+            <div class="whitespace"></div>
+            <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
+          </div>
+        </div>
     </neon-animatable>
 
     <neon-animatable data-page="unlock">
-        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>     
       <div class="pascanvas verticcenter">
+        <div class="topback">
+          <span class="flex"></span>
+            <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="removeall" verysmall>back</ac-button>
+        </div>
+        <div class="pascanvasunderexit verticcenter">
         <ac-password id="newuser" sessionname="vaultpassword" on-password-received="unlockvault"></ac-password>
       </div>
+    </div>
     </neon-animatable>
+
+    <neon-animatable data-page="removeall">
+        <div class="pascanvas verticcenter paddingside">
+          <div class="verticcenter smallio resetter">
+          <p class="white centertxt bold">Can't find your password?</p>
+          <div class="whitespace"></div>
+          <p class="white centertxt smaller">Without your password, the only thing you can do is remove the current profile and start over.</p>
+
+          <div class="notundone">
+            <p class="red smaller bold">This action can not be undone!</p>
+            <div class="whitespace"></div>
+
+          <ac-button txtbtn txtcolor="base" bg="red">remove profile</ac-button>
+        </div>
+        <ac-button icon="ac-arrowleft" txtcolor="white" bg="btncolor" on-tap="cancel" small>cancel</ac-button>
+
+        </div>
+      </div>
+    </neon-animatable>
+
 
   </neon-animated-pages>
 
@@ -269,9 +372,23 @@
         }
       },
 
+
       exit: function(){
         this.fire('exit');
       },
+
+      removeall: function(){
+        this.set('route.path', '/removeall');
+      },
+
+      cancel: function(){
+        this.exitAnimation = "slide-right-animation";
+        this.entryAnimation = "slide-from-left-animation";
+        this.set('route.path', '/unlock');
+        this.exitAnimation = "slide-left-animation";
+        this.entryAnimation = "slide-from-right-animation";
+      },
+
 
       activate: function(){
         if (!this.hasVault()) {
@@ -326,6 +443,8 @@
 
       attached: function(){
         console.log('ac-vault attached');
+        this.exitAnimation = "slide-left-animation";
+        this.entryAnimation = "slide-from-right-animation";
       },
 
       _currentidentity: function(){

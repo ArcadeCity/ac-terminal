@@ -240,7 +240,7 @@
       </template>
     </div>
 
-    <neon-animated-pages id="createwalletpgs" attr-for-selected="data-page" selected="[[data.page]]" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
+    <neon-animated-pages id="createwalletpgs" attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
       <neon-animatable data-page="welcome">
         <div class$="total vertic logo_canvas {{sizeview}}">
           <div class="logo">
@@ -331,11 +331,13 @@
         // }
       },
       attached: function() {
-        console.log('YOOOOOOOO attached ======', this.sizeview);
-
+        this.exitAnimation = "slide-left-animation";
+        this.entryAnimation = "slide-from-right-animation";
       },
 
       exit: function(){
+        this.exitAnimation = "slide-right-animation";
+        this.entryAnimation = "slide-from-left-animation";
         this.set('route.path', '/welcome');
       },
 

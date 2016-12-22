@@ -37,9 +37,29 @@
 
   }
 
+  .yellow {
+    color: var(--ac-yellow);
+  }
+  .red {
+    color: var(--ac-red);
+  }
+  .blue {
+    color: var(--ac-blue);
+  }
+
+  .white {
+    color: var(--ac-white);
+  }
+  .opacity {
+    opacity: 0.5;
+  }
   h1 {
     @apply(--ac-font-h1);
   }
+
+    h2 {
+      @apply(--ac-font-h2);
+    }
 
   p {
     @apply(--ac-font-body1);
@@ -54,7 +74,7 @@
     #homecontent {
       width: 100%;
       box-sizing: border-box;
-      padding: 2vh 10vw 10vh 10vw;
+      padding: 0vh 10vw 10vh 10vw;
       /*height: var(--homecontent-height);*/
     }
 
@@ -121,11 +141,35 @@
     }
 
     .toridesharebtn {
-      padding: 26px 38px 26px 38px;
+      padding-top: 10px;
+      padding-bottom: 13px;
+      /*padding: 26px 38px 26px 38px;*/
       @apply(--base-shadow-and-inset);
-      width: 80%;
-      max-width: 400px; 
+      /*width: 80%;
+      max-width: 200px;*/
     }
+
+    .rideshare {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 20px 0px 35px 0px;
+      border-top: 2px dotted rgba(255,255,255,0.15);
+      border-bottom: 2px dotted rgba(255,255,255,0.15);
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
+    }
+
+    .rideshare h2 {
+      font-size: 18px;
+      line-height: 20px;
+      @apply(--montserrat-semibold);
+    }
+
+    .rideshare p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.35);
+    }
+
 
 
   </style>
@@ -177,7 +221,12 @@
     <div class="flex"></div>
 
     <div id="homecontent" class="verticcenter">
-      <ac-button txtbtn bg="btncolor" txtcolor="yellow" class="toridesharebtn">to /rideshare</ac-button>
+      <div class="rideshare">
+        <h2 class="yellow">/rideshare</h2>
+        <p>You haven't played this game yet.</p>
+        <div class="whitespace"></div>
+      <ac-button txtbtn bg="btncolor" txtcolor="yellow" class="toridesharebtn" small>Play!</ac-button>
+    </div>
 
     </div>
 
@@ -207,11 +256,11 @@
         type: String,
         observer: '_sizeview'
       },
-      
+
       arcalign: {
         type: String,
       },
- 
+
       pubkey: {
         type: String,
       },
@@ -279,7 +328,7 @@
       this.$.wallet.monitorBalance();
     },
 
-  
+
     ready: function() {
       this.datastate = 'view';
     },
