@@ -29,7 +29,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: inline-block;
         box-sizing: border-box;
-        background-color: transparent;;
         --balance-h1: 40px;
         --balance-lineheight: 52px;
         --coin-margins: 0px 0px 7px 6px;
@@ -84,11 +83,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .sendcoiners {
         width: 100%;
-        max-width: 500px;
         box-sizing: border-box;
         @apply(--layout-vertical);
         @apply(--layout-center-center);
       }
+
+
 
 
       .flex {
@@ -134,6 +134,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      .announce {
       width: 100%;
       max-width: 500px;
+      min-height: 220px;
       box-sizing: border-box;
       @apply(--layout-horizontal);
       @apply(--layout-center-center);
@@ -226,11 +227,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         @apply(--layout-start-justified);
       }
 
-      .sendinput {
+
+
+      .amount {
         width: 100%;
-        overflow: hidden;
+        @apply(--layout-horizontal);
+        @apply(--layout-end-justified);
+        @apply(--layout-end);
+      }
+      .amount ac-input {
+        width: 80%;
+
       }
 
+      .amount p {
+        @apply(--montserrat-bold);
+        font-size: 11px;
+        padding:0px 10px;
+      }
+
+      .sendinputter {
+        width: 250px;
+        overflow: hidden;
+      }
 
 
       .item {
@@ -249,9 +268,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         border-bottom: 2px dotted rgba(255,255,255,0.05);
       }
 
-      .amount {
-        @apply(--montserrat-bold);
-      }
 
 
       .receiver {
@@ -326,13 +342,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="sendcoiners">
 
           <template is="dom-if" if="{{_is(sendcoinstate,'sendform')}}">
-            <ac-input center color="red" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
-            <ac-input center color="red" class="sendinput" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
+            <div class="sendinputter ">
+              <div class="amount">
+              <ac-input color="red" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
+              <p class="red">ARC</p>
+            </div>
+            </div>
+            <ac-input color="red" class="sendinputter" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
             <div class="whitespace"></div>
             <div class="confirmbtnsmobile">
               <ac-button icon="ac-decline" on-tap="togglesendcoins" small class="confirmbtn" bg="base" txtcolor="red"></ac-button>
               <ac-button on-tap="tosearchingforpeer" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
             </div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'balancelow')}}">
@@ -379,9 +402,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <p class="pubkey">{{receiver.account}}</p>
                   </div>
                 </div>
-              </div>
-              <ac-button on-tap="tosendcoins" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
-              <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+                <div class="confirmbtnsmobile">
+                  <ac-button verysmall bg="btncolor" txtcolor="red" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+                  <ac-button on-tap="tosendcoins" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
+                </div>
+            <div class="whitespace"></div>    
+            </div>
+            <div class="whitespace"></div>
+
             </div>
           </template>
 
@@ -475,7 +503,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       tosendform: function(){
-        this.sendcoinstate = 'sendform';
+        this.sendcoinstate = 'confirmtx';
       },
 
       // activatereceivecoins: function(){
@@ -575,15 +603,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     togglesendcoins: function() {
-      //var sendcoins = this.$.sendcoins;
-      //sendcoins.toggle();
-      //this.sendcollsclosed=!this.sendcollsclosed;
-      // this.sendcoinstate = 'init';
-      // if (this.sendcollsclosed){
-      //   this.fire('activated');
-      // }else{
-      //   this.fire('deactivated');
-      // }
+        this.sendcoinstate= 'init';
     },
 
 
