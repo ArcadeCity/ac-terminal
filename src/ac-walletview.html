@@ -12,6 +12,7 @@
 <link rel="import" href="ac-shortcode.html">
 <link rel="import" href="ac-tokensend.html">
 <link rel="import" href="ac-tokenreceive.html">
+<link rel="import" href="ac-log.html">
 
 <!--
 <link rel="import" href="ac-tokentransfer.html">
@@ -135,6 +136,7 @@
             identity="[[identity]]"
             on-activated="hideReceivebutton"
             on-deactivated="showReceivebutton"
+            on-addlog="receivelog"
             sizeview="{{sizeview}}">
           </ac-tokensend>
 
@@ -165,7 +167,7 @@
       <div class="whitespace"></div>
       <div class="whitespace"></div>
       <div class="whitespace"></div>
-      <ac-logitem></ac-logitem>
+      <ac-log id="log" account="[[account]]"></ac-log>
       </div>
 
 
@@ -264,6 +266,10 @@
 
     monitorBalance: function(){
       this.$.wallet.monitorBalance();
+    },
+
+    receivelog: function(logdetails){
+      this.$.log.addlogitem(logdetails);
     },
 
 

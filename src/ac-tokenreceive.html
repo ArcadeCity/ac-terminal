@@ -259,7 +259,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
         </template>
 
-        <template is="dom-if" if="{{_is(receivecoinstate,'waittx')}}">
+  <!--       <template is="dom-if" if="{{_is(receivecoinstate,'waittx')}}">
           <div class="announce">
             <div class="item red">
               <p>You're receiving</p>
@@ -276,7 +276,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </div>
             </div>
           </div>
-        </template>
+        </template> -->
 
       </div>
 
@@ -405,7 +405,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             //console.log('transfer confirmed...', message.amount, 'received');
             this.transactiondetails = message;
             this.transactiondetails.avatarurl = this.$.ipfs.geturl(this.transactiondetails.avatarhash);
-            this.receivecoinstate = 'waittx';
+//            this.receivecoinstate = 'waittx';
+
+            this.fire('addlog',
+              {
+                avatarhash:transactiondetails.avatarhash,
+                fromusername:transactiondetails.username,
+                amount:transactiondetails.amount,
+                txhash:transactiondetails.txhash,
+                status:'pending'
+              });
+
 
             // TODO : wait for the transactionID... now we just fake this , allemaal voor dat den BAN voortkan he. achteraf vervangen we dit door een transaction monitor.
 
