@@ -1,3 +1,8 @@
+# OBSOLETE
+
+This has been replaced by https://github.com/swarmcity/sc-terminal
+No development will be done further on this repo.
+
 # Arcade City Terminal
 
 The Arcade city terminal is the starting point of the user journey in Arcade City. The Arcade City Terminal will be the main entry screen into the Arcade City ecosystem and will be the switchboard towards all the Arcade City games ( starting with Ridesharing ). It provides the Arcadians the possibility to create and and manage a basic profile and exchange ARC tokens in a wallet.
